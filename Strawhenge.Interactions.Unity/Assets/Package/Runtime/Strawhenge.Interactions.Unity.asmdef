@@ -1,7 +1,10 @@
 {
     "name": "Strawhenge.Interactions.Unity",
     "rootNamespace": "Strawhenge.Interactions.Unity",
-    "references": [],
+    "references": [
+        "GUID:ab0e643ec0e5c9a4e976743cf4c3ad5e",
+        "GUID:1b5fc161151267d41b5d731ec0c68f25"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

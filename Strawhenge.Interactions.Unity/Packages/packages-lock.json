@@ -1,5 +1,28 @@
 {
   "dependencies": {
+    "com.strawhenge.common": {
+      "version": "https://github.com/Strawhenge/Common.git?path=/Strawhenge.Common.Unity/Assets/Package#release",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.strawhenge.functionalutilities": "https://github.com/Strawhenge/FunctionalUtilities.git?path=/Package#release"
+      },
+      "hash": "0410c2372b672f4941e6897690f81a870efa4f29"
+    },
+    "com.strawhenge.functionalutilities": {
+      "version": "https://github.com/Strawhenge/FunctionalUtilities.git?path=/Package#release",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "4c21ab65066a0959a73eb9997db1958742dabfa3"
+    },
+    "com.strawhenge.inventory": {
+      "version": "https://github.com/Strawhenge/Inventory.git?path=/Strawhenge.Inventory.Unity/Assets/Package#release",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "4b2bb53ed7b8e06bd8dd89b16ab751afb81ceac9"
+    },
     "com.unity.collab-proxy": {
       "version": "1.17.7",
       "depth": 0,
