@@ -1,13 +1,15 @@
 {
-    "name": "Strawhenge.Interactions.Unity",
-    "rootNamespace": "Strawhenge.Interactions.Unity",
-    "references": [],
+    "name": "Strawhenge.Interactions.Unity.Editor",
+    "rootNamespace": "Strawhenge.Interactions.Unity.Editor",
+    "references": [
+        "GUID:3152effc9c9ee244284180ab6aae4fbb"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
+    "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false
