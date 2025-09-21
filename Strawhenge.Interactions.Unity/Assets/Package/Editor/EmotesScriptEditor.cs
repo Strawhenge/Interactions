@@ -1,4 +1,3 @@
-using System;
 using Strawhenge.Interactions.Unity.Emotes;
 using UnityEditor;
 using UnityEngine;
@@ -11,7 +10,7 @@ namespace Strawhenge.Interactions.Unity.Editor
         EmotesScript _emotesScript;
         EmoteScriptableObject _emote;
 
-        private void OnEnable()
+        void OnEnable()
         {
             _emotesScript ??= target as EmotesScript;
         }
