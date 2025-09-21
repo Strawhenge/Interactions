@@ -8,5 +8,10 @@ namespace Strawhenge.Interactions.Unity.Emotes
         {
             Debug.Log($"Performing emote '{emote.name}'.", emote);
         }
+
+        public void End()
+        {
+            Debug.Log("Ending emote.", this);
+        }
     }
 }
