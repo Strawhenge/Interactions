@@ -1,0 +1,9 @@
+{
+  "name": "com.strawhenge.interactions",
+  "version": "1.0.0",
+  "displayName": "Strawhenge Interactions",
+  "unity": "2020.3",
+  "author": {
+    "name": "Matt Bristow"
+  }
+}
