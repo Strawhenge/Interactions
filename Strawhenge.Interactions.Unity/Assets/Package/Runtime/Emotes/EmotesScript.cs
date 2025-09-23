@@ -1,3 +1,4 @@
+using Strawhenge.Common.Unity.AnimatorBehaviours;
 using Strawhenge.Common.Unity.Helpers;
 using System;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
         [SerializeField] Animator _animator;
 
         AnimatorOverrideController _animatorOverrideController;
+        StateMachineEvents<EmotesStateMachine> _stateMachineEvents;
 
         void Awake()
         {
@@ -17,19 +19,31 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
             _animatorOverrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
             _animator.runtimeAnimatorController = _animatorOverrideController;
+
+            _stateMachineEvents = _animator.AddEvents<EmotesStateMachine>(
+                stateMachine => stateMachine.OnEmoteEnded = OnEmoteEnded,
+                _ => { });
         }
 
         public void Perform(EmoteScriptableObject emote)
         {
+            _stateMachineEvents.PrepareIfRequired();
+
             emote.Animation.Do(animation =>
                 _animatorOverrideController["Emote"] = animation);
-            
+
             _animator.SetTrigger("Begin Emote");
         }
 
         public void End()
         {
+            _stateMachineEvents.PrepareIfRequired();
             _animator.SetTrigger("End Emote");
+        }
+
+        void OnEmoteEnded()
+        {
+            Debug.Log("Emote Ended", this);
         }
     }
 }
