@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc1ac10421f5498fa76ff52779771514, type: 3}
   m_Name: Fishing
   m_EditorClassIdentifier: 
+  _animation: {fileID: -203655887218126122, guid: ea645f50c8539a74682b1ebcb6487c61, type: 3}
