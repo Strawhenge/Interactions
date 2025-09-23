@@ -8,6 +8,6 @@ namespace Strawhenge.Interactions.Unity.Emotes
     {
         [SerializeField] AnimationClip _animation;
 
-        Maybe<AnimationClip> Animation => Maybe.NotNull(_animation);
+        public Maybe<AnimationClip> Animation => Maybe.NotNull(_animation);
     }
 }
