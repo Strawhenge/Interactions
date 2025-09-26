@@ -1,5 +1,6 @@
 using Strawhenge.Common.Unity.AnimatorBehaviours;
 using Strawhenge.Common.Unity.Helpers;
+using Strawhenge.Inventory.Unity;
 using System;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
     public class EmotesScript : MonoBehaviour
     {
         [SerializeField] Animator _animator;
+        [SerializeField, Tooltip("Optional.")] InventoryScript _inventory;
 
         AnimatorOverrideController _animatorOverrideController;
         StateMachineEvents<EmotesStateMachine> _stateMachineEvents;
