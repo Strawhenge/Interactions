@@ -1,5 +1,6 @@
 using Strawhenge.Common.Unity.AnimatorBehaviours;
 using Strawhenge.Common.Unity.Helpers;
+using Strawhenge.Inventory.Items;
 using Strawhenge.Inventory.Unity;
 using System;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
         AnimatorOverrideController _animatorOverrideController;
         StateMachineEvents<EmotesStateMachine> _stateMachineEvents;
+        InventoryItem _item;
 
         void Awake()
         {
@@ -28,6 +30,19 @@ namespace Strawhenge.Interactions.Unity.Emotes
         }
 
         public void Perform(EmoteScriptableObject emote)
+        {
+            if (emote.Item.HasSome(out var item))
+            {
+                _item = _inventory.Inventory
+                    .GetItemOrCreateTemporary(item.ToItem());
+                _item.HoldRightHand(() => PerformAnimation(emote));
+                return;
+            }
+
+            PerformAnimation(emote);
+        }
+
+        void PerformAnimation(EmoteScriptableObject emote)
         {
             _stateMachineEvents.PrepareIfRequired();
 
@@ -45,7 +60,8 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
         void OnEmoteEnded()
         {
-            Debug.Log("Emote Ended", this);
+            _item?.ClearFromHands();
+            _item = null;
         }
     }
 }
