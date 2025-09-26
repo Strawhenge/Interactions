@@ -22,6 +22,7 @@ namespace Strawhenge.Interactions
             {
                 _next = oneAtATime;
                 _current.Stop(OnCurrentStopped);
+                _current = null;
                 return;
             }
 
@@ -29,16 +30,16 @@ namespace Strawhenge.Interactions
             _current.Start();
         }
 
-        void OnCurrentStopped()
-        {
-            _current = _next;
-            _current?.Start();
-        }
-
         public void Stop()
         {
             _current?.Stop(OnCurrentStopped);
             _current = null;
+        }
+
+        void OnCurrentStopped()
+        {
+            _current = _next;
+            _current?.Start();
         }
     }
 }
