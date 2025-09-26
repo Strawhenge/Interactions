@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strawhenge.Interactions", "Strawhenge.Interactions\Strawhenge.Interactions.csproj", "{49982E60-8C20-43E0-B90C-5E425ADBAD7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strawhenge.Interactions.Tests", "Strawhenge.Interactions.Tests\Strawhenge.Interactions.Tests.csproj", "{D38645BA-1546-4127-85A8-5F9946F675BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49982E60-8C20-43E0-B90C-5E425ADBAD7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49982E60-8C20-43E0-B90C-5E425ADBAD7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49982E60-8C20-43E0-B90C-5E425ADBAD7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49982E60-8C20-43E0-B90C-5E425ADBAD7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D38645BA-1546-4127-85A8-5F9946F675BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D38645BA-1546-4127-85A8-5F9946F675BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D38645BA-1546-4127-85A8-5F9946F675BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D38645BA-1546-4127-85A8-5F9946F675BF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
