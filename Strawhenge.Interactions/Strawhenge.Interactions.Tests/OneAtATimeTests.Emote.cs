@@ -25,5 +25,7 @@ public partial class OneAtATimeTests
         {
             _onStopped?.Invoke();
         }
+
+        public new void InvokeStop() => base.InvokeStop();
     }
 }

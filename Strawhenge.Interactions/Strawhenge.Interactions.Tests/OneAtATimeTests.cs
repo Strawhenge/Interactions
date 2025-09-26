@@ -82,4 +82,18 @@ public partial class OneAtATimeTests
 
         Assert.True(callbackInvoked);
     }
+
+    [Fact]
+    public void Callback_should_invoke_when_emote_has_called_stop_from_within()
+    {
+        var emote = new Emote();
+        var callbackInvoked = false;
+        _oneAtATimeManager.Start(emote, () => callbackInvoked = true);
+
+        emote.InvokeStop();
+        Assert.False(callbackInvoked);
+
+        emote.InvokeOnStoppedCallback();
+        Assert.True(callbackInvoked);
+    }
 }
