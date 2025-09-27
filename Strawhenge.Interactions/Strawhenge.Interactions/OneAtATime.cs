@@ -32,12 +32,4 @@ namespace Strawhenge.Interactions
             Stopped?.Invoke();
         }
     }
-
-    enum OneAtATimeState
-    {
-        New,
-        Started,
-        Stopping,
-        Stopped
-    }
 }
