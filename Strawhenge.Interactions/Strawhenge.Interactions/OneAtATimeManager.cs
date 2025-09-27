@@ -40,7 +40,23 @@ namespace Strawhenge.Interactions
             _current.Stopped += OnCurrentStopped;
             _currentCallback = callback;
 
-            _current.Start();
+            switch (_current.State)
+            {
+                case OneAtATimeState.New:
+                    _current.Start();
+                    break;
+
+                case OneAtATimeState.Started:
+                case OneAtATimeState.Stopping:
+                    break;
+
+                case OneAtATimeState.Stopped:
+                    OnCurrentStopped();
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         void OnCurrentStopped()
