@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Strawhenge.Interactions.OneAtATime
 {
@@ -52,8 +51,8 @@ namespace Strawhenge.Interactions.OneAtATime
             _currentCallback = null;
             callback?.Invoke();
 
-            while (_skippedCallbacks.Any())
-                _skippedCallbacks.Dequeue().Invoke();
+            foreach (var skippedCallback in _skippedCallbacks.DequeueAll())
+                skippedCallback.Invoke();
 
             if (_next != null)
             {
