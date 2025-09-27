@@ -6,30 +6,20 @@ namespace Strawhenge.Interactions
     {
         internal event Action Stopped;
 
-        internal OneAtATimeState State { get; private set; } = OneAtATimeState.New;
-
         internal void Start()
         {
-            State = OneAtATimeState.Started;
             OnStart();
         }
 
         internal void Stop()
         {
-            State = OneAtATimeState.Stopping;
-            OnStop(OnStopped);
+            OnStop(() => Stopped?.Invoke());
         }
 
         protected abstract void OnStart();
 
         protected abstract void OnStop(Action onStopped);
 
-        protected void InvokeStopped() => OnStopped();
-
-        void OnStopped()
-        {
-            State = OneAtATimeState.Stopped;
-            Stopped?.Invoke();
-        }
+        protected void InvokeStopped() => Stopped?.Invoke();
     }
 }
