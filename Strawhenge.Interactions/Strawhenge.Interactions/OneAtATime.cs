@@ -20,6 +20,6 @@ namespace Strawhenge.Interactions
 
         protected abstract void OnStop(Action onStopped);
 
-        protected void InvokeStop() => Stopped?.Invoke();
+        protected void InvokeStopped() => Stopped?.Invoke();
     }
 }
