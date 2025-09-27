@@ -25,11 +25,11 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             EditorGUILayout.BeginHorizontal();
 
-            if (GUILayout.Button(nameof(EmotesScript.Perform)) && _emote != null)
-                _emotesScript.Perform(_emote);
+            if (GUILayout.Button(nameof(EmoteController.Perform)) && _emote != null)
+                _emotesScript.EmoteController.Perform(_emote);
 
-            if (GUILayout.Button(nameof(EmotesScript.End)))
-                _emotesScript.End();
+            if (GUILayout.Button(nameof(EmoteController.End)))
+                _emotesScript.EmoteController.End();
 
             EditorGUILayout.EndHorizontal();
             EditorGUI.EndDisabledGroup();
