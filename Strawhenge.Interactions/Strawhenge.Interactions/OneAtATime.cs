@@ -4,35 +4,22 @@ namespace Strawhenge.Interactions
 {
     public abstract class OneAtATime
     {
-        bool _calledStart;
-        bool _calledStop;
-
-        internal Action Callback { get; set; }
+        internal event Action Stopped;
 
         internal void Start()
         {
-            if (_calledStart) return;
-            _calledStart = true;
-
             OnStart();
         }
 
-        internal void Stop(Action onStopped = null)
+        internal void Stop()
         {
-            if (_calledStop) return;
-            _calledStop = true;
-
-            OnStop(() =>
-            {
-                onStopped?.Invoke();
-                Callback?.Invoke();
-            });
+            OnStop(() => Stopped?.Invoke());
         }
 
         protected abstract void OnStart();
 
         protected abstract void OnStop(Action onStopped);
 
-        protected void InvokeStop() => Stop();
+        protected void InvokeStop() => Stopped?.Invoke();
     }
 }
