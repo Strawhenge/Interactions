@@ -1,3 +1,5 @@
+using Strawhenge.Interactions.OneAtATime;
+
 namespace Strawhenge.Interactions.Tests;
 
 public partial class OneAtATimeTests

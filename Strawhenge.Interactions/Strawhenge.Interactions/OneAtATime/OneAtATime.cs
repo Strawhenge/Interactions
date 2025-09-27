@@ -1,6 +1,6 @@
 using System;
 
-namespace Strawhenge.Interactions
+namespace Strawhenge.Interactions.OneAtATime
 {
     public abstract class OneAtATime
     {

@@ -2,7 +2,7 @@ namespace Strawhenge.Interactions.Tests;
 
 public partial class OneAtATimeTests
 {
-    class Emote : OneAtATime
+    class Emote : OneAtATime.OneAtATime
     {
         public bool HasCalledOnStart { get; private set; }
 

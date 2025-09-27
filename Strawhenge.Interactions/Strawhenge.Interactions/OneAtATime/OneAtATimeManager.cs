@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Strawhenge.Interactions
+namespace Strawhenge.Interactions.OneAtATime
 {
     public class OneAtATimeManager
     {
