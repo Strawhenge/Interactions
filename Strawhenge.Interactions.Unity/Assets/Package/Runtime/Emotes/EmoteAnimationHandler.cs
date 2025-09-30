@@ -36,12 +36,14 @@ namespace Strawhenge.Interactions.Unity.Emotes
         public void Perform(
             Maybe<AnimationClip> animation,
             bool isRepeating,
+            int layerId,
             IEnumerable<AnimatorBoolParameterScriptableObject> emoteAnimatorBoolParameters)
         {
             _stateMachineEvents.PrepareIfRequired();
 
             animation.Do(a => _animatorOverrideController["Emote"] = a);
 
+            _animator.SetInteger(AnimatorParameters.EmoteLayerId, layerId);
             _animator.SetBool(AnimatorParameters.RepeatingEmote, isRepeating);
 
             _boolParameters = emoteAnimatorBoolParameters.ToArray(x => x.Id);

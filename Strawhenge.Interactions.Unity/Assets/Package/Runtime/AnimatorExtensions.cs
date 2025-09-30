@@ -12,5 +12,8 @@ namespace Strawhenge.Interactions.Unity
 
         public static void SetBool(this Animator animator, AnimatorParameter parameter, bool value) =>
             animator.SetBool(parameter.Id, value);
+
+        public static void SetInteger(this Animator animator, AnimatorParameter parameter, int value) =>
+            animator.SetInteger(parameter.Id, value);
     }
 }

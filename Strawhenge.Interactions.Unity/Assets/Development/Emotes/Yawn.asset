@@ -13,3 +13,7 @@ MonoBehaviour:
   m_Name: Yawn
   m_EditorClassIdentifier: 
   _animation: {fileID: -203655887218126122, guid: 70a79227886deba43b6ce679e054196a, type: 3}
+  _isRepeating: 0
+  _item: {fileID: 0}
+  _layerId: 1
+  _animatorBoolParameters: []

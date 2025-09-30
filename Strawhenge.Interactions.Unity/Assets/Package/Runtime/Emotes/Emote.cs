@@ -44,6 +44,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
             _animationHandler.Perform(
                 _emote.Animation,
                 _emote.IsRepeating,
+                _emote.LayerId,
                 _emote.AnimatorBoolParameters);
 
         void OnAnimationEnded()

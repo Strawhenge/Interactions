@@ -13,6 +13,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
         [SerializeField] AnimationClip _animation;
         [SerializeField] bool _isRepeating;
         [SerializeField] ItemScriptableObject _item;
+        [SerializeField] int _layerId;
         [SerializeField] AnimatorBoolParameterScriptableObject[] _animatorBoolParameters;
 
         public Maybe<AnimationClip> Animation => Maybe.NotNull(_animation);
@@ -20,6 +21,8 @@ namespace Strawhenge.Interactions.Unity.Emotes
         public bool IsRepeating => _isRepeating;
 
         public Maybe<ItemScriptableObject> Item => Maybe.NotNull(_item);
+
+        public int LayerId => _layerId;
 
         public IEnumerable<AnimatorBoolParameterScriptableObject> AnimatorBoolParameters =>
             _animatorBoolParameters.ExcludeNull();
