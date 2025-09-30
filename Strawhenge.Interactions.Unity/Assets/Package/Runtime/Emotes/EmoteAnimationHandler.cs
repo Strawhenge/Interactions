@@ -1,7 +1,10 @@
 using FunctionalUtilities;
+using Strawhenge.Common;
 using Strawhenge.Common.Unity.AnimatorBehaviours;
+using Strawhenge.Interactions.Unity.Package.Runtime;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 namespace Strawhenge.Interactions.Unity.Emotes
 {
@@ -13,6 +16,8 @@ namespace Strawhenge.Interactions.Unity.Emotes
         readonly Animator _animator;
         readonly AnimatorOverrideController _animatorOverrideController;
         readonly StateMachineEvents<EmotesStateMachine> _stateMachineEvents;
+
+        int[] _boolParameters = Array.Empty<int>();
 
         public EmoteAnimationHandler(Animator animator)
         {
@@ -27,11 +32,17 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
         public event Action AnimationEnded;
 
-        public void Perform(Maybe<AnimationClip> animation)
+        public void Perform(
+            Maybe<AnimationClip> animation,
+            IEnumerable<AnimatorBoolParameterScriptableObject> emoteAnimatorBoolParameters)
         {
             _stateMachineEvents.PrepareIfRequired();
 
             animation.Do(a => _animatorOverrideController["Emote"] = a);
+
+            _boolParameters = emoteAnimatorBoolParameters.ToArray(x => x.Id);
+            _boolParameters.ForEach(id => _animator.SetBool(id, true));
+
             _animator.SetTrigger(BeginEmote);
         }
 
@@ -43,6 +54,8 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
         void OnAnimationEnded()
         {
+            _boolParameters.ForEach(id => _animator.SetBool(id, false));
+            _boolParameters = Array.Empty<int>();
             _animator.ResetTrigger(BeginEmote);
             _animator.ResetTrigger(EndEmote);
             AnimationEnded?.Invoke();

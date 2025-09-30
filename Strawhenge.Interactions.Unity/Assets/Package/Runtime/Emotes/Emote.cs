@@ -33,11 +33,12 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
             if (HasItem(out _item))
             {
-                _item.HoldRightHand(() => _animationHandler.Perform(_emote.Animation));
+                _item.HoldRightHand(
+                    () => _animationHandler.Perform(_emote.Animation, _emote.AnimatorBoolParameters));
                 return;
             }
 
-            _animationHandler.Perform(_emote.Animation);
+            _animationHandler.Perform(_emote.Animation, _emote.AnimatorBoolParameters);
         }
 
         protected override void OnStop(Action onStopped)
