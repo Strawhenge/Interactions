@@ -16,6 +16,7 @@ namespace Strawhenge.Interactions.Unity.Editor
         {
             bool hasBeginParameter = false;
             bool hasEndParameter = false;
+            bool hasLayerIdParameter = false;
             bool hasRepeatingParameter = false;
 
             foreach (var parameter in animatorController.parameters)
@@ -25,6 +26,9 @@ namespace Strawhenge.Interactions.Unity.Editor
 
                 if (parameter.name == AnimatorParameters.EndEmote.Name)
                     hasEndParameter = true;
+
+                if (parameter.name == AnimatorParameters.EmoteLayerId.Name)
+                    hasLayerIdParameter = true;
 
                 if (parameter.name == AnimatorParameters.RepeatingEmote.Name)
                     hasRepeatingParameter = true;
@@ -38,9 +42,13 @@ namespace Strawhenge.Interactions.Unity.Editor
                 animatorController
                     .AddParameter(AnimatorParameters.EndEmote.Name, AnimatorControllerParameterType.Trigger);
 
+            if (!hasLayerIdParameter)
+                animatorController
+                    .AddParameter(AnimatorParameters.EmoteLayerId.Name, AnimatorControllerParameterType.Int);
+
             if (!hasRepeatingParameter)
-                animatorController.AddParameter(AnimatorParameters.RepeatingEmote.Name,
-                    AnimatorControllerParameterType.Bool);
+                animatorController
+                    .AddParameter(AnimatorParameters.RepeatingEmote.Name, AnimatorControllerParameterType.Bool);
         }
 
         static void AddSubStateMachine(AnimatorController animatorController)

@@ -6,6 +6,8 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
         public static AnimatorParameter EndEmote { get; } = "End Emote";
 
+        public static AnimatorParameter EmoteLayerId { get; } = "Emote Layer Id";
+
         public static AnimatorParameter RepeatingEmote { get; } = "Repeating Emote";
     }
 }
