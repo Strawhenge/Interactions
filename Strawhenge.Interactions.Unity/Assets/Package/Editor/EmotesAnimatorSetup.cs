@@ -9,6 +9,7 @@ namespace Strawhenge.Interactions.Unity.Editor
         // TODO Move to single location
         const string BeginEmote = "Begin Emote";
         const string EndEmote = "End Emote";
+        const string RepeatingEmote = "Repeating Emote";
 
         public static void Setup(AnimatorController animatorController)
         {
@@ -20,6 +21,7 @@ namespace Strawhenge.Interactions.Unity.Editor
         {
             bool hasBeginParameter = false;
             bool hasEndParameter = false;
+            bool hasRepeatingParameter = false;
 
             foreach (var parameter in animatorController.parameters)
             {
@@ -28,6 +30,9 @@ namespace Strawhenge.Interactions.Unity.Editor
 
                 if (parameter.name == EndEmote)
                     hasEndParameter = true;
+
+                if (parameter.name == RepeatingEmote)
+                    hasRepeatingParameter = true;
             }
 
             if (!hasBeginParameter)
@@ -35,6 +40,9 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             if (!hasEndParameter)
                 animatorController.AddParameter(EndEmote, AnimatorControllerParameterType.Trigger);
+
+            if (!hasRepeatingParameter)
+                animatorController.AddParameter(RepeatingEmote, AnimatorControllerParameterType.Bool);
         }
 
         static void AddSubStateMachine(AnimatorController animatorController)
@@ -57,6 +65,7 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             var animationEndedTransition = emoteState.AddExitTransition();
             animationEndedTransition.hasExitTime = true;
+            animationEndedTransition.AddCondition(AnimatorConditionMode.IfNot, 0, RepeatingEmote);
 
             if (rootStateMachine.defaultState != null && rootStateMachine.defaultState != emoteState)
                 rootStateMachine.AddStateMachineTransition(emotesStateMachine, rootStateMachine.defaultState);
