@@ -6,10 +6,10 @@ namespace Strawhenge.Interactions.Unity.Editor
 {
     static class EmotesAnimatorSetup
     {
-        public static void Setup(AnimatorController animatorController)
+        public static void Setup(AnimatorController animatorController, AnimationClip animationClip)
         {
             AddParameters(animatorController);
-            AddSubStateMachines(animatorController);
+            AddSubStateMachines(animatorController, animationClip);
         }
 
         static void AddParameters(AnimatorController animatorController)
@@ -51,22 +51,22 @@ namespace Strawhenge.Interactions.Unity.Editor
                     .AddParameter(AnimatorParameters.RepeatingEmote.Name, AnimatorControllerParameterType.Bool);
         }
 
-        static void AddSubStateMachines(AnimatorController animatorController)
+        static void AddSubStateMachines(AnimatorController animatorController, AnimationClip animationClip)
         {
             for (var i = 0; i < animatorController.layers.Length; i++)
             {
                 var rootStateMachine = animatorController.layers[i].stateMachine;
-                AddSubStateMachine(rootStateMachine, layerId: i);
+                AddSubStateMachine(rootStateMachine, animationClip, layerId: i);
             }
         }
 
-        static void AddSubStateMachine(AnimatorStateMachine rootStateMachine, int layerId)
+        static void AddSubStateMachine(AnimatorStateMachine rootStateMachine, AnimationClip animationClip, int layerId)
         {
             var emotesStateMachine = rootStateMachine.AddStateMachine("Emotes");
             emotesStateMachine.AddStateMachineBehaviour<EmotesStateMachine>();
 
             var emoteState = emotesStateMachine.AddState("Emote");
-            // TODO Set animation clip
+            emoteState.motion = animationClip;
 
             var anyStateTransition = rootStateMachine.AddAnyStateTransition(emoteState);
             anyStateTransition.hasExitTime = false;

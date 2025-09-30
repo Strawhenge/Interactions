@@ -18,7 +18,23 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         void OnWizardCreate()
         {
-            EmotesAnimatorSetup.Setup(_animatorController);
+            var path = AssetDatabase.GetAssetPath(_animatorController);
+            var parentFolder = path[..path.LastIndexOf('/')];
+            var folder = parentFolder + "/" + _animatorController.name;
+
+            if (!AssetDatabase.IsValidFolder(folder))
+                AssetDatabase.CreateFolder(parentFolder, _animatorController.name);
+
+            var animationClipPath = $"{folder}/Emote.anim";
+
+            var animationClip = AssetDatabase.LoadAssetAtPath<AnimationClip>(animationClipPath);
+            if (animationClip == null)
+            {
+                animationClip = new AnimationClip();
+                AssetDatabase.CreateAsset(animationClip, animationClipPath);
+            }
+
+            EmotesAnimatorSetup.Setup(_animatorController, animationClip);
         }
     }
 }
