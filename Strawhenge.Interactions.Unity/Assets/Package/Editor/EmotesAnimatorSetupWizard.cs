@@ -20,17 +20,15 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         readonly Dictionary<string, int> _layerIdsByName = new();
         AnimatorController _selectedController;
+        string _assetsParentFolder;
+        string _assetsFolder;
 
         void OnWizardCreate()
         {
-            var path = AssetDatabase.GetAssetPath(_animatorController);
-            var parentFolder = path[..path.LastIndexOf('/')];
-            var folder = parentFolder + "/" + _animatorController.name;
+            if (!AssetDatabase.IsValidFolder(_assetsFolder))
+                AssetDatabase.CreateFolder(_assetsParentFolder, _animatorController.name);
 
-            if (!AssetDatabase.IsValidFolder(folder))
-                AssetDatabase.CreateFolder(parentFolder, _animatorController.name);
-
-            var animationClipPath = $"{folder}/Emote.anim";
+            var animationClipPath = $"{_assetsFolder}/Emote.anim";
 
             var animationClip = AssetDatabase.LoadAssetAtPath<AnimationClip>(animationClipPath);
             if (animationClip == null)
@@ -48,6 +46,10 @@ namespace Strawhenge.Interactions.Unity.Editor
             _selectedController = _animatorController;
 
             if (_selectedController == null) return;
+
+            var path = AssetDatabase.GetAssetPath(_animatorController);
+            _assetsParentFolder = path[..path.LastIndexOf('/')];
+            _assetsFolder = _assetsParentFolder + "/" + _animatorController.name;
 
             _layerIdsByName.Clear();
             for (var i = 0; i < _selectedController.layers.Length; i++)
