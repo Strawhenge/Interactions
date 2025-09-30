@@ -19,7 +19,12 @@ namespace Strawhenge.Interactions.Unity.Emotes
         {
             _animationHandler = animationHandler;
             _inventory = inventory;
+            _inventory.Do(i => i.Hands.RightHand.Changed += OnHandChanged);
             _emote = emote;
+        }
+
+        void OnHandChanged()
+        {
         }
 
         protected override void OnStart()
