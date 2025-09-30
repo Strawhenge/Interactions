@@ -11,7 +11,6 @@ namespace Strawhenge.Interactions.Unity.Emotes
         readonly EmoteScriptableObject _emote;
 
         InventoryItem _item;
-        bool _animationStarted;
 
         public Emote(
             EmoteAnimationHandler animationHandler,
@@ -25,19 +24,14 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
         protected override void OnStart()
         {
+            _animationHandler.AnimationEnded += OnAnimationEnded;
+
             if (HasItem(out _item))
             {
-                _item.HoldRightHand(StartAnimation);
+                _item.HoldRightHand(() => _animationHandler.Perform(_emote.Animation));
                 return;
             }
 
-            StartAnimation();
-        }
-
-        void StartAnimation()
-        {
-            _animationStarted = true;
-            _animationHandler.AnimationEnded += OnAnimationEnded;
             _animationHandler.Perform(_emote.Animation);
         }
 
@@ -56,16 +50,6 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
         protected override void OnStop(Action onStopped)
         {
-            if (!_animationStarted)
-            {
-                if (_item != null)
-                    _item.ClearFromHands(onStopped);
-                else
-                    onStopped();
-
-                return;
-            }
-
             _animationHandler.AnimationEnded -= OnAnimationEnded;
             _animationHandler.End();
 
