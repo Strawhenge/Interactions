@@ -26,8 +26,12 @@ namespace Strawhenge.Interactions.Unity.Emotes
             _animator.runtimeAnimatorController = _animatorOverrideController;
 
             _stateMachineEvents = _animator.AddEvents<EmotesStateMachine>(
-                stateMachine => stateMachine.OnEmoteEnded = OnAnimationEnded,
-                _ => { });
+                stateMachine =>
+                {
+                    stateMachine.OnEmoteEnded = OnAnimationEnded;
+                    stateMachine.Destroyed += OnAnimationEnded;
+                },
+                stateMachine => stateMachine.Destroyed -= OnAnimationEnded);
         }
 
         public event Action AnimationEnded;
