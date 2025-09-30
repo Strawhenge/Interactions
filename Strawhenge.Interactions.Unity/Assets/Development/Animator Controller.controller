@@ -57,7 +57,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Begin Emote
+    m_ConditionEvent: Begin Emote 0
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2115268348285269749}
@@ -214,7 +214,7 @@ AnimatorController:
   m_Name: Animator Controller
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: Begin Emote
+  - m_Name: Begin Emote 0
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -334,7 +334,7 @@ AnimatorStateMachine:
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: 6167764211296130065}
-    m_Position: {x: 590, y: -90, z: 0}
+    m_Position: {x: 560, y: -100, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 6882443413170674067}
     m_Position: {x: 250, y: -190, z: 0}
