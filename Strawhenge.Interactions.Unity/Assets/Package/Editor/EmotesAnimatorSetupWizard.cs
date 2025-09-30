@@ -18,7 +18,7 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         void OnWizardCreate()
         {
-            Debug.Log("Emotes Animator Setup");
+            EmotesAnimatorSetup.Setup(_animatorController);
         }
     }
 }
