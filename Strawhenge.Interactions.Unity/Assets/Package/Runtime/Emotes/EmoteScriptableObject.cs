@@ -11,10 +11,13 @@ namespace Strawhenge.Interactions.Unity.Emotes
     public class EmoteScriptableObject : ScriptableObject
     {
         [SerializeField] AnimationClip _animation;
+        [SerializeField] bool _isRepeating;
         [SerializeField] ItemScriptableObject _item;
         [SerializeField] AnimatorBoolParameterScriptableObject[] _animatorBoolParameters;
 
         public Maybe<AnimationClip> Animation => Maybe.NotNull(_animation);
+
+        public bool IsRepeating => _isRepeating;
 
         public Maybe<ItemScriptableObject> Item => Maybe.NotNull(_item);
 

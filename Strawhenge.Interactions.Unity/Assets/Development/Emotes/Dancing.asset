@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Dancing
   m_EditorClassIdentifier: 
   _animation: {fileID: -203655887218126122, guid: ad626aea7c3a83443a11bfd6d58869b0, type: 3}
+  _isRepeating: 1
   _item: {fileID: 0}
   _animatorBoolParameters: []
