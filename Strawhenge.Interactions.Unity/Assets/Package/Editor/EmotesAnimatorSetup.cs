@@ -6,11 +6,6 @@ namespace Strawhenge.Interactions.Unity.Editor
 {
     static class EmotesAnimatorSetup
     {
-        // TODO Move to single location
-        const string BeginEmote = "Begin Emote";
-        const string EndEmote = "End Emote";
-        const string RepeatingEmote = "Repeating Emote";
-
         public static void Setup(AnimatorController animatorController)
         {
             AddParameters(animatorController);
@@ -25,24 +20,27 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             foreach (var parameter in animatorController.parameters)
             {
-                if (parameter.name == BeginEmote)
+                if (parameter.name == AnimatorParameters.BeginEmote.Name)
                     hasBeginParameter = true;
 
-                if (parameter.name == EndEmote)
+                if (parameter.name == AnimatorParameters.EndEmote.Name)
                     hasEndParameter = true;
 
-                if (parameter.name == RepeatingEmote)
+                if (parameter.name == AnimatorParameters.RepeatingEmote.Name)
                     hasRepeatingParameter = true;
             }
 
             if (!hasBeginParameter)
-                animatorController.AddParameter(BeginEmote, AnimatorControllerParameterType.Trigger);
+                animatorController
+                    .AddParameter(AnimatorParameters.BeginEmote.Name, AnimatorControllerParameterType.Trigger);
 
             if (!hasEndParameter)
-                animatorController.AddParameter(EndEmote, AnimatorControllerParameterType.Trigger);
+                animatorController
+                    .AddParameter(AnimatorParameters.EndEmote.Name, AnimatorControllerParameterType.Trigger);
 
             if (!hasRepeatingParameter)
-                animatorController.AddParameter(RepeatingEmote, AnimatorControllerParameterType.Bool);
+                animatorController.AddParameter(AnimatorParameters.RepeatingEmote.Name,
+                    AnimatorControllerParameterType.Bool);
         }
 
         static void AddSubStateMachine(AnimatorController animatorController)
@@ -56,16 +54,19 @@ namespace Strawhenge.Interactions.Unity.Editor
             // TODO Set animation clip
 
             var anyStateTransition = rootStateMachine.AddAnyStateTransition(emoteState);
-            anyStateTransition.AddCondition(AnimatorConditionMode.If, 0, BeginEmote);
             anyStateTransition.hasExitTime = false;
+            anyStateTransition
+                .AddCondition(AnimatorConditionMode.If, 0, AnimatorParameters.BeginEmote.Name);
 
             var endEmoteTransition = emoteState.AddExitTransition();
-            endEmoteTransition.AddCondition(AnimatorConditionMode.If, 0, EndEmote);
             endEmoteTransition.hasExitTime = false;
+            endEmoteTransition
+                .AddCondition(AnimatorConditionMode.If, 0, AnimatorParameters.EndEmote.Name);
 
             var animationEndedTransition = emoteState.AddExitTransition();
             animationEndedTransition.hasExitTime = true;
-            animationEndedTransition.AddCondition(AnimatorConditionMode.IfNot, 0, RepeatingEmote);
+            animationEndedTransition
+                .AddCondition(AnimatorConditionMode.IfNot, 0, AnimatorParameters.RepeatingEmote.Name);
 
             if (rootStateMachine.defaultState != null && rootStateMachine.defaultState != emoteState)
                 rootStateMachine.AddStateMachineTransition(emotesStateMachine, rootStateMachine.defaultState);

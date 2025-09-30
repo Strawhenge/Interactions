@@ -10,10 +10,6 @@ namespace Strawhenge.Interactions.Unity.Emotes
 {
     class EmoteAnimationHandler
     {
-        static readonly int BeginEmote = Animator.StringToHash("Begin Emote");
-        static readonly int EndEmote = Animator.StringToHash("End Emote");
-        static readonly int RepeatingEmote = Animator.StringToHash("Repeating Emote");
-
         readonly Animator _animator;
         readonly AnimatorOverrideController _animatorOverrideController;
         readonly StateMachineEvents<EmotesStateMachine> _stateMachineEvents;
@@ -46,26 +42,26 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
             animation.Do(a => _animatorOverrideController["Emote"] = a);
 
-            _animator.SetBool(RepeatingEmote, isRepeating);
+            _animator.SetBool(AnimatorParameters.RepeatingEmote, isRepeating);
 
             _boolParameters = emoteAnimatorBoolParameters.ToArray(x => x.Id);
             _boolParameters.ForEach(id => _animator.SetBool(id, true));
 
-            _animator.SetTrigger(BeginEmote);
+            _animator.SetTrigger(AnimatorParameters.BeginEmote);
         }
 
         public void End()
         {
             _stateMachineEvents.PrepareIfRequired();
-            _animator.SetTrigger(EndEmote);
+            _animator.SetTrigger(AnimatorParameters.EndEmote);
         }
 
         void OnAnimationEnded()
         {
             _boolParameters.ForEach(id => _animator.SetBool(id, false));
             _boolParameters = Array.Empty<int>();
-            _animator.ResetTrigger(BeginEmote);
-            _animator.ResetTrigger(EndEmote);
+            _animator.ResetTrigger(AnimatorParameters.BeginEmote);
+            _animator.ResetTrigger(AnimatorParameters.EndEmote);
             AnimationEnded?.Invoke();
         }
     }
