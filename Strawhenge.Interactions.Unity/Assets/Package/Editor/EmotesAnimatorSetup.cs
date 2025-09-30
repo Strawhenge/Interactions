@@ -9,7 +9,7 @@ namespace Strawhenge.Interactions.Unity.Editor
         public static void Setup(AnimatorController animatorController)
         {
             AddParameters(animatorController);
-            AddSubStateMachine(animatorController);
+            AddSubStateMachines(animatorController);
         }
 
         static void AddParameters(AnimatorController animatorController)
@@ -51,10 +51,17 @@ namespace Strawhenge.Interactions.Unity.Editor
                     .AddParameter(AnimatorParameters.RepeatingEmote.Name, AnimatorControllerParameterType.Bool);
         }
 
-        static void AddSubStateMachine(AnimatorController animatorController)
+        static void AddSubStateMachines(AnimatorController animatorController)
         {
-            AnimatorStateMachine rootStateMachine = animatorController.layers[0].stateMachine;
+            for (var i = 0; i < animatorController.layers.Length; i++)
+            {
+                var rootStateMachine = animatorController.layers[i].stateMachine;
+                AddSubStateMachine(rootStateMachine, layerId: i);
+            }
+        }
 
+        static void AddSubStateMachine(AnimatorStateMachine rootStateMachine, int layerId)
+        {
             var emotesStateMachine = rootStateMachine.AddStateMachine("Emotes");
             emotesStateMachine.AddStateMachineBehaviour<EmotesStateMachine>();
 
@@ -65,6 +72,8 @@ namespace Strawhenge.Interactions.Unity.Editor
             anyStateTransition.hasExitTime = false;
             anyStateTransition
                 .AddCondition(AnimatorConditionMode.If, 0, AnimatorParameters.BeginEmote.Name);
+            anyStateTransition
+                .AddCondition(AnimatorConditionMode.Equals, layerId, AnimatorParameters.EmoteLayerId.Name);
 
             var endEmoteTransition = emoteState.AddExitTransition();
             endEmoteTransition.hasExitTime = false;
