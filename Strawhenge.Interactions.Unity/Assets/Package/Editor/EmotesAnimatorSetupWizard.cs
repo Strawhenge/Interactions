@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -15,6 +17,9 @@ namespace Strawhenge.Interactions.Unity.Editor
         }
 
         [SerializeField] AnimatorController _animatorController;
+
+        readonly Dictionary<string, int> _layerIdsByName = new();
+        AnimatorController _selectedController;
 
         void OnWizardCreate()
         {
@@ -34,7 +39,26 @@ namespace Strawhenge.Interactions.Unity.Editor
                 AssetDatabase.CreateAsset(animationClip, animationClipPath);
             }
 
-            EmotesAnimatorSetup.Setup(_animatorController, animationClip);
+            EmotesAnimatorSetup.Setup(_animatorController, animationClip, _layerIdsByName);
+        }
+
+        protected override bool DrawWizardGUI()
+        {
+            if (_selectedController != _animatorController)
+            {
+                _selectedController = _animatorController;
+
+                _layerIdsByName.Clear();
+                for (int i = 0; i < _selectedController.layers.Length; i++)
+                    _layerIdsByName[_selectedController.layers[i].name] = i;
+            }
+
+            var result = base.DrawWizardGUI();
+
+            foreach (var layerName in _layerIdsByName.Keys.ToArray())
+                _layerIdsByName[layerName] = EditorGUILayout.IntField(layerName, _layerIdsByName[layerName]);
+
+            return result;
         }
     }
 }

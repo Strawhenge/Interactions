@@ -1,4 +1,5 @@
 using Strawhenge.Interactions.Unity.Emotes;
+using System.Collections.Generic;
 using UnityEditor.Animations;
 using UnityEngine;
 
@@ -6,10 +7,13 @@ namespace Strawhenge.Interactions.Unity.Editor
 {
     static class EmotesAnimatorSetup
     {
-        public static void Setup(AnimatorController animatorController, AnimationClip animationClip)
+        public static void Setup(
+            AnimatorController animatorController,
+            AnimationClip animationClip,
+            IReadOnlyDictionary<string, int> layerIdsByName)
         {
             AddParameters(animatorController);
-            AddSubStateMachines(animatorController, animationClip);
+            AddSubStateMachines(animatorController, animationClip, layerIdsByName);
         }
 
         static void AddParameters(AnimatorController animatorController)
@@ -51,12 +55,15 @@ namespace Strawhenge.Interactions.Unity.Editor
                     .AddParameter(AnimatorParameters.RepeatingEmote.Name, AnimatorControllerParameterType.Bool);
         }
 
-        static void AddSubStateMachines(AnimatorController animatorController, AnimationClip animationClip)
+        static void AddSubStateMachines(
+            AnimatorController animatorController,
+            AnimationClip animationClip,
+            IReadOnlyDictionary<string, int> layerIdsByName)
         {
-            for (var i = 0; i < animatorController.layers.Length; i++)
+            foreach (var layer in animatorController.layers)
             {
-                var rootStateMachine = animatorController.layers[i].stateMachine;
-                AddSubStateMachine(rootStateMachine, animationClip, layerId: i);
+                var rootStateMachine = layer.stateMachine;
+                AddSubStateMachine(rootStateMachine, animationClip, layerIdsByName[layer.name]);
             }
         }
 
