@@ -12,6 +12,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
     {
         static readonly int BeginEmote = Animator.StringToHash("Begin Emote");
         static readonly int EndEmote = Animator.StringToHash("End Emote");
+        static readonly int RepeatingEmote = Animator.StringToHash("Repeating Emote");
 
         readonly Animator _animator;
         readonly AnimatorOverrideController _animatorOverrideController;
@@ -38,11 +39,14 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
         public void Perform(
             Maybe<AnimationClip> animation,
+            bool isRepeating,
             IEnumerable<AnimatorBoolParameterScriptableObject> emoteAnimatorBoolParameters)
         {
             _stateMachineEvents.PrepareIfRequired();
 
             animation.Do(a => _animatorOverrideController["Emote"] = a);
+
+            _animator.SetBool(RepeatingEmote, isRepeating);
 
             _boolParameters = emoteAnimatorBoolParameters.ToArray(x => x.Id);
             _boolParameters.ForEach(id => _animator.SetBool(id, true));

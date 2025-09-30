@@ -19,12 +19,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
         {
             _animationHandler = animationHandler;
             _inventory = inventory;
-            _inventory.Do(i => i.Hands.RightHand.Changed += OnHandChanged);
             _emote = emote;
-        }
-
-        void OnHandChanged()
-        {
         }
 
         protected override void OnStart()
@@ -33,18 +28,23 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
             if (HasItem(out _item))
             {
-                _item.HoldRightHand(
-                    () => _animationHandler.Perform(_emote.Animation, _emote.AnimatorBoolParameters));
+                _item.HoldRightHand(BeginAnimation);
                 return;
             }
 
-            _animationHandler.Perform(_emote.Animation, _emote.AnimatorBoolParameters);
+            BeginAnimation();
         }
 
         protected override void OnStop(Action onStopped)
         {
             _animationHandler.End();
         }
+
+        void BeginAnimation() =>
+            _animationHandler.Perform(
+                _emote.Animation,
+                _emote.IsRepeating,
+                _emote.AnimatorBoolParameters);
 
         void OnAnimationEnded()
         {
