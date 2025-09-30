@@ -35,6 +35,11 @@ namespace Strawhenge.Interactions.Unity.Emotes
             _animationHandler.Perform(_emote.Animation);
         }
 
+        protected override void OnStop(Action onStopped)
+        {
+            _animationHandler.End();
+        }
+
         void OnAnimationEnded()
         {
             _animationHandler.AnimationEnded -= OnAnimationEnded;
@@ -46,17 +51,6 @@ namespace Strawhenge.Interactions.Unity.Emotes
             }
 
             InvokeStopped();
-        }
-
-        protected override void OnStop(Action onStopped)
-        {
-            _animationHandler.AnimationEnded -= OnAnimationEnded;
-            _animationHandler.End();
-
-            if (_item != null)
-                _item.ClearFromHands(onStopped);
-            else
-                onStopped();
         }
 
         bool HasItem(out InventoryItem item)
