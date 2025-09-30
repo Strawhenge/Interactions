@@ -26,7 +26,8 @@ namespace Strawhenge.Interactions.Unity.Editor
             EditorGUILayout.BeginHorizontal();
 
             if (GUILayout.Button(nameof(EmoteController.Perform)) && _emote != null)
-                _emotesScript.EmoteController.Perform(_emote);
+                _emotesScript.EmoteController
+                    .Perform(_emote, () => Debug.Log($"Emote ended: '{_emote.name}'", _emote));
 
             if (GUILayout.Button(nameof(EmoteController.End)))
                 _emotesScript.EmoteController.End();
