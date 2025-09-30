@@ -42,17 +42,18 @@ namespace Strawhenge.Interactions.Unity.Editor
             EmotesAnimatorSetup.Setup(_animatorController, animationClip, _layerIdsByName);
         }
 
+        void OnWizardUpdate()
+        {
+            if (_selectedController == _animatorController) return;
+            _selectedController = _animatorController;
+
+            _layerIdsByName.Clear();
+            for (var i = 0; i < _selectedController.layers.Length; i++)
+                _layerIdsByName[_selectedController.layers[i].name] = i;
+        }
+
         protected override bool DrawWizardGUI()
         {
-            if (_selectedController != _animatorController)
-            {
-                _selectedController = _animatorController;
-
-                _layerIdsByName.Clear();
-                for (int i = 0; i < _selectedController.layers.Length; i++)
-                    _layerIdsByName[_selectedController.layers[i].name] = i;
-            }
-
             var result = base.DrawWizardGUI();
 
             foreach (var layerName in _layerIdsByName.Keys.ToArray())
