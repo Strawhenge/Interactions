@@ -47,6 +47,8 @@ namespace Strawhenge.Interactions.Unity.Editor
             if (_selectedController == _animatorController) return;
             _selectedController = _animatorController;
 
+            if (_selectedController == null) return;
+
             _layerIdsByName.Clear();
             for (var i = 0; i < _selectedController.layers.Length; i++)
                 _layerIdsByName[_selectedController.layers[i].name] = i;
