@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity
 {
+    // TODO Move this to Common
     public static class AnimatorExtensions
     {
         public static void SetTrigger(this Animator animator, AnimatorParameter parameter) =>

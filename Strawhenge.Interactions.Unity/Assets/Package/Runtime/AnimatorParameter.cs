@@ -17,6 +17,4 @@ namespace Strawhenge.Interactions.Unity
 
         public int Id { get; }
     }
-
-    // TODO Move this to Common
 }
