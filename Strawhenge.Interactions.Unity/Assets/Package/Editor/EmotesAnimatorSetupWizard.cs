@@ -98,14 +98,19 @@ namespace Strawhenge.Interactions.Unity.Editor
             {
                 var layerId = _layerIdsByName[layer.name];
 
-                if (!_layerIdScriptableObjectsByName.TryGetValue(layer.name, out var scriptableObject))
+                if (_layerIdScriptableObjectsByName.TryGetValue(layer.name, out var scriptableObject))
+                {
+                    scriptableObject.Id = layerId;
+                    EditorUtility.SetDirty(scriptableObject);
+                    AssetDatabase.SaveAssetIfDirty(scriptableObject);
+                }
+                else
                 {
                     var scriptableObjectPath = $"{_assetsFolder}/{layer.name}.asset";
                     scriptableObject = CreateInstance<EmoteLayerIdScriptableObject>();
+                    scriptableObject.Id = layerId;
                     AssetDatabase.CreateAsset(scriptableObject, scriptableObjectPath);
                 }
-
-                scriptableObject.Id = layerId;
             }
 
             AssetDatabase.SaveAssets();
