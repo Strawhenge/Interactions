@@ -20,7 +20,7 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         [SerializeField] AnimatorController _animatorController;
 
-        readonly Dictionary<string, bool> _enabledLayersByName = new Dictionary<string, bool>();
+        readonly Dictionary<string, bool> _enabledLayersByName = new();
         readonly Dictionary<string, int> _layerIdsByName = new();
         readonly Dictionary<string, EmoteLayerIdScriptableObject> _layerIdScriptableObjectsByName = new();
         AnimatorController _selectedController;
@@ -29,18 +29,28 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         void OnWizardCreate()
         {
-            if (!AssetDatabase.IsValidFolder(_assetsFolder))
-                AssetDatabase.CreateFolder(_assetsParentFolder, _animatorController.name);
+            EnsureAssetsFolderExists();
+            var animationClip = GetOrCreatePlaceholderAnimationClip();
+            UpdateScriptableObjects();
+            var enabledLayerIdsByName = GenerateEnabledLayerIdsByName();
 
-            var animationClipPath = $"{_assetsFolder}/{PlaceholderAnimationClip.Name}.anim";
+            EmotesAnimatorSetup.Setup(_animatorController, animationClip, enabledLayerIdsByName);
+        }
 
-            var animationClip = AssetDatabase.LoadAssetAtPath<AnimationClip>(animationClipPath);
-            if (animationClip == null)
+        Dictionary<string, int> GenerateEnabledLayerIdsByName()
+        {
+            var enabledLayerIdsByName = new Dictionary<string, int>();
+            foreach (var layer in _animatorController.layers)
             {
-                animationClip = new AnimationClip();
-                AssetDatabase.CreateAsset(animationClip, animationClipPath);
+                if (_enabledLayersByName[layer.name])
+                    enabledLayerIdsByName[layer.name] = _layerIdsByName[layer.name];
             }
 
+            return enabledLayerIdsByName;
+        }
+
+        void UpdateScriptableObjects()
+        {
             foreach (var layer in _animatorController.layers)
             {
                 var layerId = _layerIdsByName[layer.name];
@@ -56,15 +66,26 @@ namespace Strawhenge.Interactions.Unity.Editor
             }
 
             AssetDatabase.SaveAssets();
+        }
 
-            var enabledLayerIdsName = new Dictionary<string, int>();
-            foreach (var layer in _animatorController.layers)
+        AnimationClip GetOrCreatePlaceholderAnimationClip()
+        {
+            var animationClipPath = $"{_assetsFolder}/{PlaceholderAnimationClip.Name}.anim";
+
+            var animationClip = AssetDatabase.LoadAssetAtPath<AnimationClip>(animationClipPath);
+            if (animationClip == null)
             {
-                if (_enabledLayersByName[layer.name])
-                    enabledLayerIdsName[layer.name] = _layerIdsByName[layer.name];
+                animationClip = new AnimationClip();
+                AssetDatabase.CreateAsset(animationClip, animationClipPath);
             }
 
-            EmotesAnimatorSetup.Setup(_animatorController, animationClip, enabledLayerIdsName);
+            return animationClip;
+        }
+
+        void EnsureAssetsFolderExists()
+        {
+            if (!AssetDatabase.IsValidFolder(_assetsFolder))
+                AssetDatabase.CreateFolder(_assetsParentFolder, _animatorController.name);
         }
 
         void OnWizardUpdate()
@@ -103,10 +124,15 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         protected override bool DrawWizardGUI()
         {
+            if (_selectedController == null)
+                return base.DrawWizardGUI();
+
             var result = base.DrawWizardGUI();
 
-            foreach (var layerName in _layerIdsByName.Keys.ToArray())
+            foreach (var layer in _selectedController.layers)
             {
+                var layerName = layer.name;
+
                 EditorGUILayout.BeginHorizontal();
 
                 _enabledLayersByName[layerName] = EditorGUILayout.Toggle(_enabledLayersByName[layerName]);
