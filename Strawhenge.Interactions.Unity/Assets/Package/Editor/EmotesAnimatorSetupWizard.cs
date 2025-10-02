@@ -101,15 +101,40 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             if (_selectedController == null) return;
 
-            var path = AssetDatabase.GetAssetPath(_animatorController);
-            _assetsParentFolder = path[..path.LastIndexOf('/')];
-            _assetsFolder = _assetsParentFolder + "/" + _animatorController.name;
+            UpdateAssetsFolder();
+            LoadScriptableObjects();
+            UpdateEnabledLayers();
+            UpdateLayerIds();
+        }
 
+        void UpdateEnabledLayers()
+        {
+            _enabledLayersByName.Clear();
+            foreach (var layer in _selectedController.layers)
+                _enabledLayersByName[layer.name] = _layerIdScriptableObjectsByName.ContainsKey(layer.name);
+        }
+
+        void UpdateLayerIds()
+        {
             _layerIdsByName.Clear();
-            for (var i = 0; i < _selectedController.layers.Length; i++)
-                _layerIdsByName[_selectedController.layers[i].name] = i;
 
+            for (var i = 0; i < _selectedController.layers.Length; i++)
+            {
+                var layerName = _selectedController.layers[i].name;
+                if (_layerIdScriptableObjectsByName.TryGetValue(layerName, out var scriptableObject))
+                    _layerIdsByName[layerName] = scriptableObject.Id;
+                else
+                    _layerIdsByName[layerName] = i;
+            }
+        }
+
+        void LoadScriptableObjects()
+        {
             _layerIdScriptableObjectsByName.Clear();
+
+            if (!AssetDatabase.IsValidFolder(_assetsFolder))
+                return;
+
             AssetDatabase
                 .FindAssets(
                     $"t:{typeof(EmoteLayerIdScriptableObject).Name}",
@@ -120,12 +145,14 @@ namespace Strawhenge.Interactions.Unity.Editor
                 .ForEach(layerIdScriptableObject =>
                 {
                     _layerIdScriptableObjectsByName[layerIdScriptableObject.name] = layerIdScriptableObject;
-                    _layerIdsByName[layerIdScriptableObject.name] = layerIdScriptableObject.Id;
                 });
+        }
 
-            _enabledLayersByName.Clear();
-            foreach (var layer in _selectedController.layers)
-                _enabledLayersByName[layer.name] = _layerIdScriptableObjectsByName.ContainsKey(layer.name);
+        void UpdateAssetsFolder()
+        {
+            var path = AssetDatabase.GetAssetPath(_animatorController);
+            _assetsParentFolder = path[..path.LastIndexOf('/')];
+            _assetsFolder = _assetsParentFolder + "/" + _animatorController.name;
         }
 
         protected override bool DrawWizardGUI()
