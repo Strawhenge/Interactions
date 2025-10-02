@@ -29,6 +29,12 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         void OnWizardCreate()
         {
+            if (_selectedController == null)
+            {
+                Debug.LogWarning("No controller selected.");
+                return;
+            }
+
             EnsureAssetsFolderExists();
             var animationClip = GetOrCreatePlaceholderAnimationClip();
             UpdateScriptableObjects();
