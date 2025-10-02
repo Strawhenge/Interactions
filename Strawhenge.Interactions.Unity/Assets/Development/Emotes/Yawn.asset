@@ -15,5 +15,5 @@ MonoBehaviour:
   _animation: {fileID: -203655887218126122, guid: 70a79227886deba43b6ce679e054196a, type: 3}
   _isRepeating: 0
   _item: {fileID: 0}
-  _layerId: 1
+  _layer: {fileID: 11400000, guid: 6e22fad636d2b014f8d9cfd37b4e0c92, type: 2}
   _animatorBoolParameters: []
