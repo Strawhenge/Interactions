@@ -1,3 +1,5 @@
+using Strawhenge.Common;
+using Strawhenge.Interactions.Unity.Emotes;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -19,6 +21,7 @@ namespace Strawhenge.Interactions.Unity.Editor
         [SerializeField] AnimatorController _animatorController;
 
         readonly Dictionary<string, int> _layerIdsByName = new();
+        readonly Dictionary<string, EmoteLayerIdScriptableObject> _layerIdScriptableObjectsByName = new();
         AnimatorController _selectedController;
         string _assetsParentFolder;
         string _assetsFolder;
@@ -37,6 +40,22 @@ namespace Strawhenge.Interactions.Unity.Editor
                 AssetDatabase.CreateAsset(animationClip, animationClipPath);
             }
 
+            foreach (var layer in _animatorController.layers)
+            {
+                var layerId = _layerIdsByName[layer.name];
+
+                if (!_layerIdScriptableObjectsByName.TryGetValue(layer.name, out var scriptableObject))
+                {
+                    var scriptableObjectPath = $"{_assetsFolder}/{layer.name}.asset";
+                    scriptableObject = CreateInstance<EmoteLayerIdScriptableObject>();
+                    AssetDatabase.CreateAsset(scriptableObject, scriptableObjectPath);
+                }
+
+                scriptableObject.Id = layerId;
+            }
+
+            AssetDatabase.SaveAssets();
+
             EmotesAnimatorSetup.Setup(_animatorController, animationClip, _layerIdsByName);
         }
 
@@ -54,6 +73,20 @@ namespace Strawhenge.Interactions.Unity.Editor
             _layerIdsByName.Clear();
             for (var i = 0; i < _selectedController.layers.Length; i++)
                 _layerIdsByName[_selectedController.layers[i].name] = i;
+
+            _layerIdScriptableObjectsByName.Clear();
+            AssetDatabase
+                .FindAssets(
+                    $"t:{typeof(EmoteLayerIdScriptableObject).Name}",
+                    new[] { _assetsFolder })
+                .Select(guid =>
+                    AssetDatabase.LoadAssetAtPath<EmoteLayerIdScriptableObject>(AssetDatabase.GUIDToAssetPath(guid)))
+                .ExcludeNull()
+                .ForEach(layerIdScriptableObject =>
+                {
+                    _layerIdScriptableObjectsByName[layerIdScriptableObject.name] = layerIdScriptableObject;
+                    _layerIdsByName[layerIdScriptableObject.name] = layerIdScriptableObject.Id;
+                });
         }
 
         protected override bool DrawWizardGUI()
