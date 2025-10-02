@@ -135,17 +135,21 @@ namespace Strawhenge.Interactions.Unity.Editor
             if (!AssetDatabase.IsValidFolder(_assetsFolder))
                 return;
 
-            AssetDatabase
-                .FindAssets(
-                    $"t:{typeof(EmoteLayerIdScriptableObject).Name}",
-                    new[] { _assetsFolder })
-                .Select(guid =>
-                    AssetDatabase.LoadAssetAtPath<EmoteLayerIdScriptableObject>(AssetDatabase.GUIDToAssetPath(guid)))
-                .ExcludeNull()
-                .ForEach(layerIdScriptableObject =>
-                {
-                    _layerIdScriptableObjectsByName[layerIdScriptableObject.name] = layerIdScriptableObject;
-                });
+            // ReSharper disable once UseNameOfInsteadOfTypeOf
+            // Justification: `nameof` does not work.
+            var assetGuids = AssetDatabase.FindAssets(
+                $"t:{typeof(EmoteLayerIdScriptableObject).Name}",
+                new[] { _assetsFolder });
+
+            foreach (var assetGuid in assetGuids)
+            {
+                var layerIdScriptableObject = AssetDatabase
+                    .LoadAssetAtPath<EmoteLayerIdScriptableObject>(AssetDatabase.GUIDToAssetPath(assetGuid));
+
+                if (layerIdScriptableObject == null) continue;
+
+                _layerIdScriptableObjectsByName[layerIdScriptableObject.name] = layerIdScriptableObject;
+            }
         }
 
         void UpdateAssetsFolder()
