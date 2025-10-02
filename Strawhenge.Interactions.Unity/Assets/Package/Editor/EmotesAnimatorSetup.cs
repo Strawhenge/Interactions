@@ -1,5 +1,6 @@
 using Strawhenge.Interactions.Unity.Emotes;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Animations;
 using UnityEngine;
 
@@ -69,6 +70,12 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         static void AddSubStateMachine(AnimatorStateMachine rootStateMachine, AnimationClip animationClip, int layerId)
         {
+            if (ContainsEmoteSubState(rootStateMachine))
+            {
+                Debug.Log($"'{rootStateMachine.name}' already contains Emote sub state. Skipping layer.");
+                return;
+            }
+
             var emotesStateMachine = rootStateMachine.AddStateMachine("Emotes");
             emotesStateMachine.AddStateMachineBehaviour<EmotesStateMachine>();
 
@@ -95,5 +102,9 @@ namespace Strawhenge.Interactions.Unity.Editor
             if (rootStateMachine.defaultState != null && rootStateMachine.defaultState != emoteState)
                 rootStateMachine.AddStateMachineTransition(emotesStateMachine, rootStateMachine.defaultState);
         }
+
+        static bool ContainsEmoteSubState(AnimatorStateMachine stateMachine) =>
+            stateMachine.stateMachines.Any(subState =>
+                subState.stateMachine.behaviours.OfType<EmotesStateMachine>().Any());
     }
 }
