@@ -41,7 +41,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
         {
             _stateMachineEvents.PrepareIfRequired();
 
-            animation.Do(a => _animatorOverrideController["Emote"] = a);
+            animation.Do(a => _animatorOverrideController[PlaceholderAnimationClip.Name] = a);
 
             _animator.SetInteger(AnimatorParameters.EmoteLayerId, layerId);
             _animator.SetBool(AnimatorParameters.RepeatingEmote, isRepeating);

@@ -32,7 +32,7 @@ namespace Strawhenge.Interactions.Unity.Editor
             if (!AssetDatabase.IsValidFolder(_assetsFolder))
                 AssetDatabase.CreateFolder(_assetsParentFolder, _animatorController.name);
 
-            var animationClipPath = $"{_assetsFolder}/Emote.anim";
+            var animationClipPath = $"{_assetsFolder}/{PlaceholderAnimationClip.Name}.anim";
 
             var animationClip = AssetDatabase.LoadAssetAtPath<AnimationClip>(animationClipPath);
             if (animationClip == null)
