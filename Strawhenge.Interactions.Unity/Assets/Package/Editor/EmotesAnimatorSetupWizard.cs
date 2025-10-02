@@ -1,7 +1,5 @@
-using Strawhenge.Common;
 using Strawhenge.Interactions.Unity.Emotes;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -26,6 +24,45 @@ namespace Strawhenge.Interactions.Unity.Editor
         AnimatorController _selectedController;
         string _assetsParentFolder;
         string _assetsFolder;
+
+        protected override bool DrawWizardGUI()
+        {
+            if (_selectedController == null)
+                return base.DrawWizardGUI();
+
+            var result = base.DrawWizardGUI();
+
+            foreach (var layer in _selectedController.layers)
+            {
+                var layerName = layer.name;
+
+                EditorGUILayout.BeginHorizontal();
+
+                _enabledLayersByName[layerName] = EditorGUILayout.Toggle(_enabledLayersByName[layerName]);
+
+                EditorGUI.BeginDisabledGroup(!_enabledLayersByName[layerName]);
+
+                _layerIdsByName[layerName] = EditorGUILayout.IntField(layerName, _layerIdsByName[layerName]);
+
+                EditorGUI.EndDisabledGroup();
+                EditorGUILayout.EndHorizontal();
+            }
+
+            return result;
+        }
+
+        void OnWizardUpdate()
+        {
+            if (_selectedController == _animatorController) return;
+            _selectedController = _animatorController;
+
+            if (_selectedController == null) return;
+
+            UpdateAssetsFolder();
+            LoadScriptableObjects();
+            UpdateEnabledLayers();
+            UpdateLayerIds();
+        }
 
         void OnWizardCreate()
         {
@@ -94,18 +131,6 @@ namespace Strawhenge.Interactions.Unity.Editor
                 AssetDatabase.CreateFolder(_assetsParentFolder, _animatorController.name);
         }
 
-        void OnWizardUpdate()
-        {
-            if (_selectedController == _animatorController) return;
-            _selectedController = _animatorController;
-
-            if (_selectedController == null) return;
-
-            UpdateAssetsFolder();
-            LoadScriptableObjects();
-            UpdateEnabledLayers();
-            UpdateLayerIds();
-        }
 
         void UpdateEnabledLayers()
         {
@@ -157,32 +182,6 @@ namespace Strawhenge.Interactions.Unity.Editor
             var path = AssetDatabase.GetAssetPath(_animatorController);
             _assetsParentFolder = path[..path.LastIndexOf('/')];
             _assetsFolder = _assetsParentFolder + "/" + _animatorController.name;
-        }
-
-        protected override bool DrawWizardGUI()
-        {
-            if (_selectedController == null)
-                return base.DrawWizardGUI();
-
-            var result = base.DrawWizardGUI();
-
-            foreach (var layer in _selectedController.layers)
-            {
-                var layerName = layer.name;
-
-                EditorGUILayout.BeginHorizontal();
-
-                _enabledLayersByName[layerName] = EditorGUILayout.Toggle(_enabledLayersByName[layerName]);
-
-                EditorGUI.BeginDisabledGroup(!_enabledLayersByName[layerName]);
-
-                _layerIdsByName[layerName] = EditorGUILayout.IntField(layerName, _layerIdsByName[layerName]);
-
-                EditorGUI.EndDisabledGroup();
-                EditorGUILayout.EndHorizontal();
-            }
-
-            return result;
         }
     }
 }
