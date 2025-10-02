@@ -64,7 +64,9 @@ namespace Strawhenge.Interactions.Unity.Editor
             foreach (var layer in animatorController.layers)
             {
                 var rootStateMachine = layer.stateMachine;
-                AddSubStateMachine(rootStateMachine, animationClip, layerIdsByName[layer.name]);
+
+                if (layerIdsByName.TryGetValue(layer.name, out var layerId))
+                    AddSubStateMachine(rootStateMachine, animationClip, layerId);
             }
         }
 

@@ -20,6 +20,7 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         [SerializeField] AnimatorController _animatorController;
 
+        readonly Dictionary<string, bool> _enabledLayersByName = new Dictionary<string, bool>();
         readonly Dictionary<string, int> _layerIdsByName = new();
         readonly Dictionary<string, EmoteLayerIdScriptableObject> _layerIdScriptableObjectsByName = new();
         AnimatorController _selectedController;
@@ -56,7 +57,14 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             AssetDatabase.SaveAssets();
 
-            EmotesAnimatorSetup.Setup(_animatorController, animationClip, _layerIdsByName);
+            var enabledLayerIdsName = new Dictionary<string, int>();
+            foreach (var layer in _animatorController.layers)
+            {
+                if (_enabledLayersByName[layer.name])
+                    enabledLayerIdsName[layer.name] = _layerIdsByName[layer.name];
+            }
+
+            EmotesAnimatorSetup.Setup(_animatorController, animationClip, enabledLayerIdsName);
         }
 
         void OnWizardUpdate()
@@ -87,6 +95,10 @@ namespace Strawhenge.Interactions.Unity.Editor
                     _layerIdScriptableObjectsByName[layerIdScriptableObject.name] = layerIdScriptableObject;
                     _layerIdsByName[layerIdScriptableObject.name] = layerIdScriptableObject.Id;
                 });
+
+            _enabledLayersByName.Clear();
+            foreach (var layer in _selectedController.layers)
+                _enabledLayersByName[layer.name] = _layerIdScriptableObjectsByName.ContainsKey(layer.name);
         }
 
         protected override bool DrawWizardGUI()
@@ -94,7 +106,18 @@ namespace Strawhenge.Interactions.Unity.Editor
             var result = base.DrawWizardGUI();
 
             foreach (var layerName in _layerIdsByName.Keys.ToArray())
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                _enabledLayersByName[layerName] = EditorGUILayout.Toggle(_enabledLayersByName[layerName]);
+
+                EditorGUI.BeginDisabledGroup(!_enabledLayersByName[layerName]);
+
                 _layerIdsByName[layerName] = EditorGUILayout.IntField(layerName, _layerIdsByName[layerName]);
+
+                EditorGUI.EndDisabledGroup();
+                EditorGUILayout.EndHorizontal();
+            }
 
             return result;
         }
