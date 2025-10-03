@@ -2,6 +2,7 @@ using FunctionalUtilities;
 using Strawhenge.Interactions.OneAtATime;
 using System;
 using UnityEngine;
+using ILogger = Strawhenge.Common.Logging.ILogger;
 
 namespace Strawhenge.Interactions.Unity.Emotes
 {
@@ -11,9 +12,12 @@ namespace Strawhenge.Interactions.Unity.Emotes
         readonly EmoteAnimationHandler _animationHandler;
         readonly Maybe<Inventory.Inventory> _inventory;
 
-        public EmoteController(Animator animator, Maybe<Inventory.Inventory> inventory)
+        public EmoteController(
+            Animator animator,
+            Maybe<Inventory.Inventory> inventory,
+            ILogger logger)
         {
-            _animationHandler = new EmoteAnimationHandler(animator);
+            _animationHandler = new EmoteAnimationHandler(animator, logger);
             _inventory = inventory;
         }
 

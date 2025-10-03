@@ -5,20 +5,23 @@ using Strawhenge.Interactions.Unity.Package.Runtime;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using ILogger = Strawhenge.Common.Logging.ILogger;
 
 namespace Strawhenge.Interactions.Unity.Emotes
 {
     class EmoteAnimationHandler
     {
         readonly Animator _animator;
+        readonly ILogger _logger;
         readonly AnimatorOverrideController _animatorOverrideController;
         readonly StateMachineEvents<EmotesStateMachine> _stateMachineEvents;
 
         int[] _boolParameters = Array.Empty<int>();
 
-        public EmoteAnimationHandler(Animator animator)
+        public EmoteAnimationHandler(Animator animator, ILogger logger)
         {
             _animator = animator;
+            _logger = logger;
             _animatorOverrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
             _animator.runtimeAnimatorController = _animatorOverrideController;
 
@@ -39,6 +42,12 @@ namespace Strawhenge.Interactions.Unity.Emotes
             int layerId,
             IEnumerable<AnimatorBoolParameterScriptableObject> emoteAnimatorBoolParameters)
         {
+            if (!_animator.isActiveAndEnabled)
+            {
+                _logger.LogWarning("Animator is not active.");
+                AnimationEnded?.Invoke();
+            }
+
             _stateMachineEvents.PrepareIfRequired();
 
             animation.Do(a => _animatorOverrideController[PlaceholderAnimationClip.Name] = a);
@@ -60,10 +69,14 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
         void OnAnimationEnded()
         {
-            _boolParameters.ForEach(id => _animator.SetBool(id, false));
-            _boolParameters = Array.Empty<int>();
-            _animator.ResetTrigger(AnimatorParameters.BeginEmote);
-            _animator.ResetTrigger(AnimatorParameters.EndEmote);
+            if (_animator != null)
+            {
+                _boolParameters.ForEach(id => _animator.SetBool(id, false));
+                _boolParameters = Array.Empty<int>();
+                _animator.ResetTrigger(AnimatorParameters.BeginEmote);
+                _animator.ResetTrigger(AnimatorParameters.EndEmote);
+            }
+
             AnimationEnded?.Invoke();
         }
     }

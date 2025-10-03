@@ -1,4 +1,5 @@
 using FunctionalUtilities;
+using Strawhenge.Common.Unity;
 using Strawhenge.Common.Unity.Helpers;
 using Strawhenge.Inventory.Unity;
 using UnityEngine;
@@ -26,7 +27,8 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
             return new EmoteController(
                 _animator,
-                Maybe.NotNull(_inventory).Map(i => i.Inventory));
+                Maybe.NotNull(_inventory).Map(i => i.Inventory),
+                new UnityLogger(gameObject));
         }
     }
 }
