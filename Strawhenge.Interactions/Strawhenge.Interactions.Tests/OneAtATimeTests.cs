@@ -1,5 +1,3 @@
-using Strawhenge.Interactions.OneAtATime;
-
 namespace Strawhenge.Interactions.Tests;
 
 public partial class OneAtATimeTests
@@ -17,14 +15,14 @@ public partial class OneAtATimeTests
     }
 
     [Fact]
-    public void Stop_should_stop_emote()
+    public void Stop_should_request_stop_emote()
     {
         var emote = new Emote();
 
         _oneAtATimeManager.Start(emote);
         _oneAtATimeManager.Stop();
 
-        Assert.True(emote.HasCalledOnStop);
+        Assert.True(emote.HasCalledOnStopRequested);
     }
 
     [Fact]
@@ -33,13 +31,13 @@ public partial class OneAtATimeTests
         var emote = new Emote();
         var callbackInvoked = false;
 
-        _oneAtATimeManager.Start(emote, () => callbackInvoked = true);
+        _oneAtATimeManager.Start(emote, callback: () => callbackInvoked = true);
         Assert.False(callbackInvoked);
 
         _oneAtATimeManager.Stop();
         Assert.False(callbackInvoked);
 
-        emote.InvokeOnStoppedCallback();
+        emote.InvokeStopped();
         Assert.True(callbackInvoked);
     }
 
@@ -52,7 +50,7 @@ public partial class OneAtATimeTests
         var emote = new Emote();
         _oneAtATimeManager.Start(emote);
 
-        Assert.True(previousEmote.HasCalledOnStop);
+        Assert.True(previousEmote.HasCalledOnStopRequested);
     }
 
     [Fact]
@@ -65,19 +63,8 @@ public partial class OneAtATimeTests
         _oneAtATimeManager.Start(emote);
         Assert.False(emote.HasCalledOnStart);
 
-        previousEmote.InvokeOnStoppedCallback();
+        previousEmote.InvokeStopped();
         Assert.True(emote.HasCalledOnStart);
-    }
-
-    [Fact]
-    public void Callback_should_invoke_when_emote_has_called_stop_from_within()
-    {
-        var emote = new Emote();
-        var callbackInvoked = false;
-        _oneAtATimeManager.Start(emote, () => callbackInvoked = true);
-
-        emote.InvokeStop();
-        Assert.True(callbackInvoked);
     }
 
     [Fact]
@@ -93,7 +80,7 @@ public partial class OneAtATimeTests
         foreach (var emote in emotes)
             _oneAtATimeManager.Start(emote);
 
-        previousEmote.InvokeOnStoppedCallback();
+        previousEmote.InvokeStopped();
 
         var mostRecentEmote = emotes.Last();
         Assert.True(mostRecentEmote.HasCalledOnStart);
@@ -116,7 +103,7 @@ public partial class OneAtATimeTests
         foreach (var emote in emotes)
             _oneAtATimeManager.Start(emote, () => callbacksInvoked++);
 
-        previousEmote.InvokeOnStoppedCallback();
+        previousEmote.InvokeStopped();
 
         var expectedCallbacksInvoked = emotes.Length - 1;
         Assert.Equal(expectedCallbacksInvoked, callbacksInvoked);

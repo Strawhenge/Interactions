@@ -1,10 +1,9 @@
 using FunctionalUtilities;
 using Strawhenge.Inventory.Items;
-using System;
 
 namespace Strawhenge.Interactions.Unity.Emotes
 {
-    class Emote : OneAtATime.OneAtATime
+    class Emote : OneAtATime
     {
         readonly EmoteAnimationHandler _animationHandler;
         readonly Maybe<Inventory.Inventory> _inventory;
@@ -35,7 +34,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
             BeginAnimation();
         }
 
-        protected override void OnStop(Action onStopped)
+        protected override void OnStopRequested()
         {
             _animationHandler.End();
         }

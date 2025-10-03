@@ -2,30 +2,22 @@ namespace Strawhenge.Interactions.Tests;
 
 public partial class OneAtATimeTests
 {
-    class Emote : OneAtATime.OneAtATime
+    class Emote : OneAtATime
     {
         public bool HasCalledOnStart { get; private set; }
 
-        public bool HasCalledOnStop { get; private set; }
-
-        Action? _onStopped;
+        public bool HasCalledOnStopRequested { get; private set; }
 
         protected override void OnStart()
         {
             HasCalledOnStart = true;
         }
 
-        protected override void OnStop(Action onStopped)
+        protected override void OnStopRequested()
         {
-            HasCalledOnStop = true;
-            _onStopped = onStopped;
+            HasCalledOnStopRequested = true;
         }
 
-        public void InvokeOnStoppedCallback()
-        {
-            _onStopped?.Invoke();
-        }
-
-        public new void InvokeStop() => base.InvokeStopped();
+        public new void InvokeStopped() => base.InvokeStopped();
     }
 }

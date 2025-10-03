@@ -1,6 +1,6 @@
 using System;
 
-namespace Strawhenge.Interactions.OneAtATime
+namespace Strawhenge.Interactions
 {
     public abstract class OneAtATime
     {
@@ -13,12 +13,12 @@ namespace Strawhenge.Interactions.OneAtATime
 
         internal void Stop()
         {
-            OnStop(() => Stopped?.Invoke());
+            OnStopRequested();
         }
 
         protected abstract void OnStart();
 
-        protected abstract void OnStop(Action onStopped);
+        protected abstract void OnStopRequested();
 
         protected void InvokeStopped() => Stopped?.Invoke();
     }

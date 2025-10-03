@@ -1,5 +1,4 @@
 using FunctionalUtilities;
-using Strawhenge.Interactions.OneAtATime;
 using System;
 using UnityEngine;
 using ILogger = Strawhenge.Common.Logging.ILogger;
