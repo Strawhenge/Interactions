@@ -29,10 +29,11 @@ namespace Strawhenge.Interactions.Unity.Emotes
                 ? _logger.Logger
                 : new UnityLogger(gameObject);
 
-            return new EmoteController(
-                _animator,
-                Maybe.NotNull(_inventory).Map(i => i.Inventory),
-                logger);
+            var inventory = Maybe
+                .NotNull(_inventory)
+                .Map(i => i.Inventory);
+
+            return new EmoteController(_animator, inventory, logger);
         }
     }
 }
