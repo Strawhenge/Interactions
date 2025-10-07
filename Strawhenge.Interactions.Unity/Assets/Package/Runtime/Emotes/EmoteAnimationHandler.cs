@@ -1,5 +1,6 @@
 using FunctionalUtilities;
 using Strawhenge.Common;
+using Strawhenge.Common.Unity;
 using Strawhenge.Common.Unity.AnimatorBehaviours;
 using Strawhenge.Interactions.Unity.Package.Runtime;
 using UnityEngine;
