@@ -10,6 +10,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
     {
         [SerializeField] Animator _animator;
         [SerializeField, Tooltip("Optional.")] InventoryScript _inventory;
+        [SerializeField, Tooltip("Optional.")] LoggerScript _logger;
 
         EmoteController _emoteController;
 
@@ -22,13 +23,16 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
         EmoteController CreateEmoteController()
         {
-            // TODO New helper to check root object.
-            ComponentRefHelper.EnsureHierarchyComponent(ref _animator, nameof(_animator), this);
+            ComponentRefHelper.EnsureRootHierarchyComponent(ref _animator, nameof(_animator), this);
+
+            var logger = _logger != null
+                ? _logger.Logger
+                : new UnityLogger(gameObject);
 
             return new EmoteController(
                 _animator,
                 Maybe.NotNull(_inventory).Map(i => i.Inventory),
-                new UnityLogger(gameObject));
+                logger);
         }
     }
 }
