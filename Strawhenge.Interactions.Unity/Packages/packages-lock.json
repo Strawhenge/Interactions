@@ -7,7 +7,7 @@
       "dependencies": {
         "com.strawhenge.functionalutilities": "https://github.com/Strawhenge/FunctionalUtilities.git?path=/Package#release"
       },
-      "hash": "0410c2372b672f4941e6897690f81a870efa4f29"
+      "hash": "8b593fad572304cd529306b3758f42e123493b2f"
     },
     "com.strawhenge.functionalutilities": {
       "version": "https://github.com/Strawhenge/FunctionalUtilities.git?path=/Package#release",
@@ -21,7 +21,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "a0ece66edfa58a5c966643b9e56ffa9a36a5fa26"
+      "hash": "9b12bf61d0c5e2692ada9c3ed25288779c00942f"
     },
     "com.unity.collab-proxy": {
       "version": "1.17.7",
