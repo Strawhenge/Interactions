@@ -5,6 +5,10 @@
     </PropertyGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="xcopy /Y &quot;$(TargetPath)&quot; &quot;$(SolutionDir)\..\Strawhenge.Interactions.Unity\Assets\Package\Runtime&quot;"/>
+        <Exec Command="xcopy /Y &quot;$(TargetPath)&quot; &quot;$(SolutionDir)\..\Strawhenge.Interactions.Unity\Assets\Package\Runtime&quot;" />
     </Target>
+
+    <ItemGroup>
+      <PackageReference Include="FunctionalUtilities" Version="1.2.10" />
+    </ItemGroup>
 </Project>
