@@ -16,11 +16,11 @@ public class FurnitureTests
     {
         var logger = new TestOutputLogger(testOutputHelper);
 
-        _chair = new();
+        _chair = new(logger);
         _userContext = new();
         _user = new(_userContext, logger);
 
-        _otherChair = new();
+        _otherChair = new(logger);
         _otherUser = new(new UserContext(), logger);
     }
 
@@ -266,12 +266,12 @@ public class FurnitureTests
         _chair.Deactivate();
         callback.VerifyInvokedOnce();
     }
-    
+
     [Fact]
     public void Furniture_should_invoke_event_when_reactivated()
     {
         _chair.Deactivate();
-        
+
         var callback = new VerifiableCallback();
         _chair.DeactivatedStateChanged += callback;
 

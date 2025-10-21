@@ -1,3 +1,4 @@
+using Strawhenge.Common.Logging;
 using Strawhenge.Interactions.Furniture;
 
 namespace Strawhenge.Interactions.Tests;
@@ -6,6 +7,10 @@ class Chair : Furniture<UserContext>
 {
     int _onUseInvoked;
     int _onEndUseInvoked;
+
+    public Chair(ILogger logger) : base(logger)
+    {
+    }
 
     public override string Name => nameof(Chair);
 

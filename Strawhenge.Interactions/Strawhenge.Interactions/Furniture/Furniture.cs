@@ -1,11 +1,18 @@
 using System;
 using FunctionalUtilities;
+using Strawhenge.Common.Logging;
 
 namespace Strawhenge.Interactions.Furniture
 {
     public abstract class Furniture<TUserContext> where TUserContext : class
     {
+        readonly ILogger _logger;
         bool _isDeactivated;
+
+        protected Furniture(ILogger logger)
+        {
+            _logger = logger;
+        }
 
         public event Action DeactivatedStateChanged;
 
@@ -18,7 +25,15 @@ namespace Strawhenge.Interactions.Furniture
         {
             CurrentUser = user;
             UserContext = userContext;
-            OnUse();
+
+            try
+            {
+                OnUse();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception);
+            }
         }
 
         public abstract string Name { get; }
@@ -49,7 +64,14 @@ namespace Strawhenge.Interactions.Furniture
 
         internal void EndUse()
         {
-            OnEndUse();
+            try
+            {
+                OnEndUse();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception);
+            }
         }
     }
 }

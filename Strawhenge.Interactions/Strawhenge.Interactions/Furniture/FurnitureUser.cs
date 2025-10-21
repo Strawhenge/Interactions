@@ -94,7 +94,17 @@ namespace Strawhenge.Interactions.Furniture
             {
                 var callbacks = _onEndedCallbacks.ToArray();
                 _onEndedCallbacks.Clear();
-                callbacks.ForEach(callback => callback.Invoke());
+                callbacks.ForEach(callback =>
+                {
+                    try
+                    {
+                        callback.Invoke();
+                    }
+                    catch (Exception exception)
+                    {
+                        _logger.LogException(exception);
+                    }
+                });
             }
         }
     }
