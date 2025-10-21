@@ -41,6 +41,13 @@ namespace Strawhenge.Interactions.Furniture
                 return;
             }
 
+            if (furniture.IsDeactivated)
+            {
+                _logger.LogWarning($"Furniture '{furniture.Name}' is deactivated.");
+                onEnded?.Invoke();
+                return;
+            }
+
             CurrentFurniture = furniture;
 
             if (onEnded != null)
@@ -59,10 +66,10 @@ namespace Strawhenge.Interactions.Furniture
                 onEnded?.Invoke();
                 return;
             }
-            
+
             if (onEnded != null)
                 _onEndedCallbacks.Add(onEnded);
-            
+
             if (_isEndingUse)
             {
                 _logger.LogInformation("Already ending use.");

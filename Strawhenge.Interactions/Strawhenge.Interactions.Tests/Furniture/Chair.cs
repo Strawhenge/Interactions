@@ -18,7 +18,11 @@ class Chair : Furniture<UserContext>
 
     public void VerifyOnUseInvokedOnce() => Assert.Equal(1, _onUseInvoked);
 
+    public void VerifyOnUseInvokedNever() => Assert.Equal(0, _onUseInvoked);
+
     public void VerifyOnEndUseInvokedOnce() => Assert.Equal(1, _onEndUseInvoked);
 
     public void InvokeEnded() => Ended();
+
+    public void Deactivate() => IsDeactivated = true;
 }

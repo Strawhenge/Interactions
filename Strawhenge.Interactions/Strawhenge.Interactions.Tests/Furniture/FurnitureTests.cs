@@ -220,4 +220,31 @@ public class FurnitureTests
 
         callback.VerifyInvokedOnce();
     }
+
+    [Fact]
+    public void User_should_not_use_furniture_when_deactivated()
+    {
+        _chair.Deactivate();
+        _user.Use(_chair);
+
+        _user.CurrentFurniture.VerifyIsNone();
+    }
+
+    [Fact]
+    public void Furniture_should_not_have_user_assigned_when_deactivated()
+    {
+        _chair.Deactivate();
+        _user.Use(_chair);
+
+        _chair.CurrentUser.VerifyIsNone();
+    }
+
+    [Fact]
+    public void Furniture_should_not_invoke_on_use_when_deactivated()
+    {
+        _chair.Deactivate();
+        _user.Use(_chair);
+
+        _chair.VerifyOnUseInvokedNever();
+    }
 }
