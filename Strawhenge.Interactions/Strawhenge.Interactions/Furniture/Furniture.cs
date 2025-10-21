@@ -51,7 +51,15 @@ namespace Strawhenge.Interactions.Furniture
 
         public void Use(Furniture<TUserContext> furniture, Action onEnded = null)
         {
-            CurrentFurniture = furniture ?? throw new ArgumentNullException(nameof(furniture));
+            if (furniture == null) throw new ArgumentNullException(nameof(furniture));
+
+            if (CurrentFurniture.HasSome() || furniture.CurrentUser.HasSome())
+            {
+                onEnded?.Invoke();
+                return;
+            }
+
+            CurrentFurniture = furniture;
             _useOnEndedCallback = onEnded;
             furniture.SetUser(this, _context);
         }

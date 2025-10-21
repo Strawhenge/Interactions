@@ -4,15 +4,21 @@ namespace Strawhenge.Interactions.Tests;
 
 public class FurnitureTests
 {
+    readonly Chair _chair;
     readonly UserContext _userContext;
     readonly FurnitureUser<UserContext> _user;
-    readonly Chair _chair;
+
+    readonly FurnitureUser<UserContext> _otherUser;
+    readonly Chair _otherChair;
 
     public FurnitureTests()
     {
+        _chair = new();
         _userContext = new();
         _user = new(_userContext);
-        _chair = new();
+
+        _otherChair = new();
+        _otherUser = new(new UserContext());
     }
 
     [Fact]
@@ -62,7 +68,7 @@ public class FurnitureTests
         _chair.InvokeEnded();
         _user.CurrentFurniture.VerifyIsNone();
     }
-    
+
     [Fact]
     public void Furniture_user_should_not_be_using_furniture_when_furniture_invokes_ended()
     {
@@ -82,7 +88,7 @@ public class FurnitureTests
         _chair.InvokeEnded();
         _chair.CurrentUser.VerifyIsNone();
     }
-    
+
     [Fact]
     public void Furniture_should_not_have_user_assigned_when_furniture_invokes_ended()
     {
@@ -112,6 +118,66 @@ public class FurnitureTests
         var callback = new VerifiableCallback();
         _user.EndUse(callback);
         _chair.InvokeEnded();
+
+        callback.VerifyInvokedOnce();
+    }
+
+    [Fact]
+    public void Furniture_user_should_not_be_using_furniture_when_another_user_is_using_it()
+    {
+        _user.Use(_chair);
+        _otherUser.Use(_chair);
+
+        _otherUser.CurrentFurniture.VerifyIsNone();
+        _user.CurrentFurniture.VerifyIsSome(_chair);
+    }
+
+    [Fact]
+    public void Furniture_should_not_be_assigned_user_when_another_user_is_using_it()
+    {
+        _user.Use(_chair);
+        _otherUser.Use(_chair);
+
+        _chair.CurrentUser.VerifyIsSome(_user);
+    }
+
+    [Fact]
+    public void Use_callback_should_invoke_when_furniture_is_used_by_another_user()
+    {
+        _user.Use(_chair);
+
+        var callback = new VerifiableCallback();
+        _otherUser.Use(_chair, callback);
+
+        callback.VerifyInvokedOnce();
+    }
+
+    [Fact]
+    public void Furniture_user_should_not_be_using_furniture_already_using_another_furniture()
+    {
+        _user.Use(_chair);
+        _user.Use(_otherChair);
+
+        _user.CurrentFurniture.VerifyIsSome(_chair);
+    }
+
+    [Fact]
+    public void Furniture_should_not_be_assigned_user_when_already_using_another_furniture()
+    {
+        _user.Use(_chair);
+        _user.Use(_otherChair);
+
+        _otherChair.CurrentUser.VerifyIsNone();
+        _chair.CurrentUser.VerifyIsSome(_user);
+    }
+
+    [Fact]
+    public void Use_callback_should_invoke_when_already_using_another_furniture()
+    {
+        _user.Use(_chair);
+
+        var callback = new VerifiableCallback();
+        _user.Use(_otherChair, callback);
 
         callback.VerifyInvokedOnce();
     }
