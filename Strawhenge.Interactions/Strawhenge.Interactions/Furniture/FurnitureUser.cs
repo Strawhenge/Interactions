@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FunctionalUtilities;
 using Strawhenge.Common;
 using Strawhenge.Common.Logging;
@@ -89,9 +90,12 @@ namespace Strawhenge.Interactions.Furniture
             CurrentFurniture = Maybe.None<Furniture<TUserContext>>();
             _isEndingUse = false;
 
-            var callbacks = _onEndedCallbacks.ToArray();
-            _onEndedCallbacks.Clear();
-            callbacks.ForEach(callback => callback.Invoke());
+            if (_onEndedCallbacks.Any())
+            {
+                var callbacks = _onEndedCallbacks.ToArray();
+                _onEndedCallbacks.Clear();
+                callbacks.ForEach(callback => callback.Invoke());
+            }
         }
     }
 }
