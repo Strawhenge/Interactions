@@ -4,7 +4,9 @@ namespace Strawhenge.Interactions.Furniture
 {
     public class NullFurniture<TUserContext> : Furniture<TUserContext> where TUserContext : class
     {
-        public NullFurniture(ILogger logger) : base(logger)
+        public static NullFurniture<TUserContext> Instance { get; } = new NullFurniture<TUserContext>();
+        
+        NullFurniture() : base(NullLogger.Instance)
         {
             IsDeactivated = true;
         }
