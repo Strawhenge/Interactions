@@ -55,7 +55,7 @@ namespace Strawhenge.Interactions.Furniture
                 return;
             }
 
-            _logger.LogInformation($"Ending use of furniture {furniture.Name}.");
+            _logger.LogInformation($"Ending use of furniture '{furniture.Name}'.");
             _endUseOnEndedCallback = onEnded;
             furniture.EndUse();
         }
