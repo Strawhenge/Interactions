@@ -21,15 +21,15 @@ namespace Strawhenge.Interactions.Unity.Furniture
 
         Furniture<UserContext> CreateFurniture()
         {
-            if (_emote == null)
-            {
-                Debug.LogError($"'{nameof(_emote)}' not set.");
-                return NullFurniture<UserContext>.Instance;
-            }
-
             var logger = _logger != null
                 ? _logger.Logger
                 : new UnityLogger(gameObject);
+
+            if (_emote == null)
+            {
+                logger.LogError($"'{nameof(_emote)}' not set.");
+                return NullFurniture<UserContext>.Instance;
+            }
 
             return new EmoteFurniture(name, _emote, logger);
         }
