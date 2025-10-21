@@ -32,7 +32,7 @@ namespace Strawhenge.Interactions.Furniture
                 return;
             }
 
-            if (CurrentFurniture.HasSome())
+            if (furniture.CurrentUser.HasSome())
             {
                 _logger.LogWarning($"Furniture '{furniture.Name}' is already being used.");
                 onEnded?.Invoke();
@@ -42,19 +42,28 @@ namespace Strawhenge.Interactions.Furniture
             CurrentFurniture = furniture;
             _useOnEndedCallback = onEnded;
             furniture.SetUser(this, _context);
-            
+
             _logger.LogInformation($"Using furniture '{furniture.Name}'.");
         }
 
         public void EndUse(Action onEnded = null)
         {
+            if (!CurrentFurniture.HasSome(out var furniture))
+            {
+                _logger.LogInformation("User is not using furniture.");
+                onEnded?.Invoke();
+                return;
+            }
+
+            _logger.LogInformation($"Ending use of furniture {furniture.Name}.");
             _endUseOnEndedCallback = onEnded;
-            CurrentFurniture.Do(furniture => furniture.EndUse());
+            furniture.EndUse();
         }
 
         internal void OnFurnitureEnded()
         {
             CurrentFurniture = Maybe.None<Furniture<TUserContext>>();
+            _logger.LogInformation("Furniture use ended.");
             _useOnEndedCallback?.Invoke();
             _endUseOnEndedCallback?.Invoke();
         }

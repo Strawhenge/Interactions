@@ -184,4 +184,13 @@ public class FurnitureTests
 
         callback.VerifyInvokedOnce();
     }
+
+    [Fact]
+    public void End_use_callback_should_invoke_when_not_using_furniture()
+    {
+        var callback = new VerifiableCallback();
+        _user.EndUse(callback);
+
+        callback.VerifyInvokedOnce();
+    }
 }
