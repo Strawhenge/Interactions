@@ -49,7 +49,7 @@ public class FurnitureTests
     public void Furniture_should_invoke_on_use_when_used()
     {
         _user.Use(_chair);
-        _chair.VerifyOnUseInvoked();
+        _chair.VerifyOnUseInvokedOnce();
     }
 
     [Fact]
@@ -58,7 +58,17 @@ public class FurnitureTests
         _user.Use(_chair);
         _user.EndUse();
 
-        _chair.VerifyOnEndUseInvoked();
+        _chair.VerifyOnEndUseInvokedOnce();
+    }
+
+    [Fact]
+    public void Furniture_should_not_invoke_on_end_use_multiple_times()
+    {
+        _user.Use(_chair);
+        _user.EndUse();
+        _user.EndUse();
+
+        _chair.VerifyOnEndUseInvokedOnce();
     }
 
     [Fact]
@@ -123,6 +133,23 @@ public class FurnitureTests
         _chair.InvokeEnded();
 
         callback.VerifyInvokedOnce();
+    }
+
+    [Fact]
+    public void Multiple_end_use_callbacks_should_invoke_when_use_ended()
+    {
+        _user.Use(_chair);
+
+        var callback1 = new VerifiableCallback();
+        _user.EndUse(callback1);
+
+        var callback2 = new VerifiableCallback();
+        _user.EndUse(callback2);
+
+        _chair.InvokeEnded();
+
+        callback1.VerifyInvokedOnce();
+        callback2.VerifyInvokedOnce();
     }
 
     [Fact]

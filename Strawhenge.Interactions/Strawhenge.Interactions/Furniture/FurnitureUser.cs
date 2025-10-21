@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using FunctionalUtilities;
+using Strawhenge.Common;
 using Strawhenge.Common.Logging;
 
 namespace Strawhenge.Interactions.Furniture
@@ -8,9 +10,9 @@ namespace Strawhenge.Interactions.Furniture
     {
         readonly TUserContext _context;
         readonly ILogger _logger;
+        readonly List<Action> _onEndedCallbacks = new List<Action>();
 
-        Action _useOnEndedCallback;
-        Action _endUseOnEndedCallback;
+        bool _isEndingUse;
 
         public FurnitureUser(TUserContext context, ILogger logger)
         {
@@ -40,7 +42,10 @@ namespace Strawhenge.Interactions.Furniture
             }
 
             CurrentFurniture = furniture;
-            _useOnEndedCallback = onEnded;
+
+            if (onEnded != null)
+                _onEndedCallbacks.Add(onEnded);
+
             furniture.SetUser(this, _context);
 
             _logger.LogInformation($"Using furniture '{furniture.Name}'.");
@@ -54,18 +59,32 @@ namespace Strawhenge.Interactions.Furniture
                 onEnded?.Invoke();
                 return;
             }
+            
+            if (onEnded != null)
+                _onEndedCallbacks.Add(onEnded);
+            
+            if (_isEndingUse)
+            {
+                _logger.LogInformation("Already ending use.");
+                return;
+            }
 
             _logger.LogInformation($"Ending use of furniture '{furniture.Name}'.");
-            _endUseOnEndedCallback = onEnded;
+            _isEndingUse = true;
+
             furniture.EndUse();
         }
 
         internal void OnFurnitureEnded()
         {
-            CurrentFurniture = Maybe.None<Furniture<TUserContext>>();
             _logger.LogInformation("Furniture use ended.");
-            _useOnEndedCallback?.Invoke();
-            _endUseOnEndedCallback?.Invoke();
+
+            CurrentFurniture = Maybe.None<Furniture<TUserContext>>();
+            _isEndingUse = false;
+
+            var callbacks = _onEndedCallbacks.ToArray();
+            _onEndedCallbacks.Clear();
+            callbacks.ForEach(callback => callback.Invoke());
         }
     }
 }

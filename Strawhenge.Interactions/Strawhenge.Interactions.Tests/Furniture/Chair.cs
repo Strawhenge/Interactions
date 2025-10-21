@@ -4,21 +4,21 @@ namespace Strawhenge.Interactions.Tests;
 
 class Chair : Furniture<UserContext>
 {
-    bool _onUseInvoked;
-    bool _onEndUseInvoked;
+    int _onUseInvoked;
+    int _onEndUseInvoked;
 
     public override string Name => nameof(Chair);
 
-    protected override void OnUse() => _onUseInvoked = true;
+    protected override void OnUse() => _onUseInvoked++;
 
-    protected override void OnEndUse() => _onEndUseInvoked = true;
+    protected override void OnEndUse() => _onEndUseInvoked++;
 
     public void VerifyUserContextReceived(UserContext expectedUserContext) =>
         UserContext.VerifyIsSome(expectedUserContext);
 
-    public void VerifyOnUseInvoked() => Assert.True(_onUseInvoked);
+    public void VerifyOnUseInvokedOnce() => Assert.Equal(1, _onUseInvoked);
 
-    public void VerifyOnEndUseInvoked() => Assert.True(_onEndUseInvoked);
+    public void VerifyOnEndUseInvokedOnce() => Assert.Equal(1, _onEndUseInvoked);
 
     public void InvokeEnded() => Ended();
 }
