@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _emote: {fileID: 11400000, guid: 3dbd25256e3be9442a119467227334c6, type: 2}
+  _logger: {fileID: 0}
 --- !u!4 &162288838
 Transform:
   m_ObjectHideFlags: 0
