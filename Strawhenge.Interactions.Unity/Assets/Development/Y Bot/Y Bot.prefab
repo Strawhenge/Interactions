@@ -1791,6 +1791,7 @@ GameObject:
   - component: {fileID: 897170097077743393}
   - component: {fileID: 6419836043487809605}
   - component: {fileID: 6238762272775378415}
+  - component: {fileID: 8899199181610251551}
   m_Layer: 0
   m_Name: Interactions
   m_TagString: Untagged
@@ -1842,6 +1843,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _emotes: {fileID: 6419836043487809605}
   _logger: {fileID: 0}
+--- !u!114 &8899199181610251551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5558978277378371890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0de7c6e69d224325838718aeb9d59bce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _root: {fileID: 2946408470347130550}
 --- !u!1 &5879743340707824353
 GameObject:
   m_ObjectHideFlags: 0
