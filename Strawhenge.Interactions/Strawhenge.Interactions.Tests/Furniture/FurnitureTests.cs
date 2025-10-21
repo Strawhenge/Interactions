@@ -62,6 +62,15 @@ public class FurnitureTests
         _chair.InvokeEnded();
         _user.CurrentFurniture.VerifyIsNone();
     }
+    
+    [Fact]
+    public void Furniture_user_should_not_be_using_furniture_when_furniture_invokes_ended()
+    {
+        _user.Use(_chair);
+
+        _chair.InvokeEnded();
+        _user.CurrentFurniture.VerifyIsNone();
+    }
 
     [Fact]
     public void Furniture_should_not_have_user_assigned_when_user_ends_use_and_furniture_invokes_ended()
@@ -73,27 +82,37 @@ public class FurnitureTests
         _chair.InvokeEnded();
         _chair.CurrentUser.VerifyIsNone();
     }
-}
+    
+    [Fact]
+    public void Furniture_should_not_have_user_assigned_when_furniture_invokes_ended()
+    {
+        _user.Use(_chair);
 
-class Chair : Furniture<UserContext>
-{
-    bool _onUseInvoked;
-    bool _onEndUseInvoked;
+        _chair.InvokeEnded();
+        _chair.CurrentUser.VerifyIsNone();
+    }
 
-    protected override void OnUse() => _onUseInvoked = true;
+    [Fact]
+    public void Use_callback_should_invoke_when_use_ended()
+    {
+        var callback = new VerifiableCallback();
+        _user.Use(_chair, callback);
 
-    protected override void OnEndUse() => _onEndUseInvoked = true;
+        _user.EndUse();
+        _chair.InvokeEnded();
 
-    public void VerifyUserContextReceived(UserContext expectedUserContext) =>
-        UserContext.VerifyIsSome(expectedUserContext);
+        callback.VerifyInvokedOnce();
+    }
 
-    public void VerifyOnUseInvoked() => Assert.True(_onUseInvoked);
+    [Fact]
+    public void End_use_callback_should_invoke_when_use_ended()
+    {
+        _user.Use(_chair);
 
-    public void VerifyOnEndUseInvoked() => Assert.True(_onEndUseInvoked);
+        var callback = new VerifiableCallback();
+        _user.EndUse(callback);
+        _chair.InvokeEnded();
 
-    public void InvokeEnded() => Ended();
-}
-
-class UserContext
-{
+        callback.VerifyInvokedOnce();
+    }
 }
