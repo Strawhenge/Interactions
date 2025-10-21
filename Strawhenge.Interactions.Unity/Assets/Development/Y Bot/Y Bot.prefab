@@ -1840,6 +1840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c452fe5a93658ce4c925060e35dd67ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _emotes: {fileID: 6419836043487809605}
   _logger: {fileID: 0}
 --- !u!1 &5879743340707824353
 GameObject:

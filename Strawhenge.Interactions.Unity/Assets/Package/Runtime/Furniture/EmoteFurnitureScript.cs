@@ -28,7 +28,7 @@ namespace Strawhenge.Interactions.Unity.Furniture
                 ? _logger.Logger
                 : new UnityLogger(gameObject);
 
-            return new EmoteFurniture(name, logger);
+            return new EmoteFurniture(name, _emote, logger);
         }
     }
 }

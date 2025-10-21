@@ -1,11 +1,15 @@
+using FunctionalUtilities;
 using Strawhenge.Common.Unity;
+using Strawhenge.Common.Unity.Helpers;
 using Strawhenge.Interactions.Furniture;
+using Strawhenge.Interactions.Unity.Emotes;
 using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Furniture
 {
     public class FurnitureUserScript : MonoBehaviour
     {
+        [SerializeField] EmotesScript _emotes;
         [SerializeField, Tooltip("Optional.")] LoggerScript _logger;
 
         FurnitureUser<UserContext> _user;
@@ -19,7 +23,9 @@ namespace Strawhenge.Interactions.Unity.Furniture
 
         FurnitureUser<UserContext> CreateUser()
         {
-            var context = new UserContext();
+            ComponentRefHelper.EnsureRootHierarchyComponent(ref _emotes, nameof(_emotes), this);
+
+            var context = new UserContext(_emotes.EmoteController);
 
             var logger = _logger != null
                 ? _logger.Logger
