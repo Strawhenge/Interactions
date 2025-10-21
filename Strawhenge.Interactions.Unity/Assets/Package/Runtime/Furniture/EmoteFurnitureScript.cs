@@ -1,7 +1,6 @@
 using Strawhenge.Common.Unity;
 using Strawhenge.Interactions.Furniture;
 using Strawhenge.Interactions.Unity.Emotes;
-using System;
 using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Furniture
@@ -22,7 +21,11 @@ namespace Strawhenge.Interactions.Unity.Furniture
 
         Furniture<UserContext> CreateFurniture()
         {
-            // TODO Verify emote field is assigned, if not return null object.
+            if (_emote == null)
+            {
+                Debug.LogError($"'{nameof(_emote)}' not set.");
+                return NullFurniture<UserContext>.Instance;
+            }
 
             var logger = _logger != null
                 ? _logger.Logger
