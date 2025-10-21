@@ -21,7 +21,7 @@ namespace Strawhenge.Interactions.Unity.Furniture
         {
             var context = new UserContext();
 
-            var logger = _logger == null
+            var logger = _logger != null
                 ? _logger.Logger
                 : new UnityLogger(gameObject);
 

@@ -18,6 +18,7 @@ namespace Strawhenge.Interactions.Unity.Editor
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
+            EditorGUILayout.Separator();
             EditorGUI.BeginDisabledGroup(!Application.isPlaying);
 
             _emote = (EmoteScriptableObject)EditorGUILayout
