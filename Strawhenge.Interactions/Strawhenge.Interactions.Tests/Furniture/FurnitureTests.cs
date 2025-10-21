@@ -247,4 +247,35 @@ public class FurnitureTests
 
         _chair.VerifyOnUseInvokedNever();
     }
+
+    [Fact]
+    public void Furniture_should_invoke_on_end_use_when_deactivated()
+    {
+        _user.Use(_chair);
+        _chair.Deactivate();
+
+        _chair.VerifyOnEndUseInvokedOnce();
+    }
+
+    [Fact]
+    public void Furniture_should_invoke_event_when_deactivated()
+    {
+        var callback = new VerifiableCallback();
+        _chair.DeactivatedStateChanged += callback;
+
+        _chair.Deactivate();
+        callback.VerifyInvokedOnce();
+    }
+    
+    [Fact]
+    public void Furniture_should_invoke_event_when_reactivated()
+    {
+        _chair.Deactivate();
+        
+        var callback = new VerifiableCallback();
+        _chair.DeactivatedStateChanged += callback;
+
+        _chair.Activate();
+        callback.VerifyInvokedOnce();
+    }
 }

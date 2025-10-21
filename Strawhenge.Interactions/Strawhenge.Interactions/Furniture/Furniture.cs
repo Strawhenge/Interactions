@@ -31,6 +31,7 @@ namespace Strawhenge.Interactions.Furniture
                 if (_isDeactivated == value) return;
 
                 _isDeactivated = value;
+                CurrentUser.Do(user => user.EndUse());
                 DeactivatedStateChanged?.Invoke();
             }
         }

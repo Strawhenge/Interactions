@@ -25,4 +25,6 @@ class Chair : Furniture<UserContext>
     public void InvokeEnded() => Ended();
 
     public void Deactivate() => IsDeactivated = true;
+
+    public void Activate() => IsDeactivated = false;
 }
