@@ -9,9 +9,9 @@ namespace Strawhenge.Interactions.Furniture
 {
     public class FurnitureUser<TUserContext> where TUserContext : class
     {
+        readonly List<Action> _onEndedCallbacks = new List<Action>();
         readonly TUserContext _context;
         readonly ILogger _logger;
-        readonly List<Action> _onEndedCallbacks = new List<Action>();
 
         bool _isEndingUse;
 

@@ -16,8 +16,23 @@ namespace Strawhenge.Interactions.Furniture
 
         public event Action DeactivatedStateChanged;
 
+        public abstract string Name { get; }
+
         public Maybe<FurnitureUser<TUserContext>> CurrentUser { get; protected set; } =
             Maybe.None<FurnitureUser<TUserContext>>();
+
+        public bool IsDeactivated
+        {
+            get => _isDeactivated;
+            protected set
+            {
+                if (_isDeactivated == value) return;
+
+                _isDeactivated = value;
+                CurrentUser.Do(user => user.EndUse());
+                DeactivatedStateChanged?.Invoke();
+            }
+        }
 
         protected Maybe<TUserContext> UserContext { get; private set; } = Maybe.None<TUserContext>();
 
@@ -36,18 +51,15 @@ namespace Strawhenge.Interactions.Furniture
             }
         }
 
-        public abstract string Name { get; }
-
-        public bool IsDeactivated
+        internal void EndUse()
         {
-            get => _isDeactivated;
-            protected set
+            try
             {
-                if (_isDeactivated == value) return;
-
-                _isDeactivated = value;
-                CurrentUser.Do(user => user.EndUse());
-                DeactivatedStateChanged?.Invoke();
+                OnEndUse();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception);
             }
         }
 
@@ -60,18 +72,6 @@ namespace Strawhenge.Interactions.Furniture
             CurrentUser.Do(user => user.OnFurnitureEnded());
             CurrentUser = Maybe.None<FurnitureUser<TUserContext>>();
             UserContext = Maybe.None<TUserContext>();
-        }
-
-        internal void EndUse()
-        {
-            try
-            {
-                OnEndUse();
-            }
-            catch (Exception exception)
-            {
-                _logger.LogException(exception);
-            }
         }
     }
 }
