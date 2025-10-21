@@ -7,6 +7,8 @@ class Chair : Furniture<UserContext>
     bool _onUseInvoked;
     bool _onEndUseInvoked;
 
+    public override string Name => nameof(Chair);
+
     protected override void OnUse() => _onUseInvoked = true;
 
     protected override void OnEndUse() => _onEndUseInvoked = true;

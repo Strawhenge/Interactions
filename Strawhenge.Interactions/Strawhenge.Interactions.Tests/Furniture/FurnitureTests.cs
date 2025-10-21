@@ -1,4 +1,5 @@
 using Strawhenge.Interactions.Furniture;
+using Xunit.Abstractions;
 
 namespace Strawhenge.Interactions.Tests;
 
@@ -11,14 +12,16 @@ public class FurnitureTests
     readonly FurnitureUser<UserContext> _otherUser;
     readonly Chair _otherChair;
 
-    public FurnitureTests()
+    public FurnitureTests(ITestOutputHelper testOutputHelper)
     {
+        var logger = new TestOutputLogger(testOutputHelper);
+
         _chair = new();
         _userContext = new();
-        _user = new(_userContext);
+        _user = new(_userContext, logger);
 
         _otherChair = new();
-        _otherUser = new(new UserContext());
+        _otherUser = new(new UserContext(), logger);
     }
 
     [Fact]

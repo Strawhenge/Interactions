@@ -1,4 +1,3 @@
-using System;
 using FunctionalUtilities;
 
 namespace Strawhenge.Interactions.Furniture
@@ -16,6 +15,8 @@ namespace Strawhenge.Interactions.Furniture
             UserContext = userContext;
             OnUse();
         }
+        
+        public abstract string Name { get; }
 
         protected abstract void OnUse();
 
@@ -31,50 +32,6 @@ namespace Strawhenge.Interactions.Furniture
         internal void EndUse()
         {
             OnEndUse();
-        }
-    }
-
-    public class FurnitureUser<TUserContext> where TUserContext : class
-    {
-        readonly TUserContext _context;
-
-        Action _useOnEndedCallback;
-        Action _endUseOnEndedCallback;
-
-        public FurnitureUser(TUserContext context)
-        {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public Maybe<Furniture<TUserContext>> CurrentFurniture { get; private set; } =
-            Maybe.None<Furniture<TUserContext>>();
-
-        public void Use(Furniture<TUserContext> furniture, Action onEnded = null)
-        {
-            if (furniture == null) throw new ArgumentNullException(nameof(furniture));
-
-            if (CurrentFurniture.HasSome() || furniture.CurrentUser.HasSome())
-            {
-                onEnded?.Invoke();
-                return;
-            }
-
-            CurrentFurniture = furniture;
-            _useOnEndedCallback = onEnded;
-            furniture.SetUser(this, _context);
-        }
-
-        public void EndUse(Action onEnded = null)
-        {
-            _endUseOnEndedCallback = onEnded;
-            CurrentFurniture.Do(furniture => furniture.EndUse());
-        }
-
-        internal void OnFurnitureEnded()
-        {
-            CurrentFurniture = Maybe.None<Furniture<TUserContext>>();
-            _useOnEndedCallback?.Invoke();
-            _endUseOnEndedCallback?.Invoke();
         }
     }
 }
