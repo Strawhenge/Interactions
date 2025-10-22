@@ -10,16 +10,10 @@ namespace Strawhenge.Interactions.Unity.Sit
         [SerializeField] AnimationClip _sitting;
         [SerializeField] AnimationClip _stand;
 
-        public AnimationClip Sit => _sit ?? MissingAnimation(nameof(_sit));
+        public AnimationClip Sit => _sit ?? new AnimationClip();
 
-        public AnimationClip Sitting => _sitting ?? MissingAnimation(nameof(_sitting));
+        public AnimationClip Sitting => _sitting ?? new AnimationClip();
 
-        public AnimationClip Stand => _stand ?? MissingAnimation(nameof(_stand));
-
-        AnimationClip MissingAnimation(string fieldName)
-        {
-            Debug.LogError($"Missing animation clip '{fieldName}'.");
-            return new AnimationClip();
-        }
+        public AnimationClip Stand => _stand ?? new AnimationClip();
     }
 }
