@@ -26,6 +26,9 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
 
         public bool IsInProgress { get; private set; }
 
+        public void PlaceAt(Transform marker, IPositionPlacementArgs args, Action onCompleted = null) =>
+            PlaceAt(marker.position, marker.forward, args, onCompleted);
+
         public void PlaceAt(
             Vector3 position,
             Vector3 direction,
