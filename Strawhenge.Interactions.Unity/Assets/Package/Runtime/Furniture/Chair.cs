@@ -25,13 +25,13 @@ namespace Strawhenge.Interactions.Unity
             _sittingPosition = sittingPosition;
             _endPosition = endPosition;
             _sitAnimations = sitAnimations;
-            
+
             Name = name;
         }
 
         public override string Name { get; }
 
-        protected override void OnUse()
+        protected override void OnUse(UserContext userContext)
         {
         }
 

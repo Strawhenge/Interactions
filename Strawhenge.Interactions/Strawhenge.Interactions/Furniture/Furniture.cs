@@ -34,16 +34,13 @@ namespace Strawhenge.Interactions.Furniture
             }
         }
 
-        protected Maybe<TUserContext> UserContext { get; private set; } = Maybe.None<TUserContext>();
-
         internal void SetUser(FurnitureUser<TUserContext> user, TUserContext userContext)
         {
             CurrentUser = user;
-            UserContext = userContext;
 
             try
             {
-                OnUse();
+                OnUse(userContext);
             }
             catch (Exception exception)
             {
@@ -63,7 +60,7 @@ namespace Strawhenge.Interactions.Furniture
             }
         }
 
-        protected abstract void OnUse();
+        protected abstract void OnUse(TUserContext userContext);
 
         protected abstract void OnEndUse();
 
@@ -71,7 +68,6 @@ namespace Strawhenge.Interactions.Furniture
         {
             CurrentUser.Do(user => user.OnFurnitureEnded());
             CurrentUser = Maybe.None<FurnitureUser<TUserContext>>();
-            UserContext = Maybe.None<TUserContext>();
         }
     }
 }

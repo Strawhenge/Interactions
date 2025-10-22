@@ -1,5 +1,3 @@
-using FunctionalUtilities;
-using Strawhenge.Common.Logging;
 using Strawhenge.Interactions.Furniture;
 using Strawhenge.Interactions.Unity.Emotes;
 using Strawhenge.Interactions.Unity.PositionPlacement;
@@ -14,6 +12,8 @@ namespace Strawhenge.Interactions.Unity.Furniture
         readonly Transform _position;
         readonly IPositionPlacementArgs _positionPlacementArgs;
 
+        UserContext _userContext;
+
         public EmoteFurniture(
             string name,
             EmoteScriptableObject emote,
@@ -24,31 +24,26 @@ namespace Strawhenge.Interactions.Unity.Furniture
             _emote = emote;
             _position = position;
             _positionPlacementArgs = positionPlacementArgs;
+
             Name = name;
         }
 
         public override string Name { get; }
 
-        protected override void OnUse()
+        protected override void OnUse(UserContext userContext)
         {
-            if (!UserContext.HasSome(out var userContext))
-            {
-                Ended();
-                return;
-            }
+            _userContext = userContext;
 
-            userContext.PositionPlacementController.PlaceAt(
+            _userContext.PositionPlacementController.PlaceAt(
                 _position.position,
                 _position.forward,
                 _positionPlacementArgs,
-                onCompleted: () => userContext.EmoteController.Perform(_emote, Ended));
+                onCompleted: () => _userContext.EmoteController.Perform(_emote, Ended));
         }
 
         protected override void OnEndUse()
         {
-            UserContext
-                .Map(user => user.EmoteController)
-                .Do(emoteController => emoteController.End());
+            _userContext.EmoteController.End();
         }
     }
 }

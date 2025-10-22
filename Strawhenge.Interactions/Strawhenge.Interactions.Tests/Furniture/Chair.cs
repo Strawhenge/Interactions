@@ -7,6 +7,7 @@ class Chair : Furniture<UserContext>
 {
     int _onUseInvoked;
     int _onEndUseInvoked;
+    UserContext? _userContext;
 
     public Chair(ILogger logger) : base(logger)
     {
@@ -14,12 +15,16 @@ class Chair : Furniture<UserContext>
 
     public override string Name => nameof(Chair);
 
-    protected override void OnUse() => _onUseInvoked++;
+    protected override void OnUse(UserContext userContext)
+    {
+        _onUseInvoked++;
+        _userContext = userContext;
+    }
 
     protected override void OnEndUse() => _onEndUseInvoked++;
 
     public void VerifyUserContextReceived(UserContext expectedUserContext) =>
-        UserContext.VerifyIsSome(expectedUserContext);
+        Assert.Same(expectedUserContext, _userContext);
 
     public void VerifyOnUseInvokedOnce() => Assert.Equal(1, _onUseInvoked);
 
