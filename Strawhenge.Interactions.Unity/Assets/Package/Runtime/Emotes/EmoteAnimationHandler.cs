@@ -24,7 +24,6 @@ namespace Strawhenge.Interactions.Unity.Emotes
             _animator = animator;
             _logger = logger;
             _animatorOverrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
-            _animator.runtimeAnimatorController = _animatorOverrideController;
 
             _stateMachineEvents = _animator.AddEvents<EmotesStateMachine>(
                 stateMachine =>
@@ -51,6 +50,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
             _stateMachineEvents.PrepareIfRequired();
 
+            _animator.runtimeAnimatorController = _animatorOverrideController;
             animation.Do(a => _animatorOverrideController[PlaceholderAnimationClip.Name] = a);
 
             _animator.SetInteger(AnimatorParameters.EmoteLayerId, layerId);

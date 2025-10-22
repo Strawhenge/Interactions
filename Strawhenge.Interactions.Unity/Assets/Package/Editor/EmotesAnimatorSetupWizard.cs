@@ -10,7 +10,7 @@ namespace Strawhenge.Interactions.Unity.Editor
     {
         const string Name = "Emotes Animator Setup";
 
-        [MenuItem("Strawhenge/" + Name)]
+        [MenuItem("Strawhenge/Interactions/" + Name)]
         public static void ShowEditorWindow()
         {
             DisplayWizard<EmotesAnimatorSetupWizard>(Name, "Set Up");
@@ -136,7 +136,6 @@ namespace Strawhenge.Interactions.Unity.Editor
                 AssetDatabase.CreateFolder(_assetsParentFolder, _animatorController.name);
         }
 
-
         void UpdateEnabledLayers()
         {
             _enabledLayersByName.Clear();
@@ -186,7 +185,7 @@ namespace Strawhenge.Interactions.Unity.Editor
         {
             var path = AssetDatabase.GetAssetPath(_animatorController);
             _assetsParentFolder = path[..path.LastIndexOf('/')];
-            _assetsFolder = _assetsParentFolder + "/" + _animatorController.name;
+            _assetsFolder = $"{_assetsParentFolder}/{_animatorController.name}";
         }
     }
 }
