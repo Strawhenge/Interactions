@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Sit
 {
-    public class SitAnimationHandler
+    class SitAnimationHandler
     {
         readonly Animator _animator;
         readonly StateMachineEvents<SitStateMachine> _stateMachineEvents;

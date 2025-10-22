@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Sit
 {
@@ -6,14 +7,15 @@ namespace Strawhenge.Interactions.Unity.Sit
     {
         readonly SitAnimationHandler _animationHandler;
 
-        public SitController(SitAnimationHandler animationHandler)
+        public SitController(Animator animator)
         {
-            _animationHandler = animationHandler;
+            _animationHandler = new SitAnimationHandler(animator);
         }
 
         public bool IsSitting { get; private set; }
 
         public event Action Sitting;
+
         public event Action Standing;
 
         public void Sit()
