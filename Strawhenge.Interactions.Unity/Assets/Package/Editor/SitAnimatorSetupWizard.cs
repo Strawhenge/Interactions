@@ -10,7 +10,7 @@ namespace Strawhenge.Interactions.Unity.Editor
     {
         const string Name = "Sit Animator Setup";
 
-        [MenuItem("Strawhenge/" + Name)]
+        [MenuItem("Strawhenge/Interactions/" + Name)]
         public static void ShowEditorWindow()
         {
             DisplayWizard<SitAnimatorSetupWizard>(Name, "Set Up");

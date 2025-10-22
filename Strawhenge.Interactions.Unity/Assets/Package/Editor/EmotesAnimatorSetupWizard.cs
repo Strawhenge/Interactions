@@ -10,7 +10,7 @@ namespace Strawhenge.Interactions.Unity.Editor
     {
         const string Name = "Emotes Animator Setup";
 
-        [MenuItem("Strawhenge/" + Name)]
+        [MenuItem("Strawhenge/Interactions/" + Name)]
         public static void ShowEditorWindow()
         {
             DisplayWizard<EmotesAnimatorSetupWizard>(Name, "Set Up");
