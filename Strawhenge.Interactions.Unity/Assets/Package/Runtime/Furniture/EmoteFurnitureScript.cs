@@ -33,11 +33,14 @@ namespace Strawhenge.Interactions.Unity.Furniture
                 return NullFurniture<UserContext>.Instance;
             }
 
+            var positionPlacement = new PositionPlacementInstruction(
+                _positionPlacement.Target.Reduce(() => transform),
+                _positionPlacement.Args);
+
             return new EmoteFurniture(
                 name,
                 _emote,
-                _positionPlacement.Target.Reduce(() => transform),
-                _positionPlacement.Args,
+                positionPlacement,
                 logger);
         }
     }

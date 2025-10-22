@@ -42,9 +42,7 @@ namespace Strawhenge.Interactions.Unity.Editor
                 _args != null)
             {
                 _positionPlacement.PositionPlacementController.PlaceAt(
-                    _position.position,
-                    _position.forward,
-                    _args);
+                    new PositionPlacementInstruction(_position, _args));
             }
 
             if (GUILayout.Button(nameof(PositionPlacementController.Cancel)))

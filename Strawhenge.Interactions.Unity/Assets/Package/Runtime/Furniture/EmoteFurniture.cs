@@ -9,6 +9,7 @@ namespace Strawhenge.Interactions.Unity.Furniture
     public class EmoteFurniture : Furniture<UserContext>
     {
         readonly EmoteScriptableObject _emote;
+        readonly PositionPlacement.PositionPlacementInstruction _positionPlacement;
         readonly Transform _position;
         readonly IPositionPlacementArgs _positionPlacementArgs;
 
@@ -17,13 +18,11 @@ namespace Strawhenge.Interactions.Unity.Furniture
         public EmoteFurniture(
             string name,
             EmoteScriptableObject emote,
-            Transform position,
-            IPositionPlacementArgs positionPlacementArgs,
+            PositionPlacement.PositionPlacementInstruction positionPlacement,
             ILogger logger) : base(logger)
         {
             _emote = emote;
-            _position = position;
-            _positionPlacementArgs = positionPlacementArgs;
+            _positionPlacement = positionPlacement;
 
             Name = name;
         }
@@ -35,9 +34,7 @@ namespace Strawhenge.Interactions.Unity.Furniture
             _userContext = userContext;
 
             _userContext.PositionPlacementController.PlaceAt(
-                _position.position,
-                _position.forward,
-                _positionPlacementArgs,
+                _positionPlacement,
                 onCompleted: () => _userContext.EmoteController.Perform(_emote, Ended));
         }
 

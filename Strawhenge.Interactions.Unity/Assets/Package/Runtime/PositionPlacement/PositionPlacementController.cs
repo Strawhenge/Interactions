@@ -26,25 +26,23 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
 
         public bool IsInProgress { get; private set; }
 
-        public void PlaceAt(Transform marker, IPositionPlacementArgs args, Action onCompleted = null) =>
-            PlaceAt(marker.position, marker.forward, args, onCompleted);
-
         public void PlaceAt(
-            Vector3 position,
-            Vector3 direction,
-            IPositionPlacementArgs args,
+            PositionPlacementInstruction placement,
             Action onCompleted = null)
         {
             if (IsInProgress)
                 OnCompleted();
 
-            _transformLerpPosition.SetPosition(position, args.MoveSpeed);
-            _transformSlerpTurn.SetDirection(direction, args.TurnSpeed);
-            _timeout = args.TimeoutInSeconds;
-            _positionBuffer = args.PositionBuffer;
-            _directionBuffer = args.DirectionBuffer;
-            _onCompleted = onCompleted;
+            _transformLerpPosition.SetPosition(placement.Position, placement.Args.MoveSpeed);
+            _transformSlerpTurn.SetDirection(placement.Direction, placement.Args.TurnSpeed);
+            
             _timePassed = 0;
+            _timeout = placement.Args.TimeoutInSeconds;
+            
+            _positionBuffer = placement.Args.PositionBuffer;
+            _directionBuffer = placement.Args.DirectionBuffer;
+            
+            _onCompleted = onCompleted;
 
             IsInProgress = true;
             Began?.Invoke();
