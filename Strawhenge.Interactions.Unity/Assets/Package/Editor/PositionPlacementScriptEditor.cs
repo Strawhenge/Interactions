@@ -35,6 +35,8 @@ namespace Strawhenge.Interactions.Unity.Editor
                 typeof(PositionPlacementArgsScriptableObject),
                 allowSceneObjects: false) as PositionPlacementArgsScriptableObject;
 
+            EditorGUILayout.BeginHorizontal();
+
             if (GUILayout.Button(nameof(PositionPlacementController.PlaceAt)) &&
                 _position != null &&
                 _args != null)
@@ -44,6 +46,10 @@ namespace Strawhenge.Interactions.Unity.Editor
                     _args);
             }
 
+            if (GUILayout.Button(nameof(PositionPlacementController.Cancel)))
+                _positionPlacement.PositionPlacementController.Cancel();
+
+            EditorGUILayout.EndHorizontal();
             EditorGUI.EndDisabledGroup();
         }
     }

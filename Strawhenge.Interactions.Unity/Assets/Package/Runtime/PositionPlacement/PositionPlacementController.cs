@@ -10,6 +10,8 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
         readonly TransformSlerpTurn _transformSlerpTurn;
 
         float _timeout;
+        float _positionBuffer;
+        float _rotationBuffer;
         Action _onCompleted;
         float _timePassed;
 
@@ -34,6 +36,8 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
             _transformLerpPosition.SetPosition(position.Position, args.MoveSpeed);
             _transformSlerpTurn.SetDirection(position.Rotation.eulerAngles, args.TurnSpeed);
             _timeout = args.TimeoutInSeconds;
+            _positionBuffer = args.PositionBuffer;
+            _rotationBuffer = args.DirectionBuffer;
             _onCompleted = onCompleted;
             _timePassed = 0;
 
@@ -41,26 +45,32 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
             IsInProgressChanged?.Invoke();
         }
 
+        public void Cancel()
+        {
+            if (!IsInProgress) return;
+            OnCompleted();
+        }
+
         internal void Update(float timePassedInSeconds)
         {
             if (!IsInProgress) return;
 
             _timePassed += timePassedInSeconds;
-            if (_timePassed >= _timeout)
-            {
-                OnCompleted();
-                return;
-            }
 
             _transformLerpPosition.Update(timePassedInSeconds);
             _transformSlerpTurn.Update(timePassedInSeconds);
+
+            if (HasTimedOut() || IsComplete())
+            {
+                _transformLerpPosition.Complete();
+                _transformSlerpTurn.Complete();
+
+                OnCompleted();
+            }
         }
 
         void OnCompleted()
         {
-            _transformLerpPosition.Complete();
-            _transformSlerpTurn.Complete();
-
             var onCompleted = _onCompleted;
             _onCompleted = null;
             IsInProgress = false;
@@ -68,5 +78,11 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
             IsInProgressChanged?.Invoke();
             onCompleted?.Invoke();
         }
+
+        bool HasTimedOut() => _timePassed >= _timeout;
+
+        bool IsComplete() =>
+            _transformLerpPosition.RemainingDistance <= _positionBuffer &&
+            _transformSlerpTurn.RemainingAngle <= _rotationBuffer;
     }
 }
