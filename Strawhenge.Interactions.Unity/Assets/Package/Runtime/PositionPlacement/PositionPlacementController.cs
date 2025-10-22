@@ -1,4 +1,3 @@
-using Strawhenge.Common.Unity;
 using System;
 using UnityEngine;
 
@@ -21,7 +20,9 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
             _transformSlerpTurn = new TransformSlerpTurn(root);
         }
 
-        public event Action IsInProgressChanged;
+        public event Action Began;
+
+        public event Action Ended;
 
         public bool IsInProgress { get; private set; }
 
@@ -43,7 +44,7 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
             _timePassed = 0;
 
             IsInProgress = true;
-            IsInProgressChanged?.Invoke();
+            Began?.Invoke();
         }
 
         public void Cancel()
@@ -76,7 +77,7 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
             _onCompleted = null;
             IsInProgress = false;
 
-            IsInProgressChanged?.Invoke();
+            Ended?.Invoke();
             onCompleted?.Invoke();
         }
 

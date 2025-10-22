@@ -21,13 +21,19 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
         PositionPlacementController CreateController()
         {
             var controller = new PositionPlacementController(_root);
-            controller.IsInProgressChanged += OnIsInProgressChanged;
+            controller.Began += OnBegan;
+            controller.Ended += OnEnded;
             return controller;
         }
 
-        void OnIsInProgressChanged()
+        void OnBegan()
         {
-            enabled = _positionPlacementController.IsInProgress;
+            enabled = true;
+        }
+
+        void OnEnded()
+        {
+            enabled = false;
         }
 
         void FixedUpdate()
@@ -37,7 +43,8 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
 
         void OnDestroy()
         {
-            _positionPlacementController.IsInProgressChanged -= OnIsInProgressChanged;
+            _positionPlacementController.Began -= OnBegan;
+            _positionPlacementController.Ended -= OnEnded;
         }
     }
 }
