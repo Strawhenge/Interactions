@@ -14,6 +14,8 @@ namespace Strawhenge.Interactions.Unity
         readonly PositionPlacementInstruction _endPosition;
         readonly ISitAnimations _sitAnimations;
 
+        UserContext _userContext;
+
         public Chair(
             string name,
             PositionPlacementInstruction startPosition,
@@ -34,10 +36,29 @@ namespace Strawhenge.Interactions.Unity
 
         protected override void OnUse(UserContext userContext)
         {
+            _userContext = userContext;
+
+            _userContext.PositionPlacementController.PlaceAt(
+                _startPosition,
+                onCompleted: () =>
+                {
+                    _userContext.SitController.Standing += OnStanding;
+                    _userContext.SitController.Sit(_sitAnimations);
+
+                    _userContext.PositionPlacementController.PlaceAt(_sittingPosition);
+                });
         }
 
         protected override void OnEndUse()
         {
+            _userContext.PositionPlacementController.PlaceAt(_endPosition);
+            _userContext.SitController.Stand();
+        }
+
+        void OnStanding()
+        {
+            _userContext.SitController.Standing -= OnStanding;
+            _userContext.PositionPlacementController.PlaceAt(_endPosition, Ended);
         }
     }
 }
