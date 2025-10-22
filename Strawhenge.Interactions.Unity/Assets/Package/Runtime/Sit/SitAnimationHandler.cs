@@ -18,7 +18,6 @@ namespace Strawhenge.Interactions.Unity.Sit
         {
             _animator = animator;
             _animatorOverrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
-            _animator.runtimeAnimatorController = _animatorOverrideController;
 
             _defaultAnimations = defaultAnimations;
 
@@ -35,6 +34,7 @@ namespace Strawhenge.Interactions.Unity.Sit
         {
             _stateMachineEvents.PrepareIfRequired();
 
+            _animator.runtimeAnimatorController = _animatorOverrideController;
             _animatorOverrideController[PlaceholderAnimationClips.Sit] = _defaultAnimations.Sit;
             _animatorOverrideController[PlaceholderAnimationClips.Sitting] = _defaultAnimations.Sitting;
             _animatorOverrideController[PlaceholderAnimationClips.Stand] = _defaultAnimations.Stand;
