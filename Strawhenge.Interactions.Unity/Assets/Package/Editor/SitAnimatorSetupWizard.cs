@@ -1,6 +1,5 @@
 using Strawhenge.Common;
 using Strawhenge.Interactions.Unity.Sit;
-using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -22,8 +21,7 @@ namespace Strawhenge.Interactions.Unity.Editor
         AnimatorController _selectedController;
         string[] _layers;
         int _selectedLayerIndex;
-        string _assetsParentFolder;
-        string _assetsFolder;
+        AnimatorControllerAssets _assets;
 
         protected override bool DrawWizardGUI()
         {
@@ -56,10 +54,9 @@ namespace Strawhenge.Interactions.Unity.Editor
                 return;
             }
 
-            EnsureAssetsFolderExists();
-            var sitAnimationClip = GetOrCreatePlaceholderAnimationClip(PlaceholderAnimationClips.Sit);
-            var sittingAnimationClip = GetOrCreatePlaceholderAnimationClip(PlaceholderAnimationClips.Sitting);
-            var standAnimationClip = GetOrCreatePlaceholderAnimationClip(PlaceholderAnimationClips.Stand);
+            var sitAnimationClip = _assets.GetOrCreateAnimationClip(PlaceholderAnimationClips.Sit);
+            var sittingAnimationClip = _assets.GetOrCreateAnimationClip(PlaceholderAnimationClips.Sitting);
+            var standAnimationClip = _assets.GetOrCreateAnimationClip(PlaceholderAnimationClips.Stand);
 
             SitAnimatorSetup.Setup(
                 _animatorController,
@@ -69,26 +66,6 @@ namespace Strawhenge.Interactions.Unity.Editor
                 standAnimationClip);
         }
 
-        AnimationClip GetOrCreatePlaceholderAnimationClip(string clipName)
-        {
-            var animationClipPath = $"{_assetsFolder}/{clipName}.anim";
-
-            var animationClip = AssetDatabase.LoadAssetAtPath<AnimationClip>(animationClipPath);
-            if (animationClip == null)
-            {
-                animationClip = new AnimationClip();
-                AssetDatabase.CreateAsset(animationClip, animationClipPath);
-            }
-
-            return animationClip;
-        }
-
-        void EnsureAssetsFolderExists()
-        {
-            if (!AssetDatabase.IsValidFolder(_assetsFolder))
-                AssetDatabase.CreateFolder(_assetsParentFolder, _animatorController.name);
-        }
-
         void UpdateLayers()
         {
             _layers = _selectedController.layers.ToArray(layer => layer.name);
@@ -96,9 +73,7 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         void UpdateAssetsFolder()
         {
-            var path = AssetDatabase.GetAssetPath(_animatorController);
-            _assetsParentFolder = path[..path.LastIndexOf('/')];
-            _assetsFolder = $"{_assetsParentFolder}/{_animatorController.name}";
+            _assets = new AnimatorControllerAssets(_selectedController);
         }
     }
 }
