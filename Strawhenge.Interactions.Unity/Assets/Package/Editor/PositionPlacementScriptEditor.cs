@@ -42,7 +42,8 @@ namespace Strawhenge.Interactions.Unity.Editor
                 _args != null)
             {
                 _positionPlacement.PositionPlacementController.PlaceAt(
-                    _position.GetPositionAndRotation(),
+                    _position.position,
+                    _position.forward,
                     _args);
             }
 

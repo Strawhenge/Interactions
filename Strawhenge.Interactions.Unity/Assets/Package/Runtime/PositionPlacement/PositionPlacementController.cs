@@ -11,7 +11,7 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
 
         float _timeout;
         float _positionBuffer;
-        float _rotationBuffer;
+        float _directionBuffer;
         Action _onCompleted;
         float _timePassed;
 
@@ -26,18 +26,19 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
         public bool IsInProgress { get; private set; }
 
         public void PlaceAt(
-            PositionAndRotation position,
+            Vector3 position,
+            Vector3 direction,
             IPositionPlacementArgs args,
             Action onCompleted = null)
         {
             if (IsInProgress)
                 OnCompleted();
 
-            _transformLerpPosition.SetPosition(position.Position, args.MoveSpeed);
-            _transformSlerpTurn.SetDirection(position.Rotation.eulerAngles, args.TurnSpeed);
+            _transformLerpPosition.SetPosition(position, args.MoveSpeed);
+            _transformSlerpTurn.SetDirection(direction, args.TurnSpeed);
             _timeout = args.TimeoutInSeconds;
             _positionBuffer = args.PositionBuffer;
-            _rotationBuffer = args.DirectionBuffer;
+            _directionBuffer = args.DirectionBuffer;
             _onCompleted = onCompleted;
             _timePassed = 0;
 
@@ -83,6 +84,6 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
 
         bool IsComplete() =>
             _transformLerpPosition.RemainingDistance <= _positionBuffer &&
-            _transformSlerpTurn.RemainingAngle <= _rotationBuffer;
+            _transformSlerpTurn.RemainingAngle <= _directionBuffer;
     }
 }
