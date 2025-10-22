@@ -21,9 +21,9 @@ namespace Strawhenge.Interactions.Unity.Editor
         readonly Dictionary<string, bool> _enabledLayersByName = new();
         readonly Dictionary<string, int> _layerIdsByName = new();
         readonly Dictionary<string, EmoteLayerIdScriptableObject> _layerIdScriptableObjectsByName = new();
+
         AnimatorController _selectedController;
-        string _assetsParentFolder;
-        string _assetsFolder;
+        AnimatorControllerAssets _assets;
 
         protected override bool DrawWizardGUI()
         {
@@ -72,8 +72,7 @@ namespace Strawhenge.Interactions.Unity.Editor
                 return;
             }
 
-            EnsureAssetsFolderExists();
-            var animationClip = GetOrCreatePlaceholderAnimationClip();
+            var animationClip = _assets.GetOrCreateAnimationClip(PlaceholderAnimationClip.Name);
             UpdateScriptableObjects();
             var enabledLayerIdsByName = GenerateEnabledLayerIdsByName();
 
@@ -98,42 +97,18 @@ namespace Strawhenge.Interactions.Unity.Editor
             {
                 var layerId = _layerIdsByName[layer.name];
 
-                if (_layerIdScriptableObjectsByName.TryGetValue(layer.name, out var scriptableObject))
+                if (!_layerIdScriptableObjectsByName.TryGetValue(layer.name, out var scriptableObject))
                 {
-                    scriptableObject.Id = layerId;
-                    EditorUtility.SetDirty(scriptableObject);
-                    AssetDatabase.SaveAssetIfDirty(scriptableObject);
-                }
-                else
-                {
-                    var scriptableObjectPath = $"{_assetsFolder}/{layer.name}.asset";
                     scriptableObject = CreateInstance<EmoteLayerIdScriptableObject>();
-                    scriptableObject.Id = layerId;
-                    AssetDatabase.CreateAsset(scriptableObject, scriptableObjectPath);
+                    _assets.AddScriptableObject(layer.name, scriptableObject);
                 }
+
+                scriptableObject.Id = layerId;
+                EditorUtility.SetDirty(scriptableObject);
+                AssetDatabase.SaveAssetIfDirty(scriptableObject);
             }
 
             AssetDatabase.SaveAssets();
-        }
-
-        AnimationClip GetOrCreatePlaceholderAnimationClip()
-        {
-            var animationClipPath = $"{_assetsFolder}/{PlaceholderAnimationClip.Name}.anim";
-
-            var animationClip = AssetDatabase.LoadAssetAtPath<AnimationClip>(animationClipPath);
-            if (animationClip == null)
-            {
-                animationClip = new AnimationClip();
-                AssetDatabase.CreateAsset(animationClip, animationClipPath);
-            }
-
-            return animationClip;
-        }
-
-        void EnsureAssetsFolderExists()
-        {
-            if (!AssetDatabase.IsValidFolder(_assetsFolder))
-                AssetDatabase.CreateFolder(_assetsParentFolder, _animatorController.name);
         }
 
         void UpdateEnabledLayers()
@@ -161,31 +136,16 @@ namespace Strawhenge.Interactions.Unity.Editor
         {
             _layerIdScriptableObjectsByName.Clear();
 
-            if (!AssetDatabase.IsValidFolder(_assetsFolder))
-                return;
+            var scriptableObjects = _assets
+                .GetScriptableObjects<EmoteLayerIdScriptableObject>();
 
-            // ReSharper disable once UseNameOfInsteadOfTypeOf
-            // Justification: `nameof` does not work.
-            var assetGuids = AssetDatabase.FindAssets(
-                $"t:{typeof(EmoteLayerIdScriptableObject).Name}",
-                new[] { _assetsFolder });
-
-            foreach (var assetGuid in assetGuids)
-            {
-                var layerIdScriptableObject = AssetDatabase
-                    .LoadAssetAtPath<EmoteLayerIdScriptableObject>(AssetDatabase.GUIDToAssetPath(assetGuid));
-
-                if (layerIdScriptableObject == null) continue;
-
-                _layerIdScriptableObjectsByName[layerIdScriptableObject.name] = layerIdScriptableObject;
-            }
+            foreach (var scriptableObject in scriptableObjects)
+                _layerIdScriptableObjectsByName[scriptableObject.name] = scriptableObject;
         }
 
         void UpdateAssetsFolder()
         {
-            var path = AssetDatabase.GetAssetPath(_animatorController);
-            _assetsParentFolder = path[..path.LastIndexOf('/')];
-            _assetsFolder = $"{_assetsParentFolder}/{_animatorController.name}";
+            _assets = new AnimatorControllerAssets(_selectedController);
         }
     }
 }
