@@ -9,10 +9,18 @@ namespace Strawhenge.Interactions.Unity.Editor
     {
         public static void Setup(
             AnimatorController animatorController,
-            int layerIndex)
+            int layerIndex,
+            AnimationClip sitAnimationClip,
+            AnimationClip sittingAnimationClip,
+            AnimationClip standAnimationClip)
         {
             AddParameters(animatorController);
-            AddSubStateMachine(animatorController, layerIndex);
+            AddSubStateMachine(
+                animatorController,
+                layerIndex,
+                sitAnimationClip,
+                sittingAnimationClip,
+                standAnimationClip);
         }
 
         static void AddParameters(AnimatorController animatorController)
@@ -38,7 +46,12 @@ namespace Strawhenge.Interactions.Unity.Editor
                     .AddParameter(AnimatorParameters.Stand.Name, AnimatorControllerParameterType.Trigger);
         }
 
-        static void AddSubStateMachine(AnimatorController animatorController, int layerIndex)
+        static void AddSubStateMachine(
+            AnimatorController animatorController,
+            int layerIndex,
+            AnimationClip sitAnimationClip,
+            AnimationClip sittingAnimationClip,
+            AnimationClip standAnimationClip)
         {
             var layer = animatorController.layers[layerIndex];
             var rootStateMachine = layer.stateMachine;
@@ -53,8 +66,13 @@ namespace Strawhenge.Interactions.Unity.Editor
             sitStateMachine.AddStateMachineBehaviour<SitStateMachine>();
 
             var sitState = sitStateMachine.AddState(AnimatorStates.Sit);
+            sitState.motion = sitAnimationClip;
+
             var sittingState = sitStateMachine.AddState(AnimatorStates.Sitting);
+            sittingState.motion = sittingAnimationClip;
+
             var standState = sitStateMachine.AddState(AnimatorStates.Stand);
+            standState.motion = standAnimationClip;
 
             var anyStateToSitTransition = rootStateMachine.AddAnyStateTransition(sitState);
             anyStateToSitTransition.hasExitTime = false;
