@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.PositionPlacement
 {
-    public class TransformSlerpTurn
+    class TransformSlerpTurn
     {
         readonly Transform _transform;
 
