@@ -46,6 +46,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _emote: {fileID: 11400000, guid: 3dbd25256e3be9442a119467227334c6, type: 2}
+  _positionPlacementArgs:
+    _serialized:
+      _moveSpeed: 0
+      _positionBuffer: 0
+      _turnSpeed: 0
+      _directionBuffer: 0
+      _timeoutInSeconds: 0
+    _scriptableObject: {fileID: 11400000, guid: befa1739eb880c9418f170ab1f979cff, type: 2}
+    _type: 2
   _logger: {fileID: 0}
 --- !u!1 &6247724985361218371
 GameObject:
