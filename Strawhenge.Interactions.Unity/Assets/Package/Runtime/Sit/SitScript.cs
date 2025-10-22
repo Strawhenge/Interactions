@@ -1,4 +1,5 @@
 using Strawhenge.Common.Unity.Helpers;
+using Strawhenge.Common.Unity.Serialization;
 using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Sit
@@ -6,6 +7,11 @@ namespace Strawhenge.Interactions.Unity.Sit
     public class SitScript : MonoBehaviour
     {
         [SerializeField] Animator _animator;
+
+        [SerializeField] SerializedSource<
+            ISitAnimations,
+            SerializedSitAnimations,
+            SitAnimationsScriptableObject> _defaultAnimations;
 
         SitController _sitController;
 
