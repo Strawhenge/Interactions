@@ -1,5 +1,6 @@
 using Strawhenge.Interactions.Furniture;
 using Strawhenge.Interactions.Unity.Furniture;
+using Strawhenge.Interactions.Unity.PositionPlacement;
 using Strawhenge.Interactions.Unity.Sit;
 using UnityEngine;
 using ILogger = Strawhenge.Common.Logging.ILogger;
@@ -8,16 +9,16 @@ namespace Strawhenge.Interactions.Unity
 {
     public class Chair : Furniture<UserContext>
     {
-        readonly Transform _startPosition;
-        readonly Transform _sittingPosition;
-        readonly Transform _endPosition;
+        readonly PositionPlacementInstruction _startPosition;
+        readonly PositionPlacementInstruction _sittingPosition;
+        readonly PositionPlacementInstruction _endPosition;
         readonly ISitAnimations _sitAnimations;
 
         public Chair(
             string name,
-            Transform startPosition,
-            Transform sittingPosition,
-            Transform endPosition,
+            PositionPlacementInstruction startPosition,
+            PositionPlacementInstruction sittingPosition,
+            PositionPlacementInstruction endPosition,
             ISitAnimations sitAnimations,
             ILogger logger) : base(logger)
         {
