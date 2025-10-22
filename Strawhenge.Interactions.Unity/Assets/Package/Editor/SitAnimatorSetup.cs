@@ -52,9 +52,9 @@ namespace Strawhenge.Interactions.Unity.Editor
             var sitStateMachine = layer.stateMachine.AddStateMachine("Sit");
             sitStateMachine.AddStateMachineBehaviour<SitStateMachine>();
 
-            var sitState = sitStateMachine.AddState("Sit");
-            var sittingState = sitStateMachine.AddState("Sitting");
-            var standState = sitStateMachine.AddState("Stand");
+            var sitState = sitStateMachine.AddState(AnimatorStates.Sit);
+            var sittingState = sitStateMachine.AddState(AnimatorStates.Sitting);
+            var standState = sitStateMachine.AddState(AnimatorStates.Stand);
 
             var anyStateToSitTransition = rootStateMachine.AddAnyStateTransition(sitState);
             anyStateToSitTransition.hasExitTime = false;

@@ -1,4 +1,5 @@
 ﻿using Strawhenge.Common.Unity.AnimatorBehaviours;
+using Strawhenge.Interactions.Unity.Emotes;
 using System;
 using UnityEngine;
 
@@ -6,9 +7,6 @@ namespace Strawhenge.Interactions.Unity.Sit
 {
     public class SitStateMachine : StateMachineBehaviour, IHasDestroyedEvent
     {
-        const string SittingStateName = "Sitting";
-        const string StandStateName = "Stand";
-
         public Action OnSitting = () => { };
         public Action OnStanding = () => { };
 
@@ -34,9 +32,9 @@ namespace Strawhenge.Interactions.Unity.Sit
             base.OnStateExit(animator, stateInfo, layerIndex);
         }
 
-        static bool IsSitting(AnimatorStateInfo stateInfo) => stateInfo.IsName(SittingStateName);
+        static bool IsSitting(AnimatorStateInfo stateInfo) => stateInfo.IsName(AnimatorStates.Sitting);
 
-        static bool IsStanding(AnimatorStateInfo stateInfo) => stateInfo.IsName(StandStateName);
+        static bool IsStanding(AnimatorStateInfo stateInfo) => stateInfo.IsName(AnimatorStates.Stand);
 
         void OnDestroy() => Destroyed?.Invoke();
     }

@@ -2,7 +2,7 @@ using Strawhenge.Common.Unity;
 
 namespace Strawhenge.Interactions.Unity.Emotes
 {
-    public static class AnimatorParameters
+    static class AnimatorParameters
     {
         public static AnimatorParameter BeginEmote { get; } = new("Begin Emote");
 
