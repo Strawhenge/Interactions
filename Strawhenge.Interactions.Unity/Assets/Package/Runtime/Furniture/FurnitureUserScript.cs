@@ -1,9 +1,9 @@
-using FunctionalUtilities;
 using Strawhenge.Common.Unity;
 using Strawhenge.Common.Unity.Helpers;
 using Strawhenge.Interactions.Furniture;
 using Strawhenge.Interactions.Unity.Emotes;
 using Strawhenge.Interactions.Unity.PositionPlacement;
+using Strawhenge.Interactions.Unity.Sit;
 using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Furniture
@@ -11,6 +11,7 @@ namespace Strawhenge.Interactions.Unity.Furniture
     public class FurnitureUserScript : MonoBehaviour
     {
         [SerializeField] EmotesScript _emotes;
+        [SerializeField] SitScript _sit;
         [SerializeField] PositionPlacementScript _positionPlacement;
         [SerializeField, Tooltip("Optional.")] LoggerScript _logger;
 
@@ -26,9 +27,13 @@ namespace Strawhenge.Interactions.Unity.Furniture
         FurnitureUser<UserContext> CreateUser()
         {
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _emotes, nameof(_emotes), this);
+            ComponentRefHelper.EnsureRootHierarchyComponent(ref _sit, nameof(_sit), this);
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _positionPlacement, nameof(_positionPlacement), this);
 
-            var context = new UserContext(_emotes.EmoteController, _positionPlacement.PositionPlacementController);
+            var context = new UserContext(
+                _emotes.EmoteController,
+                _sit.SitController,
+                _positionPlacement.PositionPlacementController);
 
             var logger = _logger != null
                 ? _logger.Logger

@@ -1843,7 +1843,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _emotes: {fileID: 6419836043487809605}
-  _positionPlacement: {fileID: 0}
+  _sit: {fileID: 1380893159995265042}
+  _positionPlacement: {fileID: 8899199181610251551}
   _logger: {fileID: 0}
 --- !u!114 &8899199181610251551
 MonoBehaviour:
