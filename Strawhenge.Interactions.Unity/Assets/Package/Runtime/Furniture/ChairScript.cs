@@ -35,7 +35,17 @@ namespace Strawhenge.Interactions.Unity
                 ? _logger.Logger
                 : new UnityLogger(gameObject);
 
-            return new Chair(name, logger);
+            var startPosition = _startPosition ?? transform;
+            var sittingPosition = _sittingPosition ?? transform;
+            var endPosition = _endPosition ?? transform;
+            
+            return new Chair(
+                name, 
+                startPosition,
+                sittingPosition,
+                endPosition,
+                _sitAnimations.GetValue(),
+                logger);
         }
     }
 }
