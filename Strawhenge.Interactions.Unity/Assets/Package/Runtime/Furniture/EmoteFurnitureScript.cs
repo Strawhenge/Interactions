@@ -1,5 +1,4 @@
 using Strawhenge.Common.Unity;
-using Strawhenge.Common.Unity.Serialization;
 using Strawhenge.Interactions.Furniture;
 using Strawhenge.Interactions.Unity.Emotes;
 using Strawhenge.Interactions.Unity.PositionPlacement;
@@ -10,15 +9,7 @@ namespace Strawhenge.Interactions.Unity.Furniture
     public class EmoteFurnitureScript : FurnitureScript
     {
         [SerializeField] EmoteScriptableObject _emote;
-
-        [SerializeField, Tooltip("Optional. Will use 'this' transform if not set.")]
-        Transform _positionPlacement;
-
-        [SerializeField] SerializedSource<
-            IPositionPlacementArgs,
-            SerializedPositionPlacementArgs,
-            PositionPlacementArgsScriptableObject> _positionPlacementArgs;
-
+        [SerializeField] SerializedPositionPlacement _positionPlacement;
         [SerializeField, Tooltip("Optional.")] LoggerScript _logger;
 
         Furniture<UserContext> _furniture;
@@ -42,13 +33,11 @@ namespace Strawhenge.Interactions.Unity.Furniture
                 return NullFurniture<UserContext>.Instance;
             }
 
-            var positionPlacement = _positionPlacement ?? transform;
-
             return new EmoteFurniture(
                 name,
                 _emote,
-                positionPlacement,
-                _positionPlacementArgs.GetValue(),
+                _positionPlacement.Target.Reduce(() => transform),
+                _positionPlacement.Args,
                 logger);
         }
     }
