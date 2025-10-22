@@ -1,4 +1,5 @@
 using Strawhenge.Interactions.Unity.Sit;
+using System.Linq;
 using UnityEditor.Animations;
 using UnityEngine;
 
@@ -42,7 +43,14 @@ namespace Strawhenge.Interactions.Unity.Editor
             var layer = animatorController.layers[layerIndex];
             var rootStateMachine = layer.stateMachine;
 
+            if (ContainsSitSubState(rootStateMachine))
+            {
+                Debug.Log($"Animator controller already contains Sit sub state.");
+                return;
+            }
+
             var sitStateMachine = layer.stateMachine.AddStateMachine("Sit");
+            sitStateMachine.AddStateMachineBehaviour<SitStateMachine>();
 
             var sitState = sitStateMachine.AddState("Sit");
             var sittingState = sitStateMachine.AddState("Sitting");
@@ -71,5 +79,9 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             rootStateMachine.AddStateMachineTransition(sitStateMachine, rootStateMachine.defaultState);
         }
+
+        static bool ContainsSitSubState(AnimatorStateMachine stateMachine) =>
+            stateMachine.stateMachines.Any(subState =>
+                subState.stateMachine.behaviours.OfType<SitStateMachine>().Any());
     }
 }
