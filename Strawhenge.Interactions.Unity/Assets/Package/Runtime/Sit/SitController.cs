@@ -6,10 +6,12 @@ namespace Strawhenge.Interactions.Unity.Sit
     public class SitController
     {
         readonly SitAnimationHandler _animationHandler;
+        readonly ISitAnimations _defaultAnimations;
 
         public SitController(Animator animator, ISitAnimations defaultAnimations)
         {
-            _animationHandler = new SitAnimationHandler(animator, defaultAnimations);
+            _animationHandler = new SitAnimationHandler(animator);
+            _defaultAnimations = defaultAnimations;
         }
 
         public bool IsSitting { get; private set; }
@@ -18,13 +20,13 @@ namespace Strawhenge.Interactions.Unity.Sit
 
         public event Action Standing;
 
-        public void Sit()
+        public void Sit(ISitAnimations animations = null)
         {
             if (IsSitting) return;
             IsSitting = true;
 
             _animationHandler.Sitting += OnSitting;
-            _animationHandler.Sit();
+            _animationHandler.Sit(animations ?? _defaultAnimations);
         }
 
         public void Stand()
