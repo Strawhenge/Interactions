@@ -26,7 +26,7 @@ namespace Strawhenge.Interactions.Unity.Sit
         {
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _animator, nameof(_animator), this);
 
-            return new SitController(_animator);
+            return new SitController(_animator, _defaultAnimations.GetValue());
         }
     }
 }

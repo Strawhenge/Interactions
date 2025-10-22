@@ -7,9 +7,9 @@ namespace Strawhenge.Interactions.Unity.Sit
     {
         readonly SitAnimationHandler _animationHandler;
 
-        public SitController(Animator animator)
+        public SitController(Animator animator, ISitAnimations defaultAnimations)
         {
-            _animationHandler = new SitAnimationHandler(animator);
+            _animationHandler = new SitAnimationHandler(animator, defaultAnimations);
         }
 
         public bool IsSitting { get; private set; }
