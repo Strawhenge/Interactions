@@ -11,6 +11,9 @@ namespace Strawhenge.Interactions.Unity.Furniture
     {
         [SerializeField] EmoteScriptableObject _emote;
 
+        [SerializeField, Tooltip("Optional. Will use 'this' transform if not set.")]
+        Transform _positionPlacement;
+
         [SerializeField] SerializedSource<
             IPositionPlacementArgs,
             SerializedPositionPlacementArgs,
@@ -39,7 +42,14 @@ namespace Strawhenge.Interactions.Unity.Furniture
                 return NullFurniture<UserContext>.Instance;
             }
 
-            return new EmoteFurniture(name, _emote, transform, _positionPlacementArgs.GetValue(), logger);
+            var positionPlacement = _positionPlacement ?? transform;
+
+            return new EmoteFurniture(
+                name,
+                _emote,
+                positionPlacement,
+                _positionPlacementArgs.GetValue(),
+                logger);
         }
     }
 }
