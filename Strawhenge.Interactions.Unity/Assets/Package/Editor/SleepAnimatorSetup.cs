@@ -74,26 +74,26 @@ namespace Strawhenge.Interactions.Unity.Editor
             var getUpState = sleepStateMachine.AddState(AnimatorStates.GetUp);
             getUpState.motion = standAnimationClip;
 
-            var anyStateToSleepTransleepion = rootStateMachine.AddAnyStateTransition(layDownState);
-            anyStateToSleepTransleepion.hasExitTime = false;
-            anyStateToSleepTransleepion
+            var anyStateToSleepTransition = rootStateMachine.AddAnyStateTransition(layDownState);
+            anyStateToSleepTransition.hasExitTime = false;
+            anyStateToSleepTransition
                 .AddCondition(AnimatorConditionMode.If, 0, AnimatorParameters.Sleep.Name);
 
-            var sleepToSleeptingTransleepion = layDownState.AddTransition(sleepingState);
-            sleepToSleeptingTransleepion.hasExitTime = true;
+            var layDownToSleepingTransition = layDownState.AddTransition(sleepingState);
+            layDownToSleepingTransition.hasExitTime = true;
 
-            var sleepToStandTransleepion = layDownState.AddTransition(getUpState);
-            sleepToStandTransleepion.hasExitTime = false;
-            sleepToStandTransleepion
+            var layDownToGetUpTransition = layDownState.AddTransition(getUpState);
+            layDownToGetUpTransition.hasExitTime = false;
+            layDownToGetUpTransition
                 .AddCondition(AnimatorConditionMode.If, 0, AnimatorParameters.WakeUp.Name);
 
-            var sleeptingToStandTransleepion = sleepingState.AddTransition(getUpState);
-            sleeptingToStandTransleepion.hasExitTime = false;
-            sleeptingToStandTransleepion
+            var sleepingToGetUpTransition = sleepingState.AddTransition(getUpState);
+            sleepingToGetUpTransition.hasExitTime = false;
+            sleepingToGetUpTransition
                 .AddCondition(AnimatorConditionMode.If, 0, AnimatorParameters.WakeUp.Name);
 
-            var standToExitTransleepion = getUpState.AddExitTransition();
-            standToExitTransleepion.hasExitTime = true;
+            var standToExitTransition = getUpState.AddExitTransition();
+            standToExitTransition.hasExitTime = true;
 
             rootStateMachine.AddStateMachineTransition(sleepStateMachine, rootStateMachine.defaultState);
         }
