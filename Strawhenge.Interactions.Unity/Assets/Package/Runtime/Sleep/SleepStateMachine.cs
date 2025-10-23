@@ -6,9 +6,6 @@ namespace Strawhenge.Interactions.Unity.Sleep
 {
     public class SleepStateMachine : StateMachineBehaviour, IHasDestroyedEvent
     {
-        const string SleepingStateName = "Sleeping";
-        const string WakeUpStateName = "WakeUp";
-
         public event Action Destroyed;
 
         internal Action OnSleeping { private get; set; } = () => { };
@@ -17,7 +14,7 @@ namespace Strawhenge.Interactions.Unity.Sleep
 
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            if (stateInfo.IsName(SleepingStateName))
+            if (stateInfo.IsName(AnimatorStates.Sleeping))
             {
                 OnSleeping();
             }
@@ -27,7 +24,7 @@ namespace Strawhenge.Interactions.Unity.Sleep
 
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            if (stateInfo.IsName(WakeUpStateName))
+            if (stateInfo.IsName(AnimatorStates.GetUp))
             {
                 OnWokenUp();
             }
