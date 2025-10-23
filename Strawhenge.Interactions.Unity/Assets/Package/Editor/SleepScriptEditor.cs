@@ -1,6 +1,5 @@
 using Strawhenge.Interactions.Unity.Sleep;
 using UnityEditor;
-using UnityEditor;
 using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Editor
