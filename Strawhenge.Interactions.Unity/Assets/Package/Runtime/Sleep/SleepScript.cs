@@ -1,5 +1,6 @@
 using Strawhenge.Common.Unity.Helpers;
 using Strawhenge.Common.Unity.Serialization;
+using System;
 using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Sleep
@@ -16,6 +17,11 @@ namespace Strawhenge.Interactions.Unity.Sleep
         SleepController _sleepController;
 
         public SleepController SleepController => _sleepController ??= CreateSleepController();
+
+        void Awake()
+        {
+            _sleepController ??= CreateSleepController();
+        }
 
         SleepController CreateSleepController()
         {
