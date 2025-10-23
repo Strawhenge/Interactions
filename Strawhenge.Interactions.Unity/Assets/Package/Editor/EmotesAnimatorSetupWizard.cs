@@ -55,10 +55,10 @@ namespace Strawhenge.Interactions.Unity.Editor
         {
             if (_selectedController == _animatorController) return;
             _selectedController = _animatorController;
-
             if (_selectedController == null) return;
 
-            UpdateAssetsFolder();
+            _assets = new AnimatorControllerAssets(_selectedController);
+            
             LoadScriptableObjects();
             UpdateEnabledLayers();
             UpdateLayerIds();
@@ -141,11 +141,6 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             foreach (var scriptableObject in scriptableObjects)
                 _layerIdScriptableObjectsByName[scriptableObject.name] = scriptableObject;
-        }
-
-        void UpdateAssetsFolder()
-        {
-            _assets = new AnimatorControllerAssets(_selectedController);
         }
     }
 }

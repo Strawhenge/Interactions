@@ -39,11 +39,10 @@ namespace Strawhenge.Interactions.Unity.Editor
         {
             if (_selectedController == _animatorController) return;
             _selectedController = _animatorController;
-
             if (_selectedController == null) return;
 
-            UpdateAssetsFolder();
-            UpdateLayers();
+            _assets = new AnimatorControllerAssets(_selectedController);
+            _layers = _selectedController.layers.ToArray(layer => layer.name);
         }
 
         void OnWizardCreate()
@@ -64,16 +63,6 @@ namespace Strawhenge.Interactions.Unity.Editor
                 sitAnimationClip,
                 sittingAnimationClip,
                 standAnimationClip);
-        }
-
-        void UpdateLayers()
-        {
-            _layers = _selectedController.layers.ToArray(layer => layer.name);
-        }
-
-        void UpdateAssetsFolder()
-        {
-            _assets = new AnimatorControllerAssets(_selectedController);
         }
     }
 }
