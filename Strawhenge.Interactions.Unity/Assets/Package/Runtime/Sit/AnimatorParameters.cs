@@ -2,7 +2,7 @@ using Strawhenge.Common.Unity;
 
 namespace Strawhenge.Interactions.Unity.Sit
 {
-    public static class AnimatorParameters
+    static class AnimatorParameters
     {
         public static AnimatorParameter Sit { get; } = new("Sit");
 
