@@ -15,7 +15,9 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
             SerializedPositionPlacementArgs,
             PositionPlacementArgsScriptableObject> _args;
 
-        public Maybe<Transform> Target => Maybe.NotNull(_target);
+        public Maybe<Transform> Target => _target != null
+            ? Maybe.Some(_target)
+            : Maybe.None<Transform>();
 
         public IPositionPlacementArgs Args => _args.TryGetValue(out var args)
             ? args

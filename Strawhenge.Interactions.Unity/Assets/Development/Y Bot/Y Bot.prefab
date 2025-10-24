@@ -1845,6 +1845,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _emotes: {fileID: 6419836043487809605}
   _sit: {fileID: 1380893159995265042}
+  _sleep: {fileID: 2505972636240817048}
   _positionPlacement: {fileID: 8899199181610251551}
   _logger: {fileID: 0}
 --- !u!114 &8899199181610251551
@@ -1898,8 +1899,8 @@ MonoBehaviour:
       _layDown: {fileID: 0}
       _sleeping: {fileID: 0}
       _getUp: {fileID: 0}
-    _scriptableObject: {fileID: 0}
-    _type: 0
+    _scriptableObject: {fileID: 11400000, guid: aa26ce7e08f83254c9e266082be7e244, type: 2}
+    _type: 2
 --- !u!1 &5879743340707824353
 GameObject:
   m_ObjectHideFlags: 0
