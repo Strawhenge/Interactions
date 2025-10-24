@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Ground
   m_EditorClassIdentifier: 
   _layDown: {fileID: 0}
-  _sleeping: {fileID: 0}
-  _getUp: {fileID: 0}
+  _sleeping: {fileID: -203655887218126122, guid: b5d3d95676b907849963c016f65ffb9c, type: 3}
+  _getUp: {fileID: -203655887218126122, guid: f8b8982b37fe3e244a4622a49b11b509, type: 3}
