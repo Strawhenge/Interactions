@@ -11,8 +11,8 @@ namespace Strawhenge.Interactions
         {
             _logger = logger;
         }
-        
-        bool _isValid;
+
+        bool _isValid = true;
 
         public event Action Invalidated;
 
