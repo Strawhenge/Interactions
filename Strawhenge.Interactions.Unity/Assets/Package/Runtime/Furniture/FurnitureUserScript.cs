@@ -11,6 +11,7 @@ namespace Strawhenge.Interactions.Unity.Furniture
 {
     public class FurnitureUserScript : MonoBehaviour
     {
+        [SerializeField] InteractionsContextScript _context;
         [SerializeField] EmotesScript _emotes;
         [SerializeField] SitScript _sit;
         [SerializeField] SleepScript _sleep;
@@ -28,12 +29,13 @@ namespace Strawhenge.Interactions.Unity.Furniture
 
         FurnitureUser<UserContext> CreateUser()
         {
+            ComponentRefHelper.EnsureRootHierarchyComponent(ref _context, nameof(_context), this);
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _emotes, nameof(_emotes), this);
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _sit, nameof(_sit), this);
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _sleep, nameof(_sleep), this);
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _positionPlacement, nameof(_positionPlacement), this);
 
-            var context = new UserContext(
+            var userContext = new UserContext(
                 _emotes.EmoteController,
                 _sit.SitController,
                 _sleep.SleepController,
@@ -43,7 +45,7 @@ namespace Strawhenge.Interactions.Unity.Furniture
                 ? _logger.Logger
                 : new UnityLogger(gameObject);
 
-            return new FurnitureUser<UserContext>(context, logger);
+            return new FurnitureUser<UserContext>(userContext, _context.Context, logger);
         }
     }
 }

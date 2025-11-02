@@ -11,13 +11,18 @@ namespace Strawhenge.Interactions.Furniture
     {
         readonly List<Action> _onEndedCallbacks = new List<Action>();
         readonly TUserContext _context;
+        readonly InteractionsContext _interactionsContext;
         readonly ILogger _logger;
 
         bool _isEndingUse;
 
-        public FurnitureUser(TUserContext context, ILogger logger)
+        public FurnitureUser(TUserContext context, InteractionsContext interactionsContext, ILogger logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+
+            _interactionsContext = interactionsContext ?? throw new ArgumentNullException(nameof(interactionsContext));
+            _interactionsContext.Invalidated += OnInvalidated;
+
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -45,6 +50,13 @@ namespace Strawhenge.Interactions.Furniture
             if (furniture.IsDeactivated)
             {
                 _logger.LogWarning($"Furniture '{furniture.Name}' is deactivated.");
+                onEnded?.Invoke();
+                return;
+            }
+
+            if (!_interactionsContext.IsValid)
+            {
+                _logger.LogWarning($"User context is invalid.");
                 onEnded?.Invoke();
                 return;
             }
@@ -106,6 +118,12 @@ namespace Strawhenge.Interactions.Furniture
                     }
                 });
             }
+        }
+
+        void OnInvalidated()
+        {
+            CurrentFurniture.Do(x => x.NotifyUserInvalidated());
+            OnFurnitureEnded();
         }
     }
 }

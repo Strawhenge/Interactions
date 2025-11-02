@@ -60,6 +60,12 @@ namespace Strawhenge.Interactions.Furniture
             }
         }
 
+        internal void NotifyUserInvalidated()
+        {
+            CurrentUser = Maybe.None<FurnitureUser<TUserContext>>();
+            OnUserInvalidated();
+        }
+
         protected abstract void OnUse(TUserContext userContext);
 
         protected abstract void OnEndUse();
@@ -68,6 +74,10 @@ namespace Strawhenge.Interactions.Furniture
         {
             CurrentUser.Do(user => user.OnFurnitureEnded());
             CurrentUser = Maybe.None<FurnitureUser<TUserContext>>();
+        }
+
+        protected virtual void OnUserInvalidated()
+        {
         }
     }
 }
