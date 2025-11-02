@@ -21,7 +21,7 @@ namespace Strawhenge.Interactions.Furniture
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
             _interactionsContext = interactionsContext ?? throw new ArgumentNullException(nameof(interactionsContext));
-            _interactionsContext.Invalidated += OnInvalidated;
+            _interactionsContext.Interrupted += OnInterrupted;
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -120,10 +120,13 @@ namespace Strawhenge.Interactions.Furniture
             }
         }
 
-        void OnInvalidated()
+        void OnInterrupted()
         {
-            CurrentFurniture.Do(x => x.NotifyUserInvalidated());
-            OnFurnitureEnded();
+            CurrentFurniture.Do(x =>
+            {
+                x.NotifyUserInvalidated();
+                OnFurnitureEnded();
+            });
         }
     }
 }

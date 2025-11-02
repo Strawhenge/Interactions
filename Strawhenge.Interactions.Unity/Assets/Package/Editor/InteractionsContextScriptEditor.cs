@@ -28,6 +28,9 @@ namespace Strawhenge.Interactions.Unity.Editor
             if (Application.isPlaying)
                 _interactionsContext.Context.IsValid = isValid;
 
+            if (GUILayout.Button(nameof(InteractionsContext.Interrupt)))
+                _interactionsContext.Context.Interrupt();
+
             EditorGUI.EndDisabledGroup();
         }
     }

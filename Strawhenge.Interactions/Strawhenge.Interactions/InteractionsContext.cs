@@ -14,7 +14,7 @@ namespace Strawhenge.Interactions
 
         bool _isValid = true;
 
-        public event Action Invalidated;
+        public event Action Interrupted;
 
         public bool IsValid
         {
@@ -28,8 +28,14 @@ namespace Strawhenge.Interactions
                 _logger.LogInformation($"Interaction context valid: {_isValid}");
 
                 if (!_isValid)
-                    Invalidated?.Invoke();
+                    Interrupt();
             }
+        }
+
+        public void Interrupt()
+        {
+            _logger.LogInformation("Interactions context interrupted.");
+            Interrupted?.Invoke();
         }
     }
 }
