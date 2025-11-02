@@ -1,9 +1,17 @@
 using System;
+using Strawhenge.Common.Logging;
 
 namespace Strawhenge.Interactions
 {
     public class InteractionsContext
     {
+        readonly ILogger _logger;
+
+        public InteractionsContext(ILogger logger)
+        {
+            _logger = logger;
+        }
+        
         bool _isValid;
 
         public event Action Invalidated;
@@ -17,6 +25,7 @@ namespace Strawhenge.Interactions
                     return;
 
                 _isValid = value;
+                _logger.LogInformation($"Interaction context valid: {_isValid}");
 
                 if (!_isValid)
                     Invalidated?.Invoke();
