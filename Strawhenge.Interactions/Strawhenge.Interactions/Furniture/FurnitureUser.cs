@@ -61,6 +61,8 @@ namespace Strawhenge.Interactions.Furniture
                 return;
             }
 
+            _interactionsContext.Interrupt();
+
             CurrentFurniture = furniture;
 
             if (onEnded != null)
