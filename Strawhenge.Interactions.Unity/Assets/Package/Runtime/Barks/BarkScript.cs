@@ -1,3 +1,4 @@
+using Strawhenge.Common.Unity;
 using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity
@@ -5,6 +6,7 @@ namespace Strawhenge.Interactions.Unity
     public class BarkScript : MonoBehaviour
     {
         [SerializeField] AudioSource _audioSource;
+        [SerializeField] LoggerScript _logger;
 
         BarkController _barkController;
 
@@ -23,7 +25,11 @@ namespace Strawhenge.Interactions.Unity
                 _audioSource = gameObject.AddComponent<AudioSource>();
             }
 
-            return new BarkController(_audioSource, null);
+            var logger = _logger != null
+                ? _logger.Logger
+                : new UnityLogger(gameObject);
+
+            return new BarkController(_audioSource, logger);
         }
     }
 }
