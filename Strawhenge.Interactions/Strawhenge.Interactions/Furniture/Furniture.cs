@@ -21,6 +21,8 @@ namespace Strawhenge.Interactions.Furniture
         public Maybe<FurnitureUser<TUserContext>> CurrentUser { get; protected set; } =
             Maybe.None<FurnitureUser<TUserContext>>();
 
+        public bool IsAvailable => !IsDeactivated && !CurrentUser.HasSome();
+        
         public bool IsDeactivated
         {
             get => _isDeactivated;
