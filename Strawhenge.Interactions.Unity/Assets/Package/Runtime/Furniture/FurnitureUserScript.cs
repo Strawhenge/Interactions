@@ -18,16 +18,16 @@ namespace Strawhenge.Interactions.Unity.Furniture
         [SerializeField] PositionPlacementScript _positionPlacement;
         [SerializeField, Tooltip("Optional.")] LoggerScript _logger;
 
-        FurnitureUser<UserContext> _user;
+        FurnitureUser _user;
 
-        public FurnitureUser<UserContext> User => _user ??= CreateUser();
+        public FurnitureUser User => _user ??= CreateUser();
 
         void Awake()
         {
             _user ??= CreateUser();
         }
 
-        FurnitureUser<UserContext> CreateUser()
+        FurnitureUser CreateUser()
         {
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _context, nameof(_context), this);
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _emotes, nameof(_emotes), this);
@@ -35,7 +35,7 @@ namespace Strawhenge.Interactions.Unity.Furniture
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _sleep, nameof(_sleep), this);
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _positionPlacement, nameof(_positionPlacement), this);
 
-            var userContext = new UserContext(
+            var userScope = new FurnitureUserScope(
                 _emotes.EmoteController,
                 _sit.SitController,
                 _sleep.SleepController,
@@ -45,7 +45,7 @@ namespace Strawhenge.Interactions.Unity.Furniture
                 ? _logger.Logger
                 : new UnityLogger(gameObject);
 
-            return new FurnitureUser<UserContext>(userContext, _context.Context, logger);
+            return new FurnitureUser(userScope, _context.Context, logger);
         }
     }
 }
