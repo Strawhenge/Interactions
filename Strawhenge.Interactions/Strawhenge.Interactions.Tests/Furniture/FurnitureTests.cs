@@ -6,11 +6,11 @@ namespace Strawhenge.Interactions.Tests;
 public class FurnitureTests
 {
     readonly Chair _chair;
-    readonly UserContext _userContext;
+    readonly FurnitureUserScope _userScope;
     readonly InteractionsContext _interactionsContext;
-    readonly FurnitureUser<UserContext> _user;
+    readonly FurnitureUser _user;
 
-    readonly FurnitureUser<UserContext> _otherUser;
+    readonly FurnitureUser _otherUser;
     readonly Chair _otherChair;
 
     public FurnitureTests(ITestOutputHelper testOutputHelper)
@@ -18,12 +18,12 @@ public class FurnitureTests
         var logger = new TestOutputLogger(testOutputHelper);
 
         _chair = new(logger);
-        _userContext = new();
+        _userScope = new();
         _interactionsContext = new InteractionsContext(logger) { IsValid = true };
-        _user = new(_userContext, _interactionsContext, logger);
+        _user = new(_userScope, _interactionsContext, logger);
 
         _otherChair = new(logger);
-        _otherUser = new(new UserContext(), new InteractionsContext(logger), logger);
+        _otherUser = new(new FurnitureUserScope(), new InteractionsContext(logger), logger);
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public class FurnitureTests
     public void Furniture_should_receive_user_context()
     {
         _user.Use(_chair);
-        _chair.VerifyUserContextReceived(_userContext);
+        _chair.VerifyUserScopeReceived(_userScope);
     }
 
     [Fact]

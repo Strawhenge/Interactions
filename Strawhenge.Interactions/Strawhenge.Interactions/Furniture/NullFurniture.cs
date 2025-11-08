@@ -2,9 +2,9 @@ using Strawhenge.Common.Logging;
 
 namespace Strawhenge.Interactions.Furniture
 {
-    public class NullFurniture<TUserContext> : Furniture<TUserContext> where TUserContext : class
+    public class NullFurniture : Furniture
     {
-        public static NullFurniture<TUserContext> Instance { get; } = new NullFurniture<TUserContext>();
+        public static NullFurniture Instance { get; } = new NullFurniture();
 
         NullFurniture() : base(NullLogger.Instance)
         {
@@ -12,7 +12,7 @@ namespace Strawhenge.Interactions.Furniture
 
         public override string Name => string.Empty;
 
-        protected override void OnUse(TUserContext userContext)
+        protected override void OnUse(IFurnitureUserScope scope)
         {
         }
 

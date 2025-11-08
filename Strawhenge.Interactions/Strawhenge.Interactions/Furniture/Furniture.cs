@@ -4,7 +4,7 @@ using Strawhenge.Common.Logging;
 
 namespace Strawhenge.Interactions.Furniture
 {
-    public abstract class Furniture<TUserContext> where TUserContext : class
+    public abstract class Furniture
     {
         readonly ILogger _logger;
         bool _isDeactivated;
@@ -18,11 +18,11 @@ namespace Strawhenge.Interactions.Furniture
 
         public abstract string Name { get; }
 
-        public Maybe<FurnitureUser<TUserContext>> CurrentUser { get; protected set; } =
-            Maybe.None<FurnitureUser<TUserContext>>();
+        public Maybe<FurnitureUser> CurrentUser { get; protected set; } =
+            Maybe.None<FurnitureUser>();
 
         public bool IsAvailable => !IsDeactivated && !CurrentUser.HasSome();
-        
+
         public bool IsDeactivated
         {
             get => _isDeactivated;
@@ -36,13 +36,13 @@ namespace Strawhenge.Interactions.Furniture
             }
         }
 
-        internal void SetUser(FurnitureUser<TUserContext> user, TUserContext userContext)
+        internal void SetUser(FurnitureUser user, IFurnitureUserScope userScope)
         {
             CurrentUser = user;
 
             try
             {
-                OnUse(userContext);
+                OnUse(userScope);
             }
             catch (Exception exception)
             {
@@ -64,18 +64,18 @@ namespace Strawhenge.Interactions.Furniture
 
         internal void NotifyUserInvalidated()
         {
-            CurrentUser = Maybe.None<FurnitureUser<TUserContext>>();
+            CurrentUser = Maybe.None<FurnitureUser>();
             OnUserInvalidated();
         }
 
-        protected abstract void OnUse(TUserContext userContext);
+        protected abstract void OnUse(IFurnitureUserScope userScope);
 
         protected abstract void OnEndUse();
 
         protected void Ended()
         {
             CurrentUser.Do(user => user.OnFurnitureEnded());
-            CurrentUser = Maybe.None<FurnitureUser<TUserContext>>();
+            CurrentUser = Maybe.None<FurnitureUser>();
         }
 
         protected virtual void OnUserInvalidated()

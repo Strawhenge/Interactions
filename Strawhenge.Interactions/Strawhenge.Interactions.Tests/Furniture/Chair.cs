@@ -3,11 +3,11 @@ using Strawhenge.Interactions.Furniture;
 
 namespace Strawhenge.Interactions.Tests;
 
-class Chair : Furniture<UserContext>
+class Chair : Furniture.Furniture
 {
     int _onUseInvoked;
     int _onEndUseInvoked;
-    UserContext? _userContext;
+    IFurnitureUserScope? _userScope;
 
     public Chair(ILogger logger) : base(logger)
     {
@@ -15,16 +15,16 @@ class Chair : Furniture<UserContext>
 
     public override string Name => nameof(Chair);
 
-    protected override void OnUse(UserContext userContext)
+    protected override void OnUse(IFurnitureUserScope userScope)
     {
         _onUseInvoked++;
-        _userContext = userContext;
+        _userScope = userScope;
     }
 
     protected override void OnEndUse() => _onEndUseInvoked++;
 
-    public void VerifyUserContextReceived(UserContext expectedUserContext) =>
-        Assert.Same(expectedUserContext, _userContext);
+    public void VerifyUserScopeReceived(IFurnitureUserScope expectedUserScope) =>
+        Assert.Same(expectedUserScope, _userScope);
 
     public void VerifyOnUseInvokedOnce() => Assert.Equal(1, _onUseInvoked);
 

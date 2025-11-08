@@ -7,18 +7,18 @@ using Strawhenge.Common.Logging;
 
 namespace Strawhenge.Interactions.Furniture
 {
-    public class FurnitureUser<TUserContext> where TUserContext : class
+    public class FurnitureUser
     {
         readonly List<Action> _onEndedCallbacks = new List<Action>();
-        readonly TUserContext _context;
+        readonly IFurnitureUserScope _scope;
         readonly InteractionsContext _interactionsContext;
         readonly ILogger _logger;
 
         bool _isEndingUse;
 
-        public FurnitureUser(TUserContext context, InteractionsContext interactionsContext, ILogger logger)
+        public FurnitureUser(IFurnitureUserScope scope, InteractionsContext interactionsContext, ILogger logger)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _scope = scope ?? throw new ArgumentNullException(nameof(scope));
 
             _interactionsContext = interactionsContext ?? throw new ArgumentNullException(nameof(interactionsContext));
             _interactionsContext.Interrupted += OnInterrupted;
@@ -26,10 +26,9 @@ namespace Strawhenge.Interactions.Furniture
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public Maybe<Furniture<TUserContext>> CurrentFurniture { get; private set; } =
-            Maybe.None<Furniture<TUserContext>>();
+        public Maybe<Furniture> CurrentFurniture { get; private set; } = Maybe.None<Furniture>();
 
-        public void Use(Furniture<TUserContext> furniture, Action onEnded = null)
+        public void Use(Furniture furniture, Action onEnded = null)
         {
             if (furniture == null) throw new ArgumentNullException(nameof(furniture));
 
@@ -68,7 +67,7 @@ namespace Strawhenge.Interactions.Furniture
             if (onEnded != null)
                 _onEndedCallbacks.Add(onEnded);
 
-            furniture.SetUser(this, _context);
+            furniture.SetUser(this, _scope);
 
             _logger.LogInformation($"Using furniture '{furniture.Name}'.");
         }
@@ -101,7 +100,7 @@ namespace Strawhenge.Interactions.Furniture
         {
             _logger.LogInformation("Furniture use ended.");
 
-            CurrentFurniture = Maybe.None<Furniture<TUserContext>>();
+            CurrentFurniture = Maybe.None<Furniture>();
             _isEndingUse = false;
 
             if (_onEndedCallbacks.Any())
