@@ -1,46 +1,58 @@
 using Strawhenge.Interactions.Furniture;
 using Strawhenge.Interactions.Unity.Emotes;
 using Strawhenge.Interactions.Unity.PositionPlacement;
-using UnityEngine;
 using ILogger = Strawhenge.Common.Logging.ILogger;
 
 namespace Strawhenge.Interactions.Unity.Furniture
 {
-    public class EmoteFurniture : Furniture<UserContext>
+    public class EmoteFurniture : Interactions.Furniture.Furniture
     {
         readonly EmoteScriptableObject _emote;
-        readonly PositionPlacement.PositionPlacementInstruction _positionPlacement;
-        readonly Transform _position;
-        readonly IPositionPlacementArgs _positionPlacementArgs;
+        readonly PositionPlacementInstruction _positionPlacement;
+        readonly ILogger _logger;
 
-        UserContext _userContext;
+        EmoteController _emoteController;
 
         public EmoteFurniture(
             string name,
             EmoteScriptableObject emote,
-            PositionPlacement.PositionPlacementInstruction positionPlacement,
+            PositionPlacementInstruction positionPlacement,
             ILogger logger) : base(logger)
         {
             _emote = emote;
             _positionPlacement = positionPlacement;
+            _logger = logger;
 
             Name = name;
         }
 
         public override string Name { get; }
 
-        protected override void OnUse(UserContext userContext)
+        protected override void OnUse(IFurnitureUserScope userScope)
         {
-            _userContext = userContext;
+            if (!userScope.Get<EmoteController>().HasSome(out _emoteController))
+            {
+                _logger.LogWarning($"'{nameof(EmoteController)}' not found in user scope.");
+                Ended();
+                return;
+            }
 
-            _userContext.PositionPlacementController.PlaceAt(
+            if (!userScope.Get<PositionPlacementController>().HasSome(out var positionPlacementController))
+            {
+                _logger.LogWarning($"'{nameof(PositionPlacementController)}' not found in user scope.");
+                Ended();
+                return;
+            }
+
+            positionPlacementController.PlaceAt(
                 _positionPlacement,
-                onCompleted: () => _userContext.EmoteController.Perform(_emote, Ended));
+                onCompleted: () => _emoteController.Perform(_emote, Ended));
         }
 
         protected override void OnEndUse()
         {
-            _userContext.EmoteController.End();
+            _emoteController?.End();
+            _emoteController = null;
         }
     }
 }

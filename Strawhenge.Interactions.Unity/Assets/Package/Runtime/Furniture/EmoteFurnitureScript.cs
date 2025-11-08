@@ -12,16 +12,16 @@ namespace Strawhenge.Interactions.Unity.Furniture
         [SerializeField] SerializedPositionPlacement _positionPlacement;
         [SerializeField, Tooltip("Optional.")] LoggerScript _logger;
 
-        Furniture<UserContext> _furniture;
+        Interactions.Furniture.Furniture _furniture;
 
-        public override Furniture<UserContext> Furniture => _furniture ??= CreateFurniture();
+        public override Interactions.Furniture.Furniture Furniture => _furniture ??= CreateFurniture();
 
         void Awake()
         {
             _furniture ??= CreateFurniture();
         }
 
-        Furniture<UserContext> CreateFurniture()
+        Interactions.Furniture.Furniture CreateFurniture()
         {
             var logger = _logger != null
                 ? _logger.Logger
@@ -30,7 +30,7 @@ namespace Strawhenge.Interactions.Unity.Furniture
             if (_emote == null)
             {
                 logger.LogError($"'{nameof(_emote)}' not set.");
-                return NullFurniture<UserContext>.Instance;
+                return NullFurniture.Instance;
             }
 
             var positionPlacement = new PositionPlacementInstruction(
