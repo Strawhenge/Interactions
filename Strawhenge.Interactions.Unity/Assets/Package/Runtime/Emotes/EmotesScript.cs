@@ -9,6 +9,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
     public class EmotesScript : MonoBehaviour
     {
         [SerializeField] Animator _animator;
+        [SerializeField, Tooltip("Optional.")] BarkScript _barks;
         [SerializeField, Tooltip("Optional.")] InventoryScript _inventory;
         [SerializeField, Tooltip("Optional.")] LoggerScript _logger;
 
@@ -29,11 +30,15 @@ namespace Strawhenge.Interactions.Unity.Emotes
                 ? _logger.Logger
                 : new UnityLogger(gameObject);
 
+            var barks = Maybe
+                .NotNull(_barks)
+                .Map(b => b.BarkController);
+
             var inventory = Maybe
                 .NotNull(_inventory)
                 .Map(i => i.Inventory);
 
-            return new EmoteController(_animator, inventory, logger);
+            return new EmoteController(_animator, barks, inventory, logger);
         }
     }
 }

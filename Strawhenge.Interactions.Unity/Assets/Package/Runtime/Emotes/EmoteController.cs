@@ -9,14 +9,17 @@ namespace Strawhenge.Interactions.Unity.Emotes
     {
         readonly OneAtATimeManager<Emote> _oneAtATimeManager = new();
         readonly EmoteAnimationHandler _animationHandler;
+        readonly Maybe<BarkController> _barkController;
         readonly Maybe<Inventory.Inventory> _inventory;
 
         public EmoteController(
             Animator animator,
+            Maybe<BarkController> barkController,
             Maybe<Inventory.Inventory> inventory,
             ILogger logger)
         {
             _animationHandler = new EmoteAnimationHandler(animator, logger);
+            _barkController = barkController;
             _inventory = inventory;
         }
 
@@ -28,7 +31,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
         public void Perform(EmoteScriptableObject emote, Action callback = null)
         {
             _oneAtATimeManager.Start(
-                new Emote(_animationHandler, _inventory, emote),
+                new Emote(_animationHandler, _barkController, _inventory, emote),
                 callback);
         }
 

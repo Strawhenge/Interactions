@@ -6,17 +6,19 @@ namespace Strawhenge.Interactions.Unity.Emotes
     class Emote : OneAtATime
     {
         readonly EmoteAnimationHandler _animationHandler;
+        readonly Maybe<BarkController> _barkController;
         readonly Maybe<Inventory.Inventory> _inventory;
         readonly EmoteScriptableObject _emote;
 
         InventoryItem _item;
 
-        public Emote(
-            EmoteAnimationHandler animationHandler,
+        public Emote(EmoteAnimationHandler animationHandler,
+            Maybe<BarkController> barkController,
             Maybe<Inventory.Inventory> inventory,
             EmoteScriptableObject emote)
         {
             _animationHandler = animationHandler;
+            _barkController = barkController;
             _inventory = inventory;
             _emote = emote;
         }
@@ -29,11 +31,11 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
             if (HasItem(out _item))
             {
-                _item.HoldRightHand(BeginAnimation);
+                _item.HoldRightHand(BeginEmote);
                 return;
             }
 
-            BeginAnimation();
+            BeginEmote();
         }
 
         protected override void OnStopRequested()
@@ -41,12 +43,18 @@ namespace Strawhenge.Interactions.Unity.Emotes
             _animationHandler.End();
         }
 
-        void BeginAnimation() =>
+        void BeginEmote()
+        {
             _animationHandler.Perform(
                 _emote.Animation,
                 _emote.IsRepeating,
                 _emote.LayerId,
                 _emote.AnimatorBoolParameters);
+
+            _emote.Bark.Do(
+                bark => _barkController.Do(
+                    barkController => barkController.Play(bark)));
+        }
 
         void OnAnimationEnded()
         {
