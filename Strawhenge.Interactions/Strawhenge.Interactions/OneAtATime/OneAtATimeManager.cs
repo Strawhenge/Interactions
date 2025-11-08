@@ -1,19 +1,22 @@
 using System;
 using System.Collections.Generic;
+using FunctionalUtilities;
 
 namespace Strawhenge.Interactions
 {
-    public class OneAtATimeManager
+    public class OneAtATimeManager<T> where T : OneAtATime
     {
         readonly Queue<Action> _skippedCallbacks = new Queue<Action>();
 
-        OneAtATime _current;
+        T _current;
         Action _currentCallback;
 
-        OneAtATime _next;
+        T _next;
         Action _nextCallback;
 
-        public void Start(OneAtATime oneAtATime, Action callback = null)
+        public Maybe<T> Current => Maybe.NotNull(_current);
+
+        public void Start(T oneAtATime, Action callback = null)
         {
             if (_current == null)
                 SetCurrent(oneAtATime, callback);
@@ -33,7 +36,7 @@ namespace Strawhenge.Interactions
             _current?.Stop();
         }
 
-        void SetCurrent(OneAtATime oneAtATime, Action callback)
+        void SetCurrent(T oneAtATime, Action callback)
         {
             _current = oneAtATime;
             _current.Stopped += OnCurrentStopped;

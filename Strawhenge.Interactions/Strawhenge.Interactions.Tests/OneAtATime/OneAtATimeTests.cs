@@ -2,7 +2,7 @@ namespace Strawhenge.Interactions.Tests;
 
 public partial class OneAtATimeTests
 {
-    readonly OneAtATimeManager _oneAtATimeManager = new();
+    readonly OneAtATimeManager<Emote> _oneAtATimeManager = new();
 
     [Fact]
     public void Start_should_start_emote()

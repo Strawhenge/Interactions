@@ -21,6 +21,8 @@ namespace Strawhenge.Interactions.Unity.Emotes
             _emote = emote;
         }
 
+        internal EmoteScriptableObject EmoteScriptableObject => _emote;
+
         protected override void OnStart()
         {
             _animationHandler.AnimationEnded += OnAnimationEnded;

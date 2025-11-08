@@ -21,6 +21,8 @@ namespace Strawhenge.Interactions.Unity.Editor
             EditorGUILayout.Separator();
             EditorGUI.BeginDisabledGroup(!Application.isPlaying);
 
+            EditorGUILayout.LabelField("Current:", GetCurrentEmoteText());
+
             _emote = (EmoteScriptableObject)EditorGUILayout
                 .ObjectField("Emote", _emote, typeof(EmoteScriptableObject), false);
 
@@ -39,6 +41,16 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             EditorGUILayout.EndHorizontal();
             EditorGUI.EndDisabledGroup();
+        }
+
+        string GetCurrentEmoteText()
+        {
+            if (!Application.isPlaying)
+                return string.Empty;
+
+            return _emotesScript.EmoteController.Current
+                .Map(x => x.name)
+                .Reduce(() => string.Empty);
         }
     }
 }

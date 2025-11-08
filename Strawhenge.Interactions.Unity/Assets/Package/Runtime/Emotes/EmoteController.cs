@@ -7,7 +7,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
 {
     public class EmoteController
     {
-        readonly OneAtATimeManager _oneAtATimeManager = new();
+        readonly OneAtATimeManager<Emote> _oneAtATimeManager = new();
         readonly EmoteAnimationHandler _animationHandler;
         readonly Maybe<Inventory.Inventory> _inventory;
 
@@ -19,6 +19,11 @@ namespace Strawhenge.Interactions.Unity.Emotes
             _animationHandler = new EmoteAnimationHandler(animator, logger);
             _inventory = inventory;
         }
+
+        public bool IsPerformingEmote => _oneAtATimeManager.Current.HasSome();
+
+        public Maybe<EmoteScriptableObject> Current =>
+            _oneAtATimeManager.Current.Map(x => x.EmoteScriptableObject);
 
         public void Perform(EmoteScriptableObject emote, Action callback = null)
         {
