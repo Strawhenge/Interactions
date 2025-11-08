@@ -7,14 +7,16 @@ using ILogger = Strawhenge.Common.Logging.ILogger;
 
 namespace Strawhenge.Interactions.Unity
 {
-    public class Chair : Furniture<UserContext>
+    public class Chair : Interactions.Furniture.Furniture
     {
         readonly PositionPlacementInstruction _startPosition;
         readonly PositionPlacementInstruction _sittingPosition;
         readonly PositionPlacementInstruction _endPosition;
         readonly ISitAnimations _sitAnimations;
+        readonly ILogger _logger;
 
-        UserContext _userContext;
+        PositionPlacementController _positionPlacementController;
+        SitController _sitController;
 
         public Chair(
             string name,
@@ -28,37 +30,53 @@ namespace Strawhenge.Interactions.Unity
             _sittingPosition = sittingPosition;
             _endPosition = endPosition;
             _sitAnimations = sitAnimations;
+            _logger = logger;
 
             Name = name;
         }
 
         public override string Name { get; }
 
-        protected override void OnUse(UserContext userContext)
+        protected override void OnUse(IFurnitureUserScope userScope)
         {
-            _userContext = userContext;
+            if (!userScope.Get<PositionPlacementController>().HasSome(out _positionPlacementController))
+            {
+                _logger.LogWarning($"'{nameof(PositionPlacementController)}' not found in user scope.");
+                Ended();
+                return;
+            }
 
-            _userContext.PositionPlacementController.PlaceAt(
+            if (!userScope.Get<SitController>().HasSome(out _sitController))
+            {
+                _logger.LogWarning($"'{nameof(SitController)}' not found in user scope.");
+                Ended();
+                return;
+            }
+
+            _positionPlacementController.PlaceAt(
                 _startPosition,
                 onCompleted: () =>
                 {
-                    _userContext.SitController.Standing += OnStanding;
-                    _userContext.SitController.Sit(_sitAnimations);
+                    _sitController.Standing += OnStanding;
+                    _sitController.Sit(_sitAnimations);
 
-                    _userContext.PositionPlacementController.PlaceAt(_sittingPosition);
+                    _positionPlacementController.PlaceAt(_sittingPosition);
                 });
         }
 
         protected override void OnEndUse()
         {
-            _userContext.PositionPlacementController.PlaceAt(_endPosition);
-            _userContext.SitController.Stand();
+            _positionPlacementController?.PlaceAt(_endPosition);
+            _sitController?.Stand();
+
+            _positionPlacementController = null;
+            _sitController = null;
         }
 
         void OnStanding()
         {
-            _userContext.SitController.Standing -= OnStanding;
-            _userContext.PositionPlacementController.PlaceAt(_endPosition, Ended);
+            _sitController.Standing -= OnStanding;
+            _positionPlacementController.PlaceAt(_endPosition, Ended);
         }
     }
 }

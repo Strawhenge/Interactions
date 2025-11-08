@@ -1,10 +1,8 @@
 using Strawhenge.Common.Unity;
 using Strawhenge.Common.Unity.Serialization;
-using Strawhenge.Interactions.Furniture;
 using Strawhenge.Interactions.Unity.Furniture;
 using Strawhenge.Interactions.Unity.PositionPlacement;
 using Strawhenge.Interactions.Unity.Sit;
-using System;
 using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity
@@ -23,7 +21,7 @@ namespace Strawhenge.Interactions.Unity
 
         Chair _chair;
 
-        public override Furniture<UserContext> Furniture => _chair ??= CreateChair();
+        public override Interactions.Furniture.Furniture Furniture => _chair ??= CreateChair();
 
         void Awake()
         {
