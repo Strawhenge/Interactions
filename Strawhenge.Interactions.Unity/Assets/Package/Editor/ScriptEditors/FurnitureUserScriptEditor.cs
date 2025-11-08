@@ -30,10 +30,10 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             EditorGUILayout.BeginHorizontal();
 
-            if (GUILayout.Button(nameof(FurnitureUser<UserContext>.Use)) && _furniture != null)
+            if (GUILayout.Button(nameof(FurnitureUser.Use)) && _furniture != null)
                 _furnitureUser.User.Use(_furniture.Furniture);
 
-            if (GUILayout.Button(nameof(FurnitureUser<UserContext>.EndUse)))
+            if (GUILayout.Button(nameof(FurnitureUser.EndUse)))
                 _furnitureUser.User.EndUse();
 
             EditorGUILayout.EndHorizontal();
