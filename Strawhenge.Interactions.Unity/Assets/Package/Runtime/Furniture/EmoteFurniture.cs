@@ -51,7 +51,7 @@ namespace Strawhenge.Interactions.Unity.Furniture
 
         protected override void OnEndUse()
         {
-            _emoteController?.End();
+            _emoteController.End();
             _emoteController = null;
         }
     }

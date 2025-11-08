@@ -64,17 +64,17 @@ namespace Strawhenge.Interactions.Unity
 
         protected override void OnEndUse()
         {
-            _positionPlacementController?.PlaceAt(_endPosition);
-            _sleepController?.WakeUp();
-
-            _positionPlacementController = null;
-            _sleepController = null;
+            _positionPlacementController.PlaceAt(_endPosition);
+            _sleepController.WakeUp();
         }
 
         void OnWokenUp()
         {
             _sleepController.WokenUp -= OnWokenUp;
             _positionPlacementController.PlaceAt(_endPosition, Ended);
+            
+            _positionPlacementController = null;
+            _sleepController = null;
         }
     }
 }

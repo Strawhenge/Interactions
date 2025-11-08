@@ -66,17 +66,17 @@ namespace Strawhenge.Interactions.Unity
 
         protected override void OnEndUse()
         {
-            _positionPlacementController?.PlaceAt(_endPosition);
-            _sitController?.Stand();
-
-            _positionPlacementController = null;
-            _sitController = null;
+            _positionPlacementController.PlaceAt(_endPosition);
+            _sitController.Stand();
         }
 
         void OnStanding()
         {
             _sitController.Standing -= OnStanding;
             _positionPlacementController.PlaceAt(_endPosition, Ended);
+            
+            _positionPlacementController = null;
+            _sitController = null;
         }
     }
 }
