@@ -1,6 +1,5 @@
 using Strawhenge.Common.Unity;
 using Strawhenge.Common.Unity.Serialization;
-using Strawhenge.Interactions.Furniture;
 using Strawhenge.Interactions.Unity.Furniture;
 using Strawhenge.Interactions.Unity.PositionPlacement;
 using Strawhenge.Interactions.Unity.Sleep;
@@ -22,7 +21,7 @@ namespace Strawhenge.Interactions.Unity
 
         Bed _bed;
 
-        public override Furniture<UserContext> Furniture => _bed ??= CreateBed();
+        public override Interactions.Furniture.Furniture Furniture => _bed ??= CreateBed();
 
         void Awake()
         {

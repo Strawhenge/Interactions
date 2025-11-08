@@ -1,19 +1,20 @@
 using Strawhenge.Common.Logging;
 using Strawhenge.Interactions.Furniture;
-using Strawhenge.Interactions.Unity.Furniture;
 using Strawhenge.Interactions.Unity.PositionPlacement;
 using Strawhenge.Interactions.Unity.Sleep;
 
 namespace Strawhenge.Interactions.Unity
 {
-    public class Bed : Furniture<UserContext>
+    public class Bed : Interactions.Furniture.Furniture
     {
         readonly PositionPlacementInstruction _startPosition;
         readonly PositionPlacementInstruction _sleepingPosition;
         readonly PositionPlacementInstruction _endPosition;
         readonly ISleepAnimations _sleepAnimations;
+        readonly ILogger _logger;
 
-        UserContext _userContext;
+        PositionPlacementController _positionPlacementController;
+        SleepController _sleepController;
 
         public Bed(
             string name,
@@ -27,37 +28,53 @@ namespace Strawhenge.Interactions.Unity
             _sleepingPosition = sleepingPosition;
             _endPosition = endPosition;
             _sleepAnimations = sleepAnimations;
+            _logger = logger;
 
             Name = name;
         }
 
         public override string Name { get; }
 
-        protected override void OnUse(UserContext userContext)
+        protected override void OnUse(IFurnitureUserScope userScope)
         {
-            _userContext = userContext;
+            if (!userScope.Get<PositionPlacementController>().HasSome(out _positionPlacementController))
+            {
+                _logger.LogWarning($"'{nameof(PositionPlacementController)}' not found in user scope.");
+                Ended();
+                return;
+            }
 
-            _userContext.PositionPlacementController.PlaceAt(
+            if (!userScope.Get<SleepController>().HasSome(out _sleepController))
+            {
+                _logger.LogWarning($"'{nameof(SleepController)}' not found in user scope.");
+                Ended();
+                return;
+            }
+
+            _positionPlacementController.PlaceAt(
                 _startPosition,
                 onCompleted: () =>
                 {
-                    _userContext.SleepController.WokenUp += OnWokenUp;
-                    _userContext.SleepController.GoToSleep(_sleepAnimations);
+                    _sleepController.WokenUp += OnWokenUp;
+                    _sleepController.GoToSleep(_sleepAnimations);
 
-                    _userContext.PositionPlacementController.PlaceAt(_sleepingPosition);
+                    _positionPlacementController.PlaceAt(_sleepingPosition);
                 });
         }
 
         protected override void OnEndUse()
         {
-            _userContext.PositionPlacementController.PlaceAt(_endPosition);
-            _userContext.SleepController.WakeUp();
+            _positionPlacementController?.PlaceAt(_endPosition);
+            _sleepController?.WakeUp();
+
+            _positionPlacementController = null;
+            _sleepController = null;
         }
 
         void OnWokenUp()
         {
-            _userContext.SleepController.WokenUp -= OnWokenUp;
-            _userContext.PositionPlacementController.PlaceAt(_endPosition, Ended);
+            _sleepController.WokenUp -= OnWokenUp;
+            _positionPlacementController.PlaceAt(_endPosition, Ended);
         }
     }
 }
