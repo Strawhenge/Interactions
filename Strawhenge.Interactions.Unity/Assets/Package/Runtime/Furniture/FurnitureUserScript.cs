@@ -16,6 +16,7 @@ namespace Strawhenge.Interactions.Unity.Furniture
         [SerializeField] SitScript _sit;
         [SerializeField] SleepScript _sleep;
         [SerializeField] PositionPlacementScript _positionPlacement;
+        [SerializeField, Tooltip("Optional.")] FurnitureUserScopeConfigurationScript _scopeConfiguration;
         [SerializeField, Tooltip("Optional.")] LoggerScript _logger;
 
         FurnitureUser _user;
@@ -30,22 +31,30 @@ namespace Strawhenge.Interactions.Unity.Furniture
         FurnitureUser CreateUser()
         {
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _context, nameof(_context), this);
-            ComponentRefHelper.EnsureRootHierarchyComponent(ref _emotes, nameof(_emotes), this);
-            ComponentRefHelper.EnsureRootHierarchyComponent(ref _sit, nameof(_sit), this);
-            ComponentRefHelper.EnsureRootHierarchyComponent(ref _sleep, nameof(_sleep), this);
-            ComponentRefHelper.EnsureRootHierarchyComponent(ref _positionPlacement, nameof(_positionPlacement), this);
 
-            var userScope = new FurnitureUserScope(
-                _emotes.EmoteController,
-                _sit.SitController,
-                _sleep.SleepController,
-                _positionPlacement.PositionPlacementController);
+            var userScope = new DictionaryFurnitureUserScope();
+            ConfigureScope(userScope);
 
             var logger = _logger != null
                 ? _logger.Logger
                 : new UnityLogger(gameObject);
 
             return new FurnitureUser(userScope, _context.Context, logger);
+        }
+
+        void ConfigureScope(IConfigureFurnitureUserScope userScope)
+        {
+            if (_emotes != null)
+                userScope.Set(_emotes.EmoteController);
+            if (_sit != null)
+                userScope.Set(_sit.SitController);
+            if (_sleep != null)
+                userScope.Set(_sleep.SleepController);
+            if (_positionPlacement != null)
+                userScope.Set(_positionPlacement.PositionPlacementController);
+
+            if (_scopeConfiguration != null)
+                _scopeConfiguration.Configure(userScope);
         }
     }
 }
