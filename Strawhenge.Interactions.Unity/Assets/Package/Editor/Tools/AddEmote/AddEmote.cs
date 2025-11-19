@@ -1,5 +1,7 @@
 using Strawhenge.Interactions.Unity.Emotes;
+using System.IO;
 using System.Linq;
+using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 
@@ -50,6 +52,25 @@ namespace Strawhenge.Interactions.Unity.Editor
                 var animationEndedTransition = emoteState.AddExitTransition();
                 animationEndedTransition.hasExitTime = true;
             }
+
+            var scriptableObject = ScriptableObject.CreateInstance<EmoteScriptableObject>();
+
+            // TODO Set serializable fields
+            
+            var directoryPath = GetDirectoryPath();
+            var scriptableObjectPath = $"{directoryPath}/{args.EmoteName}.asset";
+            AssetDatabase.CreateAsset(scriptableObject, scriptableObjectPath);
+        }
+
+        static string GetDirectoryPath()
+        {
+            if (Selection.activeObject == null)
+                return "Assets";
+
+            var path = AssetDatabase.GetAssetPath(Selection.activeObject);
+            return AssetDatabase.IsValidFolder(path)
+                ? path
+                : Path.GetDirectoryName(path);
         }
     }
 }
