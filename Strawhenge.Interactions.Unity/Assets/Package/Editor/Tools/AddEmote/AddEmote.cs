@@ -12,7 +12,7 @@ namespace Strawhenge.Interactions.Unity.Editor
     {
         public static void Add(AddEmoteArgs args)
         {
-            int emoteId = GenerateEmoteId(args.AnimatorController);
+            var emoteId = GenerateEmoteId(args.AnimatorController);
 
             var layer = args.AnimatorController.layers
                 .FirstOrDefault(x => x.name == args.LayerName);
@@ -55,8 +55,10 @@ namespace Strawhenge.Interactions.Unity.Editor
             }
 
             var scriptableObject = ScriptableObject.CreateInstance<EmoteScriptableObject>();
-
-            // TODO Set serializable fields
+            var serializedObject = new SerializedObject(scriptableObject);
+            serializedObject.FindProperty(EmoteScriptableObject.IdFieldName).intValue = emoteId;
+            serializedObject.FindProperty(EmoteScriptableObject.UseRootMotionFieldName).boolValue = args.UseRootMotion;
+            serializedObject.ApplyModifiedProperties();
 
             var directoryPath = GetDirectoryPath();
             var scriptableObjectPath = $"{directoryPath}/{args.EmoteName}.asset";
