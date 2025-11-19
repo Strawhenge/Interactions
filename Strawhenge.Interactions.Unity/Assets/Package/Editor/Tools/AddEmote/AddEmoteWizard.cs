@@ -81,15 +81,11 @@ namespace Strawhenge.Interactions.Unity.Editor
         static string[] GetEmoteLayers(AnimatorController animatorController)
         {
             return animatorController != null
-                ? animatorController.layers
-                    .Where(HasEmoteStateMachine)
+                ? animatorController
+                    .GetEmoteLayers()
                     .Select(x => x.name)
                     .ToArray()
                 : Array.Empty<string>();
         }
-
-        static bool HasEmoteStateMachine(AnimatorControllerLayer animatorControllerLayer) =>
-            animatorControllerLayer.stateMachine.stateMachines
-                .Any(stateMachine => stateMachine.stateMachine.behaviours.OfType<EmotesStateMachine>().Any());
     }
 }
