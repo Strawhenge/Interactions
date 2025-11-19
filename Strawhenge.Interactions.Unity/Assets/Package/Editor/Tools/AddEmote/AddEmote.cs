@@ -1,4 +1,5 @@
 using Strawhenge.Interactions.Unity.Emotes;
+using System;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -11,7 +12,7 @@ namespace Strawhenge.Interactions.Unity.Editor
     {
         public static void Add(AddEmoteArgs args)
         {
-            int emoteId = 1; // TODO
+            int emoteId = GenerateEmoteId(args.AnimatorController);
 
             var layer = args.AnimatorController.layers
                 .FirstOrDefault(x => x.name == args.LayerName);
@@ -56,10 +57,28 @@ namespace Strawhenge.Interactions.Unity.Editor
             var scriptableObject = ScriptableObject.CreateInstance<EmoteScriptableObject>();
 
             // TODO Set serializable fields
-            
+
             var directoryPath = GetDirectoryPath();
             var scriptableObjectPath = $"{directoryPath}/{args.EmoteName}.asset";
             AssetDatabase.CreateAsset(scriptableObject, scriptableObjectPath);
+        }
+
+        static int GenerateEmoteId(AnimatorController animatorController)
+        {
+            var emoteLayers = animatorController.GetEmoteLayers();
+
+            int highestId = 0;
+            foreach (var layer in emoteLayers)
+            {
+                highestId = layer.stateMachine.defaultState.transitions
+                    .SelectMany(x => x.conditions
+                        .Where(y => y.parameter == AnimatorParameters.EmoteId.Name)
+                        .Select(y => (int)y.threshold))
+                    .Prepend(highestId)
+                    .Max();
+            }
+
+            return highestId + 1;
         }
 
         static string GetDirectoryPath()
