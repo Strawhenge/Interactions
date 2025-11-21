@@ -1,5 +1,6 @@
 using Strawhenge.Interactions.Unity.Emotes;
 using System.Linq;
+using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 
@@ -14,6 +15,9 @@ namespace Strawhenge.Interactions.Unity.Editor
         {
             AddParameters(animatorController);
             AddLayer(animatorController, layerName, avatarMask);
+
+            EditorUtility.SetDirty(animatorController);
+            AssetDatabase.SaveAssets();
         }
 
         static void AddParameters(AnimatorController animatorController)
