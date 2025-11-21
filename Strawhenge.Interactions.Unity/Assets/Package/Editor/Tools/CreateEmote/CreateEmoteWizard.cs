@@ -76,13 +76,17 @@ namespace Strawhenge.Interactions.Unity.Editor
                 objType: typeof(BarkScriptableObject),
                 allowSceneObjects: false) as BarkScriptableObject;
 
+            isValid =
+                _animatorController != null &&
+                _layerNames.Length > 0 &&
+                !string.IsNullOrWhiteSpace(_emoteName) &&
+                _animation != null;
+
             return result;
         }
 
         void OnWizardCreate()
         {
-            // TODO add validation
-
             CreateEmote.Create(new CreateEmoteArgs(
                 _animatorController,
                 _layerNames[_selectedLayerIndex],

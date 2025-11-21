@@ -20,6 +20,13 @@ namespace Strawhenge.Interactions.Unity.Editor
         [SerializeField] string _layerName;
         [SerializeField] AvatarMask _avatarMask;
 
+        void OnWizardUpdate()
+        {
+            isValid =
+                _animatorController != null &&
+                !string.IsNullOrWhiteSpace(_layerName);
+        }
+
         void OnWizardCreate()
         {
             if (_animatorController == null)
@@ -33,7 +40,7 @@ namespace Strawhenge.Interactions.Unity.Editor
                 Debug.LogWarning("Layer name is not set.");
                 return;
             }
-            
+
             CreateEmotesLayer.Create(_animatorController, _layerName, _avatarMask);
         }
     }
