@@ -45,11 +45,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
         void BeginEmote()
         {
-            _animationHandler.Perform(
-                _emote.Animation,
-                _emote.IsRepeating,
-                _emote.LayerId,
-                _emote.AnimatorBoolParameters);
+            _animationHandler.Perform(_emote.Id, _emote.UseRootMotion);
 
             _emote.Bark.Do(
                 bark => _barkController.Do(

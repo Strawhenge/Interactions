@@ -8,26 +8,19 @@ using UnityEngine;
 namespace Strawhenge.Interactions.Unity.Emotes
 {
     [CreateAssetMenu(menuName = "Strawhenge/Interactions/Emote")]
-    public class EmoteScriptableObject : ScriptableObject
+    public partial class EmoteScriptableObject : ScriptableObject
     {
-        [SerializeField] AnimationClip _animation;
-        [SerializeField] EmoteLayerIdScriptableObject _layer;
-        [SerializeField] bool _isRepeating;
-        [SerializeField] BarkScriptableObject _bark;
-        [SerializeField] ItemScriptableObject _item;
-        [SerializeField] AnimatorBoolParameterScriptableObject[] _animatorBoolParameters;
+        [SerializeField] int _id;
+        [SerializeField] bool _useRootMotion;
+        [SerializeField, Tooltip("Optional.")] ItemScriptableObject _item;
+        [SerializeField, Tooltip("Optional.")] BarkScriptableObject _bark;
 
-        public Maybe<AnimationClip> Animation => Maybe.NotNull(_animation);
+        public int Id => _id;
 
-        public int LayerId => _layer != null ? _layer.Id : 0;
-
-        public bool IsRepeating => _isRepeating;
+        public bool UseRootMotion => _useRootMotion;
 
         public Maybe<BarkScriptableObject> Bark => Maybe.NotNull(_bark);
 
         public Maybe<ItemScriptableObject> Item => Maybe.NotNull(_item);
-
-        public IEnumerable<AnimatorBoolParameterScriptableObject> AnimatorBoolParameters =>
-            _animatorBoolParameters.ExcludeNull();
     }
 }
