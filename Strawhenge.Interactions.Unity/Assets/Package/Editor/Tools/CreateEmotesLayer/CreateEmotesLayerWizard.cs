@@ -29,18 +29,6 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         void OnWizardCreate()
         {
-            if (_animatorController == null)
-            {
-                Debug.LogWarning("Animator controller is not set.");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(_layerName))
-            {
-                Debug.LogWarning("Layer name is not set.");
-                return;
-            }
-
             CreateEmotesLayer.Create(_animatorController, _layerName, _avatarMask);
         }
     }
