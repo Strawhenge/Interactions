@@ -52,6 +52,9 @@ namespace Strawhenge.Interactions.Unity.Editor
                 animationEndedTransition.hasExitTime = true;
             }
 
+            EditorUtility.SetDirty(args.AnimatorController);
+            AssetDatabase.SaveAssets();
+
             CreateScriptableObject(emoteId, args);
         }
 
