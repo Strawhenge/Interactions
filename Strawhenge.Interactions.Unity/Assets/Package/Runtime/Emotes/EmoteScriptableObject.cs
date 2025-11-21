@@ -12,28 +12,15 @@ namespace Strawhenge.Interactions.Unity.Emotes
     {
         [SerializeField] int _id;
         [SerializeField] bool _useRootMotion;
-        [SerializeField] ItemScriptableObject _item;
-        [SerializeField] BarkScriptableObject _bark;
-
-        // TODO Remove below fields
-        [SerializeField] AnimationClip _animation;
-        [SerializeField] EmoteLayerIdScriptableObject _layer;
-        [SerializeField] bool _isRepeating;
-        [SerializeField] AnimatorBoolParameterScriptableObject[] _animatorBoolParameters;
+        [SerializeField, Tooltip("Optional.")] ItemScriptableObject _item;
+        [SerializeField, Tooltip("Optional.")] BarkScriptableObject _bark;
 
         public int Id => _id;
 
-        public Maybe<AnimationClip> Animation => Maybe.NotNull(_animation);
-
-        public int LayerId => _layer != null ? _layer.Id : 0;
-
-        public bool IsRepeating => _isRepeating;
+        public bool UseRootMotion => _useRootMotion;
 
         public Maybe<BarkScriptableObject> Bark => Maybe.NotNull(_bark);
 
         public Maybe<ItemScriptableObject> Item => Maybe.NotNull(_item);
-
-        public IEnumerable<AnimatorBoolParameterScriptableObject> AnimatorBoolParameters =>
-            _animatorBoolParameters.ExcludeNull();
     }
 }
