@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Emotes
 {
-    [CreateAssetMenu(menuName = "Strawhenge/Interactions/Emote")]
     public partial class EmoteScriptableObject : ScriptableObject
     {
         [SerializeField] int _id;

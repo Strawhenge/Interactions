@@ -9,7 +9,7 @@ namespace Strawhenge.Interactions.Unity.Editor
 {
     public class CreateEmoteWizard : ScriptableWizard
     {
-        const string Name = "Create Emote";
+        const string Name = "Emote...";
 
         [MenuItem("Assets/Create/Strawhenge/Interactions/" + Name)]
         public static void ShowEditorWindow()
