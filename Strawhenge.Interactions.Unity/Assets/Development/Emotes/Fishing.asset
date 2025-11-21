@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc1ac10421f5498fa76ff52779771514, type: 3}
   m_Name: Fishing
   m_EditorClassIdentifier: 
-  _animation: {fileID: -203655887218126122, guid: ea645f50c8539a74682b1ebcb6487c61, type: 3}
-  _isRepeating: 0
+  _id: 4
+  _useRootMotion: 1
   _item: {fileID: 11400000, guid: aae46b1852e7d424f94f3389ee38e0d8, type: 2}
-  _layer: {fileID: 0}
-  _animatorBoolParameters:
-  - {fileID: 11400000, guid: a24b917c265f8c244ad849e5d5c4dbcd, type: 2}
+  _bark: {fileID: 0}

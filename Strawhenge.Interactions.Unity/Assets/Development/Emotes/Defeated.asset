@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc1ac10421f5498fa76ff52779771514, type: 3}
   m_Name: Defeated
   m_EditorClassIdentifier: 
-  _animation: {fileID: -203655887218126122, guid: 916648e13a1cd964c96bc45bea09f94a, type: 3}
+  _id: 3
+  _useRootMotion: 1
+  _item: {fileID: 0}
+  _bark: {fileID: 0}
