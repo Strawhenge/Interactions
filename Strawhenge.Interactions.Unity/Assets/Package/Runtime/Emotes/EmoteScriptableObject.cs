@@ -14,12 +14,14 @@ namespace Strawhenge.Interactions.Unity.Emotes
         [SerializeField] bool _useRootMotion;
         [SerializeField] ItemScriptableObject _item;
         [SerializeField] BarkScriptableObject _bark;
-        
+
         // TODO Remove below fields
         [SerializeField] AnimationClip _animation;
         [SerializeField] EmoteLayerIdScriptableObject _layer;
         [SerializeField] bool _isRepeating;
         [SerializeField] AnimatorBoolParameterScriptableObject[] _animatorBoolParameters;
+
+        public int Id => _id;
 
         public Maybe<AnimationClip> Animation => Maybe.NotNull(_animation);
 
