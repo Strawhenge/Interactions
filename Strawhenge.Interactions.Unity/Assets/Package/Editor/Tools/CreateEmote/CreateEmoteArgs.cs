@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Editor
 {
-    class AddEmoteArgs
+    class CreateEmoteArgs
     {
-        public AddEmoteArgs(
+        public CreateEmoteArgs(
             AnimatorController animatorController,
             string layerName,
             string emoteName,

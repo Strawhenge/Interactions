@@ -6,14 +6,14 @@ using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Editor
 {
-    public class EmotesAnimatorLayerSetupWizard : ScriptableWizard
+    public class CreateEmotesLayerWizard : ScriptableWizard
     {
         const string Name = "Emotes Animator Layer";
 
         [MenuItem("Strawhenge/Interactions/" + Name)]
         public static void ShowEditorWindow()
         {
-            DisplayWizard<EmotesAnimatorLayerSetupWizard>(Name, "Create");
+            DisplayWizard<CreateEmotesLayerWizard>(Name, "Create");
         }
 
         [SerializeField] AnimatorController _animatorController;
@@ -34,7 +34,7 @@ namespace Strawhenge.Interactions.Unity.Editor
                 return;
             }
             
-            EmotesAnimatorLayerSetup.Setup(_animatorController, _layerName, _avatarMask);
+            CreateEmotesLayer.Create(_animatorController, _layerName, _avatarMask);
         }
     }
 }

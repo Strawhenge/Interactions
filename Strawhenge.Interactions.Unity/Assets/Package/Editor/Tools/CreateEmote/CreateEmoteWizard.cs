@@ -1,4 +1,3 @@
-using Strawhenge.Interactions.Unity.Emotes;
 using Strawhenge.Inventory.Unity.Items.ItemData;
 using System;
 using System.Linq;
@@ -8,14 +7,14 @@ using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Editor
 {
-    public class AddEmoteWizard : ScriptableWizard
+    public class CreateEmoteWizard : ScriptableWizard
     {
-        const string Name = "Add Emote";
+        const string Name = "Create Emote";
 
         [MenuItem("Assets/Create/Strawhenge/Interactions/" + Name)]
         public static void ShowEditorWindow()
         {
-            DisplayWizard<AddEmoteWizard>(Name, "Create");
+            DisplayWizard<CreateEmoteWizard>(Name, "Create");
         }
 
         AnimatorController _animatorController;
@@ -84,7 +83,7 @@ namespace Strawhenge.Interactions.Unity.Editor
         {
             // TODO add validation
 
-            AddEmote.Add(new AddEmoteArgs(
+            CreateEmote.Create(new CreateEmoteArgs(
                 _animatorController,
                 _layerNames[_selectedLayerIndex],
                 _emoteName,

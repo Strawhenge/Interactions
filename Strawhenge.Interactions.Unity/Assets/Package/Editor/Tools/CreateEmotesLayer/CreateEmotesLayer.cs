@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Editor
 {
-    static class EmotesAnimatorLayerSetup
+    static class CreateEmotesLayer
     {
-        public static void Setup(
+        public static void Create(
             AnimatorController animatorController,
             string layerName,
             AvatarMask avatarMask = null)

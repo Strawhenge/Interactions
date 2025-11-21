@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Editor
 {
-    static class AddEmote
+    static class CreateEmote
     {
-        public static void Add(AddEmoteArgs args)
+        public static void Create(CreateEmoteArgs args)
         {
             var emoteId = args.AnimatorController.GenerateEmoteId();
 
@@ -58,7 +58,7 @@ namespace Strawhenge.Interactions.Unity.Editor
             CreateScriptableObject(emoteId, args);
         }
 
-        static void CreateScriptableObject(int emoteId, AddEmoteArgs args)
+        static void CreateScriptableObject(int emoteId, CreateEmoteArgs args)
         {
             var scriptableObject = ScriptableObject.CreateInstance<EmoteScriptableObject>();
 
