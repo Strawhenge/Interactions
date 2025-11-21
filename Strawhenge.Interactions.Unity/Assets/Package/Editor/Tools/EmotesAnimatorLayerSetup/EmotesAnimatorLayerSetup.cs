@@ -30,7 +30,7 @@ namespace Strawhenge.Interactions.Unity.Editor
                 if (parameter.name == AnimatorParameters.EndEmote.Name)
                     hasEndParameter = true;
 
-                if (parameter.name == AnimatorParameters.EmoteLayerId.Name)
+                if (parameter.name == AnimatorParameters.EmoteId.Name)
                     hasEmoteIdParameter = true;
             }
 
