@@ -32,7 +32,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
         public event Action AnimationEnded;
 
-        public void Perform(int emoteId)
+        public void Perform(int emoteId, bool useRootMotion)
         {
             if (!_animator.isActiveAndEnabled)
             {
@@ -44,6 +44,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
 
             _animator.SetInteger(AnimatorParameters.EmoteId, emoteId);
             _animator.SetTrigger(AnimatorParameters.BeginEmote);
+            _animator.applyRootMotion = useRootMotion;
         }
 
         public void End()
@@ -56,6 +57,7 @@ namespace Strawhenge.Interactions.Unity.Emotes
         {
             if (_animator != null)
             {
+                _animator.applyRootMotion = false;
                 _animator.ResetTrigger(AnimatorParameters.BeginEmote);
                 _animator.ResetTrigger(AnimatorParameters.EndEmote);
             }
