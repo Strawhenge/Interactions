@@ -1,4 +1,5 @@
 using Strawhenge.Interactions.Unity.Emotes;
+using Strawhenge.Inventory.Unity.Items.ItemData;
 using System;
 using System.Linq;
 using UnityEditor;
@@ -24,6 +25,8 @@ namespace Strawhenge.Interactions.Unity.Editor
         AnimationClip _animation;
         bool _isRepeating;
         bool _useRootMotion;
+        ItemScriptableObject _item;
+        BarkScriptableObject _bark;
 
         protected override bool DrawWizardGUI()
         {
@@ -62,6 +65,18 @@ namespace Strawhenge.Interactions.Unity.Editor
                 label: "Use Root Motion",
                 _useRootMotion);
 
+            _item = EditorGUILayout.ObjectField(
+                label: "Item (optional)",
+                obj: _item,
+                objType: typeof(ItemScriptableObject),
+                allowSceneObjects: false) as ItemScriptableObject;
+
+            _bark = EditorGUILayout.ObjectField(
+                label: "Bark (optional)",
+                obj: _bark,
+                objType: typeof(BarkScriptableObject),
+                allowSceneObjects: false) as BarkScriptableObject;
+
             return result;
         }
 
@@ -75,7 +90,9 @@ namespace Strawhenge.Interactions.Unity.Editor
                 _emoteName,
                 _animation,
                 _isRepeating,
-                _useRootMotion));
+                _useRootMotion,
+                _item,
+                _bark));
         }
 
         static string[] GetEmoteLayers(AnimatorController animatorController)

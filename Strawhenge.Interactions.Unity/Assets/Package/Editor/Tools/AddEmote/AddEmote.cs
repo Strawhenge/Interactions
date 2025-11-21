@@ -61,9 +61,12 @@ namespace Strawhenge.Interactions.Unity.Editor
         static void CreateScriptableObject(int emoteId, AddEmoteArgs args)
         {
             var scriptableObject = ScriptableObject.CreateInstance<EmoteScriptableObject>();
+
             var serializedObject = new SerializedObject(scriptableObject);
             serializedObject.FindProperty(EmoteScriptableObject.IdFieldName).intValue = emoteId;
             serializedObject.FindProperty(EmoteScriptableObject.UseRootMotionFieldName).boolValue = args.UseRootMotion;
+            serializedObject.FindProperty(EmoteScriptableObject.ItemFieldName).objectReferenceValue = args.Item;
+            serializedObject.FindProperty(EmoteScriptableObject.BarkFieldName).objectReferenceValue = args.Bark;
             serializedObject.ApplyModifiedProperties();
 
             var directoryPath = SelectionHelper.GetAssetDirectoryPath();

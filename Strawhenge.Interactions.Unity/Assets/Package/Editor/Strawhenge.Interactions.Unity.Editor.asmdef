@@ -3,7 +3,8 @@
     "rootNamespace": "Strawhenge.Interactions.Unity.Editor",
     "references": [
         "GUID:ab0e643ec0e5c9a4e976743cf4c3ad5e",
-        "GUID:3152effc9c9ee244284180ab6aae4fbb"
+        "GUID:3152effc9c9ee244284180ab6aae4fbb",
+        "GUID:1b5fc161151267d41b5d731ec0c68f25"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
