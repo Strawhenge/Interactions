@@ -29,17 +29,7 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         static void AddLayer(AnimatorController animatorController, string layerName, AvatarMask avatarMask)
         {
-            var layer = new AnimatorControllerLayer
-            {
-                name = layerName,
-                defaultWeight = 1,
-                avatarMask = avatarMask,
-                stateMachine = new AnimatorStateMachine()
-            };
-
-            animatorController.AddLayer(layer);
-
-            AssetDatabase.AddObjectToAsset(layer.stateMachine, AssetDatabase.GetAssetPath(animatorController));
+            var layer = animatorController.CreateLayer(layerName, avatarMask);
 
             var rootStateMachine = layer.stateMachine;
             rootStateMachine.AddState("Default");
