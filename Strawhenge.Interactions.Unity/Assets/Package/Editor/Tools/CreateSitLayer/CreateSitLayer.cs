@@ -68,35 +68,13 @@ namespace Strawhenge.Interactions.Unity.Editor
             var sitStateMachine = rootStateMachine.AddStateMachine("Sit");
             sitStateMachine.AddStateMachineBehaviour<SitStateMachine>();
 
-            var sitState = sitStateMachine.AddState("Sit");
-            sitState.motion = defaultSitAnimation;
-
-            var sittingState = sitStateMachine.AddState("Sitting");
-            sitState.motion = defaultSittingAnimation;
-
-            var standState = sitStateMachine.AddState("Stand");
-            standState.motion = defaultStandAnimation;
-
-            var beginSitTransition = rootStateMachine.defaultState.AddTransition(sitState);
-            beginSitTransition.hasExitTime = false;
-            beginSitTransition.AddCondition(
-                AnimatorConditionMode.If, 0, AnimatorParameters.Sit.Name);
-
-            var sitToSittingTransition = sitState.AddTransition(sittingState);
-            sitToSittingTransition.hasExitTime = true;
-
-            var sitToStandTransition = sitState.AddTransition(standState);
-            sitToStandTransition.hasExitTime = false;
-            sitToStandTransition.AddCondition(
-                AnimatorConditionMode.If, 0, AnimatorParameters.Stand.Name);
-
-            var sittingToStandTransition = sittingState.AddTransition(standState);
-            sittingToStandTransition.hasExitTime = false;
-            sittingToStandTransition.AddCondition(
-                AnimatorConditionMode.If, 0, AnimatorParameters.Stand.Name);
-
-            var endStandTransition = standState.AddExitTransition();
-            endStandTransition.hasExitTime = true;
+            SitTypeHelper.AddSitType(
+                id: 0,
+                defaultSitAnimation,
+                defaultSittingAnimation,
+                defaultStandAnimation,
+                sitStateMachine,
+                rootStateMachine);
         }
     }
 }
