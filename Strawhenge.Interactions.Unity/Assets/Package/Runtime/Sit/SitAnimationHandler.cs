@@ -29,17 +29,14 @@ namespace Strawhenge.Interactions.Unity.Sit
                 unsubscribe: _ => { });
         }
 
-        public void Sit(ISitAnimations animations)
+        public void Sit(int sitTypeId)
         {
             _stateMachineEvents.PrepareIfRequired();
 
-            _animator.runtimeAnimatorController = _animatorOverrideController;
-            _animatorOverrideController[PlaceholderAnimationClips.Sit] = animations.Sit;
-            _animatorOverrideController[PlaceholderAnimationClips.Sitting] = animations.Sitting;
-            _animatorOverrideController[PlaceholderAnimationClips.Stand] = animations.Stand;
-
             _animator.ResetTrigger(AnimatorParameters.Stand.Id);
             _animator.ResetTrigger(AnimatorParameters.Sit.Id);
+            
+            _animator.SetInteger(AnimatorParameters.SitTypeId.Id, sitTypeId);
             _animator.SetTrigger(AnimatorParameters.Sit.Id);
         }
 

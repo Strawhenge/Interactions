@@ -77,7 +77,7 @@ namespace Strawhenge.Interactions.Unity.Editor
             sitStateMachine.AddStateMachineBehaviour<SitStateMachine>();
 
             SitTypeHelper.AddSitType(
-                id: 0,
+                SitTypeScriptableObject.DefaultId,
                 name: "Default",
                 defaultSitAnimation,
                 defaultSittingAnimation,

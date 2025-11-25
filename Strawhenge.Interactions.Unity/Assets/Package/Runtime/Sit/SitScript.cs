@@ -8,11 +8,6 @@ namespace Strawhenge.Interactions.Unity.Sit
     {
         [SerializeField] Animator _animator;
 
-        [SerializeField] SerializedSource<
-            ISitAnimations,
-            SerializedSitAnimations,
-            SitAnimationsScriptableObject> _defaultAnimations;
-
         SitController _sitController;
 
         public SitController SitController => _sitController ??= CreateSitController();
@@ -26,7 +21,7 @@ namespace Strawhenge.Interactions.Unity.Sit
         {
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _animator, nameof(_animator), this);
 
-            return new SitController(_animator, _defaultAnimations.GetValue());
+            return new SitController(_animator);
         }
     }
 }

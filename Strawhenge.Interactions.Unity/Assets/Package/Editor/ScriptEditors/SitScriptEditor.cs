@@ -1,5 +1,4 @@
 using Strawhenge.Interactions.Unity.Sit;
-using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ namespace Strawhenge.Interactions.Unity.Editor
     public class SitScriptEditor : UnityEditor.Editor
     {
         SitScript _sit;
-        SitAnimationsScriptableObject _animations;
+        SitTypeScriptableObject _sitType;
 
         void OnEnable()
         {
@@ -24,16 +23,16 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             EditorGUILayout.LabelField($"{nameof(SitController.IsSitting)}: {GetIsSittingText()}");
 
-            _animations = EditorGUILayout.ObjectField(
-                "Animations",
-                _animations,
+            _sitType = EditorGUILayout.ObjectField(
+                "Sit Type",
+                _sitType,
                 typeof(SitAnimationsScriptableObject),
-                allowSceneObjects: false) as SitAnimationsScriptableObject;
+                allowSceneObjects: false) as SitTypeScriptableObject;
 
             EditorGUILayout.BeginHorizontal();
 
             if (GUILayout.Button(nameof(SitController.Sit)))
-                _sit.SitController.Sit(_animations);
+                _sit.SitController.Sit(_sitType);
 
             if (GUILayout.Button(nameof(SitController.Stand)))
                 _sit.SitController.Stand();

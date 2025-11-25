@@ -1,5 +1,4 @@
 using Strawhenge.Common.Unity;
-using Strawhenge.Common.Unity.Serialization;
 using Strawhenge.Interactions.Unity.Furniture;
 using Strawhenge.Interactions.Unity.PositionPlacement;
 using Strawhenge.Interactions.Unity.Sit;
@@ -12,11 +11,7 @@ namespace Strawhenge.Interactions.Unity
         [SerializeField] SerializedPositionPlacement _startPosition;
         [SerializeField] SerializedPositionPlacement _sittingPosition;
         [SerializeField] SerializedPositionPlacement _endPosition;
-
-        [SerializeField] SerializedSource<ISitAnimations,
-            SerializedSitAnimations,
-            SitAnimationsScriptableObject> _sitAnimations;
-
+        [SerializeField] SitTypeScriptableObject _sitType;
         [SerializeField] LoggerScript _logger;
 
         Chair _chair;
@@ -51,7 +46,7 @@ namespace Strawhenge.Interactions.Unity
                 startPosition,
                 sittingPosition,
                 endPosition,
-                _sitAnimations.GetValue(),
+                _sitType, // TODO Handle missing case
                 logger);
         }
     }
