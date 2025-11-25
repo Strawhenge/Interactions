@@ -22,7 +22,7 @@ namespace Strawhenge.Interactions.Unity.Editor
             sitState.motion = sitAnimation;
 
             var sittingState = sitTypeStateMachine.AddState(AnimatorStates.Sitting);
-            sitState.motion = sittingAnimation;
+            sittingState.motion = sittingAnimation;
 
             var standState = sitTypeStateMachine.AddState(AnimatorStates.Stand);
             standState.motion = standAnimation;
