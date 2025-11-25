@@ -4,9 +4,9 @@ using UnityEditor.Animations;
 
 namespace Strawhenge.Interactions.Unity.Editor
 {
-    static class AnimatorControllerLayerExtensions
+    static class SitTypeIdHelper
     {
-        public static int GenerateSitTypeId(this AnimatorControllerLayer layer)
+        public static int GenerateSitTypeId(AnimatorControllerLayer layer)
         {
             int highestId = layer.stateMachine.defaultState.transitions
                 .SelectMany(x => x.conditions
