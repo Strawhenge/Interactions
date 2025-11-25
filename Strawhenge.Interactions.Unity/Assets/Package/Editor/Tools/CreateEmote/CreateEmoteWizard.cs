@@ -1,3 +1,4 @@
+using Strawhenge.Interactions.Unity.Emotes;
 using Strawhenge.Inventory.Unity.Items.ItemData;
 using System;
 using System.Linq;
@@ -102,7 +103,7 @@ namespace Strawhenge.Interactions.Unity.Editor
         {
             return animatorController != null
                 ? animatorController
-                    .GetEmoteLayers()
+                    .GetLayersContaining<EmotesStateMachine>()
                     .Select(x => x.name)
                     .ToArray()
                 : Array.Empty<string>();
