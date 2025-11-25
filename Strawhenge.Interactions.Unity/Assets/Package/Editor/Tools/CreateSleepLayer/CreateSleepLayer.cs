@@ -29,7 +29,7 @@ namespace Strawhenge.Interactions.Unity.Editor
             var rootStateMachine = layer.stateMachine;
             rootStateMachine.AddState("Default");
 
-            var sitStateMachine = rootStateMachine.AddStateMachine("Sit");
+            var sitStateMachine = rootStateMachine.AddStateMachine("Sleep");
             sitStateMachine.AddStateMachineBehaviour<SleepStateMachine>();
         }
     }
