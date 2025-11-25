@@ -1,5 +1,6 @@
 using Strawhenge.Interactions.Unity.Sit;
 using System.Linq;
+using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 
@@ -44,6 +45,24 @@ namespace Strawhenge.Interactions.Unity.Editor
                 sitStateMachine,
                 sitLayer.stateMachine
             );
+
+            EditorUtility.SetDirty(animatorController);
+            AssetDatabase.SaveAssets();
+
+            CreateScriptableObject(id, name);
+        }
+
+        static void CreateScriptableObject(int id, string name)
+        {
+            var scriptableObject = ScriptableObject.CreateInstance<SitTypeScriptableObject>();
+
+            var serializedObject = new SerializedObject(scriptableObject);
+            serializedObject.FindProperty(SitTypeScriptableObject.IdFieldName).intValue = id;
+            serializedObject.ApplyModifiedProperties();
+
+            var directoryPath = SelectionHelper.GetAssetDirectoryPath();
+            var scriptableObjectPath = $"{directoryPath}/{name}.asset";
+            AssetDatabase.CreateAsset(scriptableObject, scriptableObjectPath);
         }
     }
 }
