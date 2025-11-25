@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a569d9139add4351bbcdefc888fb8e2a, type: 3}
+  m_Script: {fileID: 11500000, guid: 84f7346de42a4e73921d3fd5c31617d8, type: 3}
   m_Name: Chair
   m_EditorClassIdentifier: 
-  _sit: {fileID: -203655887218126122, guid: 6120ec031a45f814bbba982a8e406c8c, type: 3}
-  _sitting: {fileID: -203655887218126122, guid: 50c77f54d2bf8fb409309f29ef0d7c41, type: 3}
-  _stand: {fileID: -203655887218126122, guid: 8d5d2db9d2cad1844b764ab1313abd4e, type: 3}
+  _id: 1
