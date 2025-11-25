@@ -26,7 +26,7 @@ namespace Strawhenge.Interactions.Unity.Editor
             _sitType = EditorGUILayout.ObjectField(
                 "Sit Type",
                 _sitType,
-                typeof(SitAnimationsScriptableObject),
+                typeof(SitTypeScriptableObject),
                 allowSceneObjects: false) as SitTypeScriptableObject;
 
             EditorGUILayout.BeginHorizontal();

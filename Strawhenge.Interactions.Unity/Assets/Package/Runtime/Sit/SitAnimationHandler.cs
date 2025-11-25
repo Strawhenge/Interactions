@@ -8,8 +8,6 @@ namespace Strawhenge.Interactions.Unity.Sit
     class SitAnimationHandler
     {
         readonly Animator _animator;
-        readonly AnimatorOverrideController _animatorOverrideController;
-        readonly ISitAnimations _defaultAnimations;
         readonly StateMachineEvents<SitStateMachine> _stateMachineEvents;
 
         public event Action Sitting;
@@ -18,7 +16,6 @@ namespace Strawhenge.Interactions.Unity.Sit
         public SitAnimationHandler(Animator animator)
         {
             _animator = animator;
-            _animatorOverrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
 
             _stateMachineEvents = animator.AddEvents<SitStateMachine>(
                 subscribe: stateMachine =>
