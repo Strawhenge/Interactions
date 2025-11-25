@@ -6,10 +6,12 @@ namespace Strawhenge.Interactions.Unity.Sit
     public class SitController
     {
         readonly SitAnimationHandler _animationHandler;
+        readonly SitTypeScriptableObject _defaultSitType;
 
-        public SitController(Animator animator)
+        public SitController(Animator animator, SitTypeScriptableObject defaultSitType)
         {
             _animationHandler = new SitAnimationHandler(animator);
+            _defaultSitType = defaultSitType;
         }
 
         public bool IsSitting { get; private set; }
@@ -24,7 +26,7 @@ namespace Strawhenge.Interactions.Unity.Sit
             IsSitting = true;
 
             _animationHandler.Sitting += OnSitting;
-            _animationHandler.Sit(sitType?.Id ?? SitTypeScriptableObject.DefaultId);
+            _animationHandler.Sit(sitType ?? _defaultSitType);
         }
 
         public void Stand()

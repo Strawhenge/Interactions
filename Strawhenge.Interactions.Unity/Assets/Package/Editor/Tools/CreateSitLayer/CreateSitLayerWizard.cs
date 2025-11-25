@@ -15,26 +15,17 @@ namespace Strawhenge.Interactions.Unity.Editor
         }
 
         [SerializeField] AnimatorController _animatorController;
-        [SerializeField] AnimationClip _defaultSitAnimation;
-        [SerializeField] AnimationClip _defaultSittingAnimation;
-        [SerializeField] AnimationClip _defaultStandAnimation;
 
         void OnWizardUpdate()
         {
-            isValid =
-                _animatorController != null &&
-                _defaultSitAnimation != null &&
-                _defaultSittingAnimation != null &&
-                _defaultStandAnimation != null;
+            isValid = _animatorController != null;
+            
+            // TODO Check for existing layer
         }
 
         void OnWizardCreate()
         {
-            CreateSitLayer.Create(
-                _animatorController,
-                _defaultSitAnimation,
-                _defaultSittingAnimation,
-                _defaultStandAnimation);
+            CreateSitLayer.Create(_animatorController);
         }
     }
 }

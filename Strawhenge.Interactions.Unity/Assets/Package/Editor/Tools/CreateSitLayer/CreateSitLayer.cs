@@ -8,18 +8,10 @@ namespace Strawhenge.Interactions.Unity.Editor
 {
     static class CreateSitLayer
     {
-        public static void Create(
-            AnimatorController animatorController,
-            AnimationClip defaultSitAnimation,
-            AnimationClip defaultSittingAnimation,
-            AnimationClip defaultStandAnimation)
+        public static void Create(AnimatorController animatorController)
         {
             AddParameters(animatorController);
-            AddLayer(
-                animatorController,
-                defaultSitAnimation,
-                defaultSittingAnimation,
-                defaultStandAnimation);
+            AddLayer(animatorController);
         }
 
         static void AddParameters(AnimatorController animatorController)
@@ -53,11 +45,7 @@ namespace Strawhenge.Interactions.Unity.Editor
                     .AddParameter(AnimatorParameters.Stand.Name, AnimatorControllerParameterType.Trigger);
         }
 
-        static void AddLayer(
-            AnimatorController animatorController,
-            AnimationClip defaultSitAnimation,
-            AnimationClip defaultSittingAnimation,
-            AnimationClip defaultStandAnimation)
+        static void AddLayer(AnimatorController animatorController)
         {
             var layer = new AnimatorControllerLayer
             {
@@ -75,15 +63,6 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             var sitStateMachine = rootStateMachine.AddStateMachine("Sit");
             sitStateMachine.AddStateMachineBehaviour<SitStateMachine>();
-
-            SitTypeHelper.AddSitType(
-                SitTypeScriptableObject.DefaultId,
-                name: "Default",
-                defaultSitAnimation,
-                defaultSittingAnimation,
-                defaultStandAnimation,
-                sitStateMachine,
-                rootStateMachine);
         }
     }
 }

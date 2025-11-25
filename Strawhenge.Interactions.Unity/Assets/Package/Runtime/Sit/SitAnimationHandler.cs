@@ -1,5 +1,4 @@
-﻿using FunctionalUtilities;
-using Strawhenge.Common.Unity.AnimatorBehaviours;
+﻿using Strawhenge.Common.Unity.AnimatorBehaviours;
 using System;
 using UnityEngine;
 
@@ -26,14 +25,14 @@ namespace Strawhenge.Interactions.Unity.Sit
                 unsubscribe: _ => { });
         }
 
-        public void Sit(int sitTypeId)
+        public void Sit(SitTypeScriptableObject sitType)
         {
             _stateMachineEvents.PrepareIfRequired();
 
             _animator.ResetTrigger(AnimatorParameters.Stand.Id);
             _animator.ResetTrigger(AnimatorParameters.Sit.Id);
-            
-            _animator.SetInteger(AnimatorParameters.SitTypeId.Id, sitTypeId);
+
+            _animator.SetInteger(AnimatorParameters.SitTypeId.Id, sitType.Id);
             _animator.SetTrigger(AnimatorParameters.Sit.Id);
         }
 
