@@ -210,13 +210,7 @@ MonoBehaviour:
         _timeoutInSeconds: 0
       _scriptableObject: {fileID: 11400000, guid: befa1739eb880c9418f170ab1f979cff, type: 2}
       _type: 2
-  _sitAnimations:
-    _serialized:
-      _sit: {fileID: 0}
-      _sitting: {fileID: 0}
-      _stand: {fileID: 0}
-    _scriptableObject: {fileID: 11400000, guid: bb83aeca206d77e4a8e333d4a608c7b8, type: 2}
-    _type: 2
+  _sitType: {fileID: 11400000, guid: 8b77010d4db60fb40b4c8322156186ea, type: 2}
   _logger: {fileID: 0}
 --- !u!1 &5905391645076929096
 GameObject:
