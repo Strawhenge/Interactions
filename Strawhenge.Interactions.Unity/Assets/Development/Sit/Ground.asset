@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84f7346de42a4e73921d3fd5c31617d8, type: 3}
-  m_Name: Chair
+  m_Name: Ground
   m_EditorClassIdentifier: 
-  _id: 2
+  _id: 1
