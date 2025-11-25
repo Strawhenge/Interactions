@@ -1,5 +1,4 @@
 using Strawhenge.Common.Unity;
-using Strawhenge.Common.Unity.Serialization;
 using Strawhenge.Interactions.Unity.Furniture;
 using Strawhenge.Interactions.Unity.PositionPlacement;
 using Strawhenge.Interactions.Unity.Sleep;
@@ -12,11 +11,7 @@ namespace Strawhenge.Interactions.Unity
         [SerializeField] SerializedPositionPlacement _startPosition;
         [SerializeField] SerializedPositionPlacement _sleepingPosition;
         [SerializeField] SerializedPositionPlacement _endPosition;
-
-        [SerializeField] SerializedSource<ISleepAnimations,
-            SerializedSleepAnimations,
-            SleepAnimationsScriptableObject> _sleepAnimations;
-
+        [SerializeField] SleepTypeScriptableObject _sleepType;
         [SerializeField] LoggerScript _logger;
 
         Bed _bed;
@@ -51,7 +46,7 @@ namespace Strawhenge.Interactions.Unity
                 startPosition,
                 sleepingPosition,
                 endPosition,
-                _sleepAnimations.GetValue(),
+                _sleepType, // TODO Handle missing case
                 logger);
         }
     }

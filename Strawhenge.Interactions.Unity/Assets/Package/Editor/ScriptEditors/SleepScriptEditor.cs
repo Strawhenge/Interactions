@@ -8,7 +8,7 @@ namespace Strawhenge.Interactions.Unity.Editor
     public class SleepScriptEditor : UnityEditor.Editor
     {
         SleepScript _sleep;
-        SleepAnimationsScriptableObject _animations;
+        SleepTypeScriptableObject _sleepType;
 
         void OnEnable()
         {
@@ -21,16 +21,16 @@ namespace Strawhenge.Interactions.Unity.Editor
             EditorGUILayout.Separator();
             EditorGUI.BeginDisabledGroup(!Application.isPlaying);
 
-            _animations = EditorGUILayout.ObjectField(
-                "Animations",
-                _animations,
-                typeof(SleepAnimationsScriptableObject),
-                allowSceneObjects: false) as SleepAnimationsScriptableObject;
+            _sleepType = EditorGUILayout.ObjectField(
+                "Sleep Type",
+                _sleepType,
+                typeof(SleepTypeScriptableObject),
+                allowSceneObjects: false) as SleepTypeScriptableObject;
 
             EditorGUILayout.BeginHorizontal();
 
             if (GUILayout.Button(nameof(SleepController.GoToSleep)))
-                _sleep.SleepController.GoToSleep(_animations);
+                _sleep.SleepController.GoToSleep(_sleepType);
 
             if (GUILayout.Button(nameof(SleepController.WakeUp)))
                 _sleep.SleepController.WakeUp();

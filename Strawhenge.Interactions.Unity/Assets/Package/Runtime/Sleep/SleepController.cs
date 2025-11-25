@@ -6,15 +6,15 @@ namespace Strawhenge.Interactions.Unity.Sleep
     public class SleepController
     {
         readonly SleepAnimationHandler _animationHandler;
-        readonly ISleepAnimations _defaultAnimations;
+        readonly SleepTypeScriptableObject _defaultSleepType;
 
-        public SleepController(Animator animator, ISleepAnimations defaultAnimations)
+        public SleepController(Animator animator, SleepTypeScriptableObject defaultSleepType)
         {
             _animationHandler = new SleepAnimationHandler(animator);
             _animationHandler.Sleeping += OnSleeping;
             _animationHandler.WokenUp += OnWokenUp;
 
-            _defaultAnimations = defaultAnimations;
+            _defaultSleepType = defaultSleepType;
         }
 
         public event Action GoingToSleep;
@@ -31,13 +31,13 @@ namespace Strawhenge.Interactions.Unity.Sleep
 
         public bool IsWakingUp { get; private set; }
 
-        public void GoToSleep(ISleepAnimations sleepAnimations = null)
+        public void GoToSleep(SleepTypeScriptableObject sleepType = null)
         {
             if (IsGoingToSleep || IsSleeping)
                 return;
 
             IsGoingToSleep = true;
-            _animationHandler.GoToSleep(sleepAnimations ?? _defaultAnimations);
+            _animationHandler.GoToSleep(sleepType ?? _defaultSleepType);
             GoingToSleep?.Invoke();
         }
 

@@ -1,6 +1,4 @@
 using Strawhenge.Common.Unity.Helpers;
-using Strawhenge.Common.Unity.Serialization;
-using System;
 using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Sleep
@@ -8,11 +6,7 @@ namespace Strawhenge.Interactions.Unity.Sleep
     public class SleepScript : MonoBehaviour
     {
         [SerializeField] Animator _animator;
-
-        [SerializeField] SerializedSource<
-            ISleepAnimations,
-            SerializedSleepAnimations,
-            SleepAnimationsScriptableObject> _defaultAnimations;
+        [SerializeField] SleepTypeScriptableObject _defaultSleepType;
 
         SleepController _sleepController;
 
@@ -27,7 +21,10 @@ namespace Strawhenge.Interactions.Unity.Sleep
         {
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _animator, nameof(_animator), this);
 
-            return new SleepController(_animator, _defaultAnimations.GetValue());
+            if (_defaultSleepType == null)
+                Debug.LogError($"'{nameof(_defaultSleepType)}' is not set.", this);
+
+            return new SleepController(_animator, _defaultSleepType);
         }
     }
 }
