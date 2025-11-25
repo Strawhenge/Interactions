@@ -21,33 +21,10 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         static void AddParameters(AnimatorController animatorController)
         {
-            bool hasBeginParameter = false;
-            bool hasEndParameter = false;
-            bool hasEmoteIdParameter = false;
-
-            foreach (var parameter in animatorController.parameters)
-            {
-                if (parameter.name == AnimatorParameters.BeginEmote.Name)
-                    hasBeginParameter = true;
-
-                if (parameter.name == AnimatorParameters.EndEmote.Name)
-                    hasEndParameter = true;
-
-                if (parameter.name == AnimatorParameters.EmoteId.Name)
-                    hasEmoteIdParameter = true;
-            }
-
-            if (!hasBeginParameter)
-                animatorController
-                    .AddParameter(AnimatorParameters.BeginEmote.Name, AnimatorControllerParameterType.Trigger);
-
-            if (!hasEndParameter)
-                animatorController
-                    .AddParameter(AnimatorParameters.EndEmote.Name, AnimatorControllerParameterType.Trigger);
-
-            if (!hasEmoteIdParameter)
-                animatorController
-                    .AddParameter(AnimatorParameters.EmoteId.Name, AnimatorControllerParameterType.Int);
+            animatorController.EnsureParametersExist(
+                (AnimatorParameters.BeginEmote, AnimatorControllerParameterType.Trigger),
+                (AnimatorParameters.EndEmote, AnimatorControllerParameterType.Trigger),
+                (AnimatorParameters.EmoteId, AnimatorControllerParameterType.Int));
         }
 
         static void AddLayer(AnimatorController animatorController, string layerName, AvatarMask avatarMask)

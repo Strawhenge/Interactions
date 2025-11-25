@@ -16,33 +16,10 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         static void AddParameters(AnimatorController animatorController)
         {
-            bool hasSleepParameter = false;
-            bool hasSleepTypeIdParameter = false;
-            bool hasWakeUpParameter = false;
-
-            foreach (var parameter in animatorController.parameters)
-            {
-                if (parameter.name == AnimatorParameters.Sleep.Name)
-                    hasSleepParameter = true;
-
-                if (parameter.name == AnimatorParameters.SleepTypeId.Name)
-                    hasSleepTypeIdParameter = true;
-
-                if (parameter.name == AnimatorParameters.WakeUp.Name)
-                    hasWakeUpParameter = true;
-            }
-
-            if (!hasSleepParameter)
-                animatorController
-                    .AddParameter(AnimatorParameters.Sleep.Name, AnimatorControllerParameterType.Trigger);
-
-            if (!hasSleepTypeIdParameter)
-                animatorController
-                    .AddParameter(AnimatorParameters.SleepTypeId.Name, AnimatorControllerParameterType.Int);
-
-            if (!hasWakeUpParameter)
-                animatorController
-                    .AddParameter(AnimatorParameters.WakeUp.Name, AnimatorControllerParameterType.Trigger);
+            animatorController.EnsureParametersExist(
+                (AnimatorParameters.Sleep, AnimatorControllerParameterType.Trigger),
+                (AnimatorParameters.SleepTypeId, AnimatorControllerParameterType.Int),
+                (AnimatorParameters.WakeUp, AnimatorControllerParameterType.Trigger));
         }
 
         static void AddLayer(AnimatorController animatorController)

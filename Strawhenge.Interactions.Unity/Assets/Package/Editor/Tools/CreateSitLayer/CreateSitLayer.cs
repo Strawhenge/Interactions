@@ -16,33 +16,10 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         static void AddParameters(AnimatorController animatorController)
         {
-            bool hasSitParameter = false;
-            bool hasSitTypeIdParameter = false;
-            bool hasStandParameter = false;
-
-            foreach (var parameter in animatorController.parameters)
-            {
-                if (parameter.name == AnimatorParameters.Sit.Name)
-                    hasSitParameter = true;
-
-                if (parameter.name == AnimatorParameters.SitTypeId.Name)
-                    hasSitTypeIdParameter = true;
-
-                if (parameter.name == AnimatorParameters.Stand.Name)
-                    hasStandParameter = true;
-            }
-
-            if (!hasSitParameter)
-                animatorController
-                    .AddParameter(AnimatorParameters.Sit.Name, AnimatorControllerParameterType.Trigger);
-
-            if (!hasSitTypeIdParameter)
-                animatorController
-                    .AddParameter(AnimatorParameters.SitTypeId.Name, AnimatorControllerParameterType.Int);
-
-            if (!hasStandParameter)
-                animatorController
-                    .AddParameter(AnimatorParameters.Stand.Name, AnimatorControllerParameterType.Trigger);
+            animatorController.EnsureParametersExist(
+                (AnimatorParameters.Sit, AnimatorControllerParameterType.Trigger),
+                (AnimatorParameters.SitTypeId, AnimatorControllerParameterType.Int),
+                (AnimatorParameters.Stand, AnimatorControllerParameterType.Trigger));
         }
 
         static void AddLayer(AnimatorController animatorController)
