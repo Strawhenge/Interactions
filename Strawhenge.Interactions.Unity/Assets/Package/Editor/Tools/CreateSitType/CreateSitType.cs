@@ -15,12 +15,10 @@ namespace Strawhenge.Interactions.Unity.Editor
             AnimationClip sittingAnimation,
             AnimationClip standAnimation)
         {
-            int id = 1; // TODO
-
             AnimatorControllerLayer sitLayer = null;
             AnimatorStateMachine sitStateMachine = null;
 
-            foreach (AnimatorControllerLayer layer in animatorController.layers)
+            foreach (var layer in animatorController.layers)
             foreach (var stateMachine in layer.stateMachine.stateMachines.Select(x => x.stateMachine))
             {
                 if (stateMachine.behaviours.OfType<SitStateMachine>().Any())
@@ -35,6 +33,8 @@ namespace Strawhenge.Interactions.Unity.Editor
                 Debug.LogError("Sit layer not found.", animatorController);
                 return;
             }
+
+            var id = sitLayer.GenerateSitTypeId();
 
             SitTypeHelper.AddSitType(
                 id,
