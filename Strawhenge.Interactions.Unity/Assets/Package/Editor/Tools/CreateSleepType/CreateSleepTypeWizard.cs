@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Strawhenge.Interactions.Unity.Editor
 {
@@ -16,7 +17,7 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         [SerializeField] AnimatorController _animatorController;
         [SerializeField] string _name;
-        [SerializeField] AnimationClip _sleepAnimation;
+        [SerializeField] AnimationClip _layDownAnimation;
         [SerializeField] AnimationClip _sleepingAnimation;
         [SerializeField] AnimationClip _wakeUpAnimation;
 
@@ -25,7 +26,7 @@ namespace Strawhenge.Interactions.Unity.Editor
             isValid =
                 _animatorController != null &&
                 !string.IsNullOrEmpty(_name) &&
-                _sleepAnimation != null &&
+                _layDownAnimation != null &&
                 _sleepingAnimation != null &&
                 _wakeUpAnimation != null;
         }
@@ -35,7 +36,7 @@ namespace Strawhenge.Interactions.Unity.Editor
             CreateSleepType.Create(
                 _animatorController,
                 _name,
-                _sleepAnimation,
+                _layDownAnimation,
                 _sleepingAnimation,
                 _wakeUpAnimation);
         }

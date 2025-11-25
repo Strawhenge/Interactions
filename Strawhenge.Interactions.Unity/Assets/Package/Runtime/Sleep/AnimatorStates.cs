@@ -4,6 +4,6 @@ namespace Strawhenge.Interactions.Unity.Sleep
     {
         public const string LayDown = "Lay Down";
         public const string Sleeping = "Sleeping";
-        public const string GetUp = "Get Up";
+        public const string WakeUp = "Wake Up";
     }
 }

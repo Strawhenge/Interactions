@@ -24,7 +24,7 @@ namespace Strawhenge.Interactions.Unity.Sleep
 
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            if (stateInfo.IsName(AnimatorStates.GetUp))
+            if (stateInfo.IsName(AnimatorStates.WakeUp))
             {
                 OnWokenUp();
             }
