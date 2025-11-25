@@ -70,6 +70,7 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             SitTypeHelper.AddSitType(
                 id: 0,
+                name: "Default",
                 defaultSitAnimation,
                 defaultSittingAnimation,
                 defaultStandAnimation,

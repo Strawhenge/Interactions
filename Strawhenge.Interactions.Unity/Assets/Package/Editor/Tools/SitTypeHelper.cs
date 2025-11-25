@@ -8,19 +8,20 @@ namespace Strawhenge.Interactions.Unity.Editor
     {
         public static void AddSitType(
             int id,
+            string name,
             AnimationClip sitAnimation,
             AnimationClip sittingAnimation,
             AnimationClip standAnimation,
             AnimatorStateMachine sitStateMachine,
             AnimatorStateMachine rootStateMachine)
         {
-            var sitState = sitStateMachine.AddState("Sit");
+            var sitState = sitStateMachine.AddState($"{name} Sit");
             sitState.motion = sitAnimation;
 
-            var sittingState = sitStateMachine.AddState("Sitting");
+            var sittingState = sitStateMachine.AddState($"{name} Sitting");
             sitState.motion = sittingAnimation;
 
-            var standState = sitStateMachine.AddState("Stand");
+            var standState = sitStateMachine.AddState($"{name} Stand");
             standState.motion = standAnimation;
 
             var beginSitTransition = rootStateMachine.defaultState.AddTransition(sitState);
