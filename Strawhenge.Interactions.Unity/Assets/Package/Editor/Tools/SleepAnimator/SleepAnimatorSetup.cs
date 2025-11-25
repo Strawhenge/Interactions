@@ -58,7 +58,7 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             if (ContainsSleepSubState(rootStateMachine))
             {
-                Debug.Log($"Animator controller already contains Sleep sub state.");
+                Debug.Log("Animator controller already contains Sleep sub state.");
                 return;
             }
 

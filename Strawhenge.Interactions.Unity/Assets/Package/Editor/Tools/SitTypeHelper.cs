@@ -15,13 +15,16 @@ namespace Strawhenge.Interactions.Unity.Editor
             AnimatorStateMachine sitStateMachine,
             AnimatorStateMachine rootStateMachine)
         {
-            var sitState = sitStateMachine.AddState($"{name} Sit");
+            var sitTypeStateMachine = sitStateMachine.AddStateMachine(name);
+            sitStateMachine.AddStateMachineExitTransition(sitTypeStateMachine);
+
+            var sitState = sitTypeStateMachine.AddState("Sit");
             sitState.motion = sitAnimation;
 
-            var sittingState = sitStateMachine.AddState($"{name} Sitting");
+            var sittingState = sitTypeStateMachine.AddState("Sitting");
             sitState.motion = sittingAnimation;
 
-            var standState = sitStateMachine.AddState($"{name} Stand");
+            var standState = sitTypeStateMachine.AddState("Stand");
             standState.motion = standAnimation;
 
             var beginSitTransition = rootStateMachine.defaultState.AddTransition(sitState);

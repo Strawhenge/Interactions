@@ -58,7 +58,7 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             if (ContainsSitSubState(rootStateMachine))
             {
-                Debug.Log($"Animator controller already contains Sit sub state.");
+                Debug.Log("Animator controller already contains Sit sub state.");
                 return;
             }
 

@@ -1,5 +1,4 @@
 using Strawhenge.Interactions.Unity.Sit;
-using System;
 using System.Linq;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -32,7 +31,7 @@ namespace Strawhenge.Interactions.Unity.Editor
 
             if (sitLayer == null || sitStateMachine == null)
             {
-                Debug.LogError($"Sit layer not found.", animatorController);
+                Debug.LogError("Sit layer not found.", animatorController);
                 return;
             }
 
