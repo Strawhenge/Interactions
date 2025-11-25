@@ -36,7 +36,7 @@ namespace Strawhenge.Interactions.Unity.Editor
                 return;
             }
 
-            var id = SitTypeIdHelper.GenerateSitTypeId(sleepLayer);
+            var id = SleepTypeIdHelper.GenerateSitTypeId(sleepLayer);
 
             AddSitType(
                 id,
