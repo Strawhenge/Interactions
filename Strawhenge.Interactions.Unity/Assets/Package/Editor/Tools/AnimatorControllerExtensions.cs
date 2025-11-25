@@ -45,10 +45,10 @@ namespace Strawhenge.Interactions.Unity.Editor
             where TBehaviour : StateMachineBehaviour
         {
             return animatorController.layers
-                .Where(HasEmoteStateMachine)
+                .Where(HasStateMachine)
                 .ToArray();
 
-            static bool HasEmoteStateMachine(AnimatorControllerLayer animatorControllerLayer) =>
+            static bool HasStateMachine(AnimatorControllerLayer animatorControllerLayer) =>
                 animatorControllerLayer.stateMachine.stateMachines
                     .Any(stateMachine => stateMachine.stateMachine.behaviours.OfType<TBehaviour>().Any());
         }
