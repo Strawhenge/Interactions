@@ -1,0 +1,43 @@
+using UnityEditor;
+using UnityEditor.Animations;
+using UnityEngine;
+
+namespace Strawhenge.Interactions.Unity.Editor
+{
+    public class CreateSleepTypeWizard : ScriptableWizard
+    {
+        const string Name = "Sleep Type...";
+
+        [MenuItem("Assets/Create/Strawhenge/Interactions/" + Name)]
+        public static void ShowEditorWindow()
+        {
+            DisplayWizard<CreateSleepTypeWizard>(Name, "Create");
+        }
+
+        [SerializeField] AnimatorController _animatorController;
+        [SerializeField] string _name;
+        [SerializeField] AnimationClip _sleepAnimation;
+        [SerializeField] AnimationClip _sleepingAnimation;
+        [SerializeField] AnimationClip _wakeUpAnimation;
+
+        void OnWizardUpdate()
+        {
+            isValid =
+                _animatorController != null &&
+                !string.IsNullOrEmpty(_name) &&
+                _sleepAnimation != null &&
+                _sleepingAnimation != null &&
+                _wakeUpAnimation != null;
+        }
+
+        void OnWizardCreate()
+        {
+            CreateSleepType.Create(
+                _animatorController,
+                _name,
+                _sleepAnimation,
+                _sleepingAnimation,
+                _wakeUpAnimation);
+        }
+    }
+}
