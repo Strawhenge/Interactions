@@ -2733,6 +2733,10 @@ PrefabInstance:
       propertyPath: _animator
       value: 
       objectReference: {fileID: 9080262009022577868}
+    - target: {fileID: 4624494580728169779, guid: 667142906ce415f4c9819615a07411d6, type: 3}
+      propertyPath: _defaultSleepType
+      value: 
+      objectReference: {fileID: 11400000, guid: c7ed742e3e42d6548b6f0b2054f6130d, type: 2}
     - target: {fileID: 7969650567076495754, guid: 667142906ce415f4c9819615a07411d6, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2781,6 +2785,10 @@ PrefabInstance:
       propertyPath: _animator
       value: 
       objectReference: {fileID: 9080262009022577868}
+    - target: {fileID: 8197512876202065593, guid: 667142906ce415f4c9819615a07411d6, type: 3}
+      propertyPath: _defaultSitType
+      value: 
+      objectReference: {fileID: 11400000, guid: 4b69f508c90a75043869c8040e0ebb6a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 667142906ce415f4c9819615a07411d6, type: 3}
 --- !u!4 &897170097077743393 stripped
