@@ -21,7 +21,13 @@ namespace Strawhenge.Interactions.Furniture
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        public event Action<Furniture> BeganUsingFurniture;
+
+        public event Action EndedUsingFurniture;
+
         public Maybe<Furniture> CurrentFurniture { get; private set; } = Maybe.None<Furniture>();
+
+        public bool IsUsingFurniture => CurrentFurniture.HasSome();
 
         public void Use(Furniture furniture, Action onEnded = null)
         {
@@ -49,6 +55,7 @@ namespace Strawhenge.Interactions.Furniture
             }
 
             CurrentFurniture = furniture;
+            BeganUsingFurniture?.Invoke(furniture);
 
             if (onEnded != null)
                 _onEndedCallbacks.Add(onEnded);
@@ -89,6 +96,7 @@ namespace Strawhenge.Interactions.Furniture
             CurrentFurniture = Maybe.None<Furniture>();
             _isEndingUse = false;
 
+            EndedUsingFurniture?.Invoke();
             if (_onEndedCallbacks.Any())
             {
                 var callbacks = _onEndedCallbacks.ToArray();
