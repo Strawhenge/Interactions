@@ -1,5 +1,4 @@
-﻿using FunctionalUtilities;
-using Strawhenge.Common.Unity.AnimatorBehaviours;
+﻿using Strawhenge.Common.Unity.AnimatorBehaviours;
 using System;
 using UnityEngine;
 
@@ -8,8 +7,6 @@ namespace Strawhenge.Interactions.Unity.Sit
     class SitAnimationHandler
     {
         readonly Animator _animator;
-        readonly AnimatorOverrideController _animatorOverrideController;
-        readonly ISitAnimations _defaultAnimations;
         readonly StateMachineEvents<SitStateMachine> _stateMachineEvents;
 
         public event Action Sitting;
@@ -18,7 +15,6 @@ namespace Strawhenge.Interactions.Unity.Sit
         public SitAnimationHandler(Animator animator)
         {
             _animator = animator;
-            _animatorOverrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
 
             _stateMachineEvents = animator.AddEvents<SitStateMachine>(
                 subscribe: stateMachine =>
@@ -29,17 +25,14 @@ namespace Strawhenge.Interactions.Unity.Sit
                 unsubscribe: _ => { });
         }
 
-        public void Sit(ISitAnimations animations)
+        public void Sit(SitTypeScriptableObject sitType)
         {
             _stateMachineEvents.PrepareIfRequired();
 
-            _animator.runtimeAnimatorController = _animatorOverrideController;
-            _animatorOverrideController[PlaceholderAnimationClips.Sit] = animations.Sit;
-            _animatorOverrideController[PlaceholderAnimationClips.Sitting] = animations.Sitting;
-            _animatorOverrideController[PlaceholderAnimationClips.Stand] = animations.Stand;
-
             _animator.ResetTrigger(AnimatorParameters.Stand.Id);
             _animator.ResetTrigger(AnimatorParameters.Sit.Id);
+
+            _animator.SetInteger(AnimatorParameters.SitTypeId.Id, sitType.Id);
             _animator.SetTrigger(AnimatorParameters.Sit.Id);
         }
 

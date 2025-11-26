@@ -10,7 +10,7 @@ namespace Strawhenge.Interactions.Unity
         readonly PositionPlacementInstruction _startPosition;
         readonly PositionPlacementInstruction _sleepingPosition;
         readonly PositionPlacementInstruction _endPosition;
-        readonly ISleepAnimations _sleepAnimations;
+        readonly SleepTypeScriptableObject _sleepType;
         readonly ILogger _logger;
 
         PositionPlacementController _positionPlacementController;
@@ -21,13 +21,13 @@ namespace Strawhenge.Interactions.Unity
             PositionPlacementInstruction startPosition,
             PositionPlacementInstruction sleepingPosition,
             PositionPlacementInstruction endPosition,
-            ISleepAnimations sleepAnimations,
+            SleepTypeScriptableObject sleepType,
             ILogger logger) : base(logger)
         {
             _startPosition = startPosition;
             _sleepingPosition = sleepingPosition;
             _endPosition = endPosition;
-            _sleepAnimations = sleepAnimations;
+            _sleepType = sleepType;
             _logger = logger;
 
             Name = name;
@@ -56,7 +56,7 @@ namespace Strawhenge.Interactions.Unity
                 onCompleted: () =>
                 {
                     _sleepController.WokenUp += OnWokenUp;
-                    _sleepController.GoToSleep(_sleepAnimations);
+                    _sleepController.GoToSleep(_sleepType);
 
                     _positionPlacementController.PlaceAt(_sleepingPosition);
                 });
@@ -72,7 +72,7 @@ namespace Strawhenge.Interactions.Unity
         {
             _sleepController.WokenUp -= OnWokenUp;
             _positionPlacementController.PlaceAt(_endPosition, Ended);
-            
+
             _positionPlacementController = null;
             _sleepController = null;
         }

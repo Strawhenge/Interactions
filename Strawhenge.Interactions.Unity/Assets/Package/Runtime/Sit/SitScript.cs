@@ -7,11 +7,7 @@ namespace Strawhenge.Interactions.Unity.Sit
     public class SitScript : MonoBehaviour
     {
         [SerializeField] Animator _animator;
-
-        [SerializeField] SerializedSource<
-            ISitAnimations,
-            SerializedSitAnimations,
-            SitAnimationsScriptableObject> _defaultAnimations;
+        [SerializeField] SitTypeScriptableObject _defaultSitType;
 
         SitController _sitController;
 
@@ -26,7 +22,10 @@ namespace Strawhenge.Interactions.Unity.Sit
         {
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _animator, nameof(_animator), this);
 
-            return new SitController(_animator, _defaultAnimations.GetValue());
+            if (_defaultSitType == null)
+                Debug.LogError($"'{nameof(_defaultSitType)}' not set.", this);
+
+            return new SitController(_animator, _defaultSitType);
         }
     }
 }

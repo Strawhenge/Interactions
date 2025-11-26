@@ -6,6 +6,8 @@ namespace Strawhenge.Interactions.Unity.Sit
     {
         public static AnimatorParameter Sit { get; } = new("Sit");
 
+        public static AnimatorParameter SitTypeId { get; } = new("Sit Type Id");
+
         public static AnimatorParameter Stand { get; } = new("Stand");
     }
 }

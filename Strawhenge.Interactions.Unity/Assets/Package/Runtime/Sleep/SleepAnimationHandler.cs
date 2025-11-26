@@ -7,13 +7,11 @@ namespace Strawhenge.Interactions.Unity.Sleep
     class SleepAnimationHandler
     {
         readonly Animator _animator;
-        readonly AnimatorOverrideController _overrideController;
         readonly StateMachineEvents<SleepStateMachine> _stateMachineEvents;
 
         public SleepAnimationHandler(Animator animator)
         {
             _animator = animator;
-            _overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
 
             _stateMachineEvents = animator.AddEvents<SleepStateMachine>(
                 subscribe: stateMachine =>
@@ -28,15 +26,11 @@ namespace Strawhenge.Interactions.Unity.Sleep
 
         public event Action WokenUp;
 
-        public void GoToSleep(ISleepAnimations sleepAnimations)
+        public void GoToSleep(SleepTypeScriptableObject sleepType)
         {
             _stateMachineEvents.PrepareIfRequired();
 
-            _overrideController[PlaceholderAnimationClips.LayDown] = sleepAnimations.LayDown;
-            _overrideController[PlaceholderAnimationClips.Sleeping] = sleepAnimations.Sleeping;
-            _overrideController[PlaceholderAnimationClips.GetUp] = sleepAnimations.GetUp;
-            _animator.runtimeAnimatorController = _overrideController;
-
+            _animator.SetInteger(AnimatorParameters.SleepTypeId.Id, sleepType.Id);
             _animator.SetTrigger(AnimatorParameters.Sleep.Id);
         }
 

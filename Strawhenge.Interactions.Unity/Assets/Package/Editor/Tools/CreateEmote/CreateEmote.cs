@@ -10,7 +10,7 @@ namespace Strawhenge.Interactions.Unity.Editor
     {
         public static void Create(CreateEmoteArgs args)
         {
-            var emoteId = args.AnimatorController.GenerateEmoteId();
+            var emoteId = EmoteIdHelper.GenerateEmoteId(args.AnimatorController);
 
             var layer = args.AnimatorController.layers
                 .FirstOrDefault(x => x.name == args.LayerName);

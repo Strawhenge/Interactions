@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dddd2745e3444bb0a4f97a39acaabc71, type: 3}
+  m_Script: {fileID: 11500000, guid: d4bb6c1033ea43f68ce1d8d1d3cfc14d, type: 3}
   m_Name: Bed
   m_EditorClassIdentifier: 
-  _layDown: {fileID: -203655887218126122, guid: a36f7b72bca1af0439c702982f3461f8, type: 3}
-  _sleeping: {fileID: -203655887218126122, guid: 90da001440b8e9e409cd52e60942b0f3, type: 3}
-  _getUp: {fileID: 0}
+  _id: 2

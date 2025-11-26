@@ -81,13 +81,7 @@ MonoBehaviour:
         _timeoutInSeconds: 0
       _scriptableObject: {fileID: 11400000, guid: befa1739eb880c9418f170ab1f979cff, type: 2}
       _type: 2
-  _sleepAnimations:
-    _serialized:
-      _layDown: {fileID: 0}
-      _sleeping: {fileID: 0}
-      _getUp: {fileID: 0}
-    _scriptableObject: {fileID: 11400000, guid: 8c8cdb5f9e40e344789ce94805642838, type: 2}
-    _type: 2
+  _sleepType: {fileID: 11400000, guid: 7ab3b89a7ce946c44883edb6050e03ed, type: 2}
   _logger: {fileID: 0}
 --- !u!1 &2363327262815447168
 GameObject:

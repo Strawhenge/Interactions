@@ -12,7 +12,7 @@ namespace Strawhenge.Interactions.Unity
         readonly PositionPlacementInstruction _startPosition;
         readonly PositionPlacementInstruction _sittingPosition;
         readonly PositionPlacementInstruction _endPosition;
-        readonly ISitAnimations _sitAnimations;
+        readonly SitTypeScriptableObject _sitType;
         readonly ILogger _logger;
 
         PositionPlacementController _positionPlacementController;
@@ -23,13 +23,13 @@ namespace Strawhenge.Interactions.Unity
             PositionPlacementInstruction startPosition,
             PositionPlacementInstruction sittingPosition,
             PositionPlacementInstruction endPosition,
-            ISitAnimations sitAnimations,
+            SitTypeScriptableObject sitType,
             ILogger logger) : base(logger)
         {
             _startPosition = startPosition;
             _sittingPosition = sittingPosition;
             _endPosition = endPosition;
-            _sitAnimations = sitAnimations;
+            _sitType = sitType;
             _logger = logger;
 
             Name = name;
@@ -58,7 +58,7 @@ namespace Strawhenge.Interactions.Unity
                 onCompleted: () =>
                 {
                     _sitController.Standing += OnStanding;
-                    _sitController.Sit(_sitAnimations);
+                    _sitController.Sit(_sitType);
 
                     _positionPlacementController.PlaceAt(_sittingPosition);
                 });
@@ -74,7 +74,7 @@ namespace Strawhenge.Interactions.Unity
         {
             _sitController.Standing -= OnStanding;
             _positionPlacementController.PlaceAt(_endPosition, Ended);
-            
+
             _positionPlacementController = null;
             _sitController = null;
         }
