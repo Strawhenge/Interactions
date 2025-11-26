@@ -1,5 +1,4 @@
 ﻿using Strawhenge.Common.Unity.AnimatorBehaviours;
-using Strawhenge.Interactions.Unity.Emotes;
 using System;
 using UnityEngine;
 

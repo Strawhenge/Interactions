@@ -1,8 +1,5 @@
 using FunctionalUtilities;
-using Strawhenge.Common;
-using Strawhenge.Interactions.Unity.Package.Runtime;
 using Strawhenge.Inventory.Unity.Items.ItemData;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Strawhenge.Interactions.Unity.Emotes

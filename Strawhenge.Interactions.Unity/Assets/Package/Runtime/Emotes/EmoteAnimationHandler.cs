@@ -1,11 +1,7 @@
-using FunctionalUtilities;
-using Strawhenge.Common;
 using Strawhenge.Common.Unity;
 using Strawhenge.Common.Unity.AnimatorBehaviours;
-using Strawhenge.Interactions.Unity.Package.Runtime;
-using UnityEngine;
 using System;
-using System.Collections.Generic;
+using UnityEngine;
 using ILogger = Strawhenge.Common.Logging.ILogger;
 
 namespace Strawhenge.Interactions.Unity.Emotes
