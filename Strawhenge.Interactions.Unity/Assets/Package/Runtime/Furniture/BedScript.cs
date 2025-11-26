@@ -29,6 +29,9 @@ namespace Strawhenge.Interactions.Unity
                 ? _logger.Logger
                 : new UnityLogger(gameObject);
 
+            if (_sleepType == null)
+                logger.LogError($"'{nameof(_sleepType)}' not set.");
+
             var startPosition = new PositionPlacementInstruction(
                 _startPosition.Target.Reduce(() => transform),
                 _startPosition.Args);
@@ -46,7 +49,7 @@ namespace Strawhenge.Interactions.Unity
                 startPosition,
                 sleepingPosition,
                 endPosition,
-                _sleepType, // TODO Handle missing case
+                _sleepType,
                 logger);
         }
     }

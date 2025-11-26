@@ -29,6 +29,9 @@ namespace Strawhenge.Interactions.Unity
                 ? _logger.Logger
                 : new UnityLogger(gameObject);
 
+            if (_sitType == null)
+                logger.LogError($"'{nameof(_sitType)}' not set.");
+
             var startPosition = new PositionPlacementInstruction(
                 _startPosition.Target.Reduce(() => transform),
                 _startPosition.Args);
