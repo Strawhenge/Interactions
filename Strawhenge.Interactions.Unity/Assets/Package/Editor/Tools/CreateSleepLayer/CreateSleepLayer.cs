@@ -1,5 +1,4 @@
 using Strawhenge.Interactions.Unity.Sleep;
-using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 using AnimatorParameters = Strawhenge.Interactions.Unity.Sleep.AnimatorParameters;

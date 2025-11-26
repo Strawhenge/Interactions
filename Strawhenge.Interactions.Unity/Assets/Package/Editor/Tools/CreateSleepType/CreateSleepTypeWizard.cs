@@ -1,7 +1,6 @@
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Strawhenge.Interactions.Unity.Editor
 {
