@@ -21,6 +21,8 @@ namespace Strawhenge.Interactions.Unity.Editor
             EditorGUILayout.Separator();
             EditorGUI.BeginDisabledGroup(!Application.isPlaying);
 
+            EditorGUILayout.LabelField($"{nameof(SleepController.State)}: {GetStateText()}");
+
             _sleepType = EditorGUILayout.ObjectField(
                 "Sleep Type",
                 _sleepType,
@@ -36,6 +38,13 @@ namespace Strawhenge.Interactions.Unity.Editor
                 _sleep.SleepController.WakeUp();
 
             EditorGUILayout.EndHorizontal();
+        }
+
+        string GetStateText()
+        {
+            return Application.isPlaying
+                ? _sleep.SleepController.State.ToString()
+                : "N/A";
         }
     }
 }

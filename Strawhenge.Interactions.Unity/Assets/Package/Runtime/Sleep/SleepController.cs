@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using ILogger = Strawhenge.Common.Logging.ILogger;
 
 namespace Strawhenge.Interactions.Unity.Sleep
 {
@@ -7,14 +8,19 @@ namespace Strawhenge.Interactions.Unity.Sleep
     {
         readonly SleepAnimationHandler _animationHandler;
         readonly SleepTypeScriptableObject _defaultSleepType;
+        readonly ILogger _logger;
 
-        public SleepController(Animator animator, SleepTypeScriptableObject defaultSleepType)
+        public SleepController(
+            Animator animator,
+            SleepTypeScriptableObject defaultSleepType,
+            ILogger logger)
         {
             _animationHandler = new SleepAnimationHandler(animator);
             _animationHandler.Sleeping += OnSleeping;
             _animationHandler.WokenUp += OnWokenUp;
 
             _defaultSleepType = defaultSleepType;
+            _logger = logger;
         }
 
         public event Action GoingToSleep;
@@ -25,45 +31,44 @@ namespace Strawhenge.Interactions.Unity.Sleep
 
         public event Action WokenUp;
 
-        public bool IsGoingToSleep { get; private set; }
+        public SleepState State { get; private set; } = SleepState.Awake;
 
-        public bool IsSleeping { get; private set; }
-
-        public bool IsWakingUp { get; private set; }
+        public bool IsSleepInProgress => State != SleepState.Awake;
 
         public void GoToSleep(SleepTypeScriptableObject sleepType = null)
         {
-            if (IsGoingToSleep || IsSleeping)
+            if (IsSleepInProgress)
+            {
+                _logger.LogWarning($"Sleep is already in progress.");
                 return;
+            }
 
-            IsGoingToSleep = true;
-            _animationHandler.GoToSleep(sleepType ?? _defaultSleepType);
+            State = SleepState.GoingToSleep;
             GoingToSleep?.Invoke();
+
+            _animationHandler.GoToSleep(sleepType ?? _defaultSleepType);
         }
 
         public void WakeUp()
         {
-            if (IsWakingUp || !(IsGoingToSleep || IsSleeping))
+            if (!IsSleepInProgress)
                 return;
 
-            IsWakingUp = true;
-            _animationHandler.WakeUp();
+            State = SleepState.WakingUp;
             WakingUp?.Invoke();
+
+            _animationHandler.WakeUp();
         }
 
         void OnSleeping()
         {
-            IsGoingToSleep = false;
-            IsSleeping = true;
-            IsWakingUp = false;
+            State = SleepState.Sleeping;
             Sleeping?.Invoke();
         }
 
         void OnWokenUp()
         {
-            IsGoingToSleep = false;
-            IsSleeping = false;
-            IsWakingUp = false;
+            State = SleepState.Awake;
             WokenUp?.Invoke();
         }
     }

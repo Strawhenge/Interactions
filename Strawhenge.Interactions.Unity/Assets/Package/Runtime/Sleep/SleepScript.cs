@@ -1,3 +1,4 @@
+using Strawhenge.Common.Unity;
 using Strawhenge.Common.Unity.Helpers;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace Strawhenge.Interactions.Unity.Sleep
     {
         [SerializeField] Animator _animator;
         [SerializeField] SleepTypeScriptableObject _defaultSleepType;
+        [SerializeField] LoggerScript _logger;
 
         SleepController _sleepController;
 
@@ -19,12 +21,16 @@ namespace Strawhenge.Interactions.Unity.Sleep
 
         SleepController CreateSleepController()
         {
+            var logger = _logger != null
+                ? _logger.Logger
+                : new UnityLogger(gameObject);
+
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _animator, nameof(_animator), this);
 
             if (_defaultSleepType == null)
-                Debug.LogError($"'{nameof(_defaultSleepType)}' is not set.", this);
+                logger.LogError($"'{nameof(_defaultSleepType)}' is not set.");
 
-            return new SleepController(_animator, _defaultSleepType);
+            return new SleepController(_animator, _defaultSleepType, logger);
         }
     }
 }
