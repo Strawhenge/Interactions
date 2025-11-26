@@ -33,6 +33,13 @@ namespace Strawhenge.Interactions.Unity.Sleep
 
         public void GoToSleep(SleepTypeScriptableObject sleepType)
         {
+            if (!_animator.isActiveAndEnabled)
+            {
+                _logger.LogWarning("Animator is not active.");
+                OnWokenUp();
+                return;
+            }
+
             _stateMachineEvents.PrepareIfRequired();
 
             _animator.SetInteger(AnimatorParameters.SleepTypeId.Id, sleepType.Id);

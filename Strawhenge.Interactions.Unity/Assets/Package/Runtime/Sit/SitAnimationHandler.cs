@@ -37,6 +37,7 @@ namespace Strawhenge.Interactions.Unity.Sit
             {
                 _logger.LogWarning("Animator is not active.");
                 Standing?.Invoke();
+                return;
             }
 
             _stateMachineEvents.PrepareIfRequired();
