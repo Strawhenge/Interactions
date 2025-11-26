@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61a35d48fdc479da67d0b520ee50db5, type: 3}
+  m_Name: Whistle
+  m_EditorClassIdentifier: 
+  _clips:
+  - {fileID: 8300000, guid: 8e865267fee444a4fa2db3a31795e148, type: 3}
+  - {fileID: 8300000, guid: 8d934fe8ebc54034a877ff71d609b3a6, type: 3}
+  - {fileID: 8300000, guid: 500ff26a44afd31449eacaddd7405edd, type: 3}

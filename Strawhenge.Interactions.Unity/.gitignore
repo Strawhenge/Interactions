@@ -80,3 +80,5 @@ crashlytics-build.properties
 !/[Aa]ssets/Development.meta
 /[Aa]ssets/Development/*.fbx
 /[Aa]ssets/Development/*/*.fbx
+/[Aa]ssets/Development/*.mp3
+/[Aa]ssets/Development/*/*.mp3
