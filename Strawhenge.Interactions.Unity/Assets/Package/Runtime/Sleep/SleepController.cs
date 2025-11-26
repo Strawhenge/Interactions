@@ -15,7 +15,7 @@ namespace Strawhenge.Interactions.Unity.Sleep
             SleepTypeScriptableObject defaultSleepType,
             ILogger logger)
         {
-            _animationHandler = new SleepAnimationHandler(animator);
+            _animationHandler = new SleepAnimationHandler(animator, logger);
             _animationHandler.Sleeping += OnSleeping;
             _animationHandler.WokenUp += OnWokenUp;
 
@@ -43,9 +43,7 @@ namespace Strawhenge.Interactions.Unity.Sleep
                 return;
             }
 
-            State = SleepState.GoingToSleep;
-            GoingToSleep?.Invoke();
-
+            ChangeState(SleepState.GoingToSleep, GoingToSleep);
             _animationHandler.GoToSleep(sleepType ?? _defaultSleepType);
         }
 
@@ -54,22 +52,21 @@ namespace Strawhenge.Interactions.Unity.Sleep
             if (!IsSleepInProgress)
                 return;
 
-            State = SleepState.WakingUp;
-            WakingUp?.Invoke();
-
+            ChangeState(SleepState.WakingUp, WakingUp);
             _animationHandler.WakeUp();
         }
 
-        void OnSleeping()
-        {
-            State = SleepState.Sleeping;
-            Sleeping?.Invoke();
-        }
+        void OnSleeping() => ChangeState(SleepState.Sleeping, Sleeping);
 
-        void OnWokenUp()
+        void OnWokenUp() => ChangeState(SleepState.Awake, WokenUp);
+
+        void ChangeState(SleepState newState, Action eventToInvoke)
         {
-            State = SleepState.Awake;
-            WokenUp?.Invoke();
+            if (newState == State)
+                return;
+
+            State = newState;
+            eventToInvoke?.Invoke();
         }
     }
 }

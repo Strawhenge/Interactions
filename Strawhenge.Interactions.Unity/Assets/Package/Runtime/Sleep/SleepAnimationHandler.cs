@@ -1,6 +1,7 @@
 ﻿using Strawhenge.Common.Unity.AnimatorBehaviours;
 using System;
 using UnityEngine;
+using ILogger = Strawhenge.Common.Logging.ILogger;
 
 namespace Strawhenge.Interactions.Unity.Sleep
 {
@@ -8,8 +9,9 @@ namespace Strawhenge.Interactions.Unity.Sleep
     {
         readonly Animator _animator;
         readonly StateMachineEvents<SleepStateMachine> _stateMachineEvents;
+        readonly ILogger _logger;
 
-        public SleepAnimationHandler(Animator animator)
+        public SleepAnimationHandler(Animator animator, ILogger logger)
         {
             _animator = animator;
 
@@ -18,8 +20,11 @@ namespace Strawhenge.Interactions.Unity.Sleep
                 {
                     stateMachine.OnSleeping = OnSleeping;
                     stateMachine.OnWokenUp = OnWokenUp;
+                    stateMachine.Destroyed += OnStateMachineDestroyed;
                 },
-                unsubscribe: _ => { });
+                unsubscribe: stateMachine => stateMachine.Destroyed -= OnStateMachineDestroyed);
+
+            _logger = logger;
         }
 
         public event Action Sleeping;
@@ -44,5 +49,11 @@ namespace Strawhenge.Interactions.Unity.Sleep
         void OnSleeping() => Sleeping?.Invoke();
 
         void OnWokenUp() => WokenUp?.Invoke();
+
+        void OnStateMachineDestroyed()
+        {
+            _logger.LogInformation($"'{nameof(SleepStateMachine)}' destroyed.");
+            WokenUp?.Invoke();
+        }
     }
 }
