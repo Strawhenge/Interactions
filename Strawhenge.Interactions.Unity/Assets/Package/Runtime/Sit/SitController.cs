@@ -16,6 +16,9 @@ namespace Strawhenge.Interactions.Unity.Sit
             ILogger logger)
         {
             _animationHandler = new SitAnimationHandler(animator, logger);
+            _animationHandler.Sitting += OnSitting;
+            _animationHandler.Standing += OnStanding;
+            
             _defaultSitType = defaultSitType;
             _logger = logger;
         }
@@ -36,31 +39,23 @@ namespace Strawhenge.Interactions.Unity.Sit
 
             IsSitting = true;
 
-            _animationHandler.Sitting += OnSitting;
-            _animationHandler.Standing += OnStanding;
-
             _animationHandler.Sit(sitType ?? _defaultSitType);
         }
 
         public void Stand()
         {
             if (!IsSitting) return;
-
-            _animationHandler.Standing += OnStanding;
+           
             _animationHandler.Stand();
         }
 
         void OnSitting()
         {
-            _animationHandler.Sitting -= OnSitting;
             Sitting?.Invoke();
         }
 
         void OnStanding()
         {
-            _animationHandler.Sitting -= OnSitting;
-            _animationHandler.Standing -= OnStanding;
-            
             IsSitting = false;
             Standing?.Invoke();
         }
