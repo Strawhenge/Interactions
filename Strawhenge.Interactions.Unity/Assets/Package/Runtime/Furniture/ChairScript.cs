@@ -49,7 +49,7 @@ namespace Strawhenge.Interactions.Unity
                 startPosition,
                 sittingPosition,
                 endPosition,
-                _sitType, // TODO Handle missing case
+                _sitType,
                 logger);
         }
     }
