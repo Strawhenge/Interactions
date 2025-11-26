@@ -1790,7 +1790,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 897170097077743393}
-  - component: {fileID: 5537387617490551538}
   - component: {fileID: 6419836043487809605}
   - component: {fileID: 5751275314554122133}
   - component: {fileID: 6238762272775378415}
@@ -1819,19 +1818,6 @@ Transform:
   m_Father: {fileID: 2946408470347130550}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5537387617490551538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5558978277378371890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c037a96268f59c42ad4c2042ba54070, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _logger: {fileID: 0}
 --- !u!114 &6419836043487809605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1874,7 +1860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c452fe5a93658ce4c925060e35dd67ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _context: {fileID: 5537387617490551538}
+  _context: {fileID: 0}
   _emotes: {fileID: 6419836043487809605}
   _sit: {fileID: 1380893159995265042}
   _sleep: {fileID: 2505972636240817048}
@@ -1908,6 +1894,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 9080262009022577868}
   _defaultSitType: {fileID: 11400000, guid: 4b69f508c90a75043869c8040e0ebb6a, type: 2}
+  _logger: {fileID: 0}
 --- !u!114 &2505972636240817048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1922,6 +1909,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 9080262009022577868}
   _defaultSleepType: {fileID: 11400000, guid: c7ed742e3e42d6548b6f0b2054f6130d, type: 2}
+  _logger: {fileID: 0}
 --- !u!1 &5879743340707824353
 GameObject:
   m_ObjectHideFlags: 0

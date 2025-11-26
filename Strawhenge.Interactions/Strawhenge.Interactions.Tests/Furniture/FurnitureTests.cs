@@ -7,7 +7,6 @@ public class FurnitureTests
 {
     readonly Chair _chair;
     readonly FurnitureUserScope _userScope;
-    readonly InteractionsContext _interactionsContext;
     readonly FurnitureUser _user;
 
     readonly FurnitureUser _otherUser;
@@ -19,11 +18,10 @@ public class FurnitureTests
 
         _chair = new(logger);
         _userScope = new();
-        _interactionsContext = new InteractionsContext(logger) { IsValid = true };
-        _user = new(_userScope, _interactionsContext, logger);
+        _user = new(_userScope, logger);
 
         _otherChair = new(logger);
-        _otherUser = new(new FurnitureUserScope(), new InteractionsContext(logger), logger);
+        _otherUser = new(new FurnitureUserScope(), logger);
     }
 
     [Fact]
@@ -278,68 +276,6 @@ public class FurnitureTests
         _chair.DeactivatedStateChanged += callback;
 
         _chair.Activate();
-        callback.VerifyInvokedOnce();
-    }
-
-    [Fact]
-    public void Furniture_user_should_not_be_able_to_use_furniture_when_context_invalid()
-    {
-        _interactionsContext.IsValid = false;
-
-        _user.Use(_chair);
-
-        _user.CurrentFurniture.VerifyIsNone();
-    }
-
-    [Fact]
-    public void Furniture_should_not_have_user_assigned_when_context_invalid()
-    {
-        _interactionsContext.IsValid = false;
-
-        _user.Use(_chair);
-
-        _chair.CurrentUser.VerifyIsNone();
-    }
-
-    [Fact]
-    public void Use_callback_should_invoke_when_user_context_invalid()
-    {
-        _interactionsContext.IsValid = false;
-
-        var callback = new VerifiableCallback();
-        _user.Use(_chair, callback);
-
-        callback.VerifyInvokedOnce();
-    }
-
-    [Fact]
-    public void Furniture_user_should_no_longer_be_using_furniture_when_context_invalided()
-    {
-        _user.Use(_chair);
-
-        _interactionsContext.IsValid = false;
-
-        _user.CurrentFurniture.VerifyIsNone();
-    }
-
-    [Fact]
-    public void Furniture_should_no_longer_have_user_assigned_when_context_invalided()
-    {
-        _user.Use(_chair);
-
-        _interactionsContext.IsValid = false;
-
-        _chair.CurrentUser.VerifyIsNone();
-    }
-
-    [Fact]
-    public void Use_callback_should_invoke_when_user_context_invalidated()
-    {
-        var callback = new VerifiableCallback();
-        _user.Use(_chair, callback);
-
-        _interactionsContext.IsValid = false;
-
         callback.VerifyInvokedOnce();
     }
 }

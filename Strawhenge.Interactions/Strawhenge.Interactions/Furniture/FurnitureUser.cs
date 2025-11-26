@@ -11,18 +11,13 @@ namespace Strawhenge.Interactions.Furniture
     {
         readonly List<Action> _onEndedCallbacks = new List<Action>();
         readonly IFurnitureUserScope _scope;
-        readonly InteractionsContext _interactionsContext;
         readonly ILogger _logger;
 
         bool _isEndingUse;
 
-        public FurnitureUser(IFurnitureUserScope scope, InteractionsContext interactionsContext, ILogger logger)
+        public FurnitureUser(IFurnitureUserScope scope, ILogger logger)
         {
             _scope = scope ?? throw new ArgumentNullException(nameof(scope));
-
-            _interactionsContext = interactionsContext ?? throw new ArgumentNullException(nameof(interactionsContext));
-            _interactionsContext.Interrupted += OnInterrupted;
-
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -52,15 +47,6 @@ namespace Strawhenge.Interactions.Furniture
                 onEnded?.Invoke();
                 return;
             }
-
-            if (!_interactionsContext.IsValid)
-            {
-                _logger.LogWarning($"User context is invalid.");
-                onEnded?.Invoke();
-                return;
-            }
-
-            _interactionsContext.Interrupt();
 
             CurrentFurniture = furniture;
 
@@ -119,15 +105,6 @@ namespace Strawhenge.Interactions.Furniture
                     }
                 });
             }
-        }
-
-        void OnInterrupted()
-        {
-            CurrentFurniture.Do(x =>
-            {
-                x.NotifyUserInvalidated();
-                OnFurnitureEnded();
-            });
         }
     }
 }
