@@ -1,3 +1,5 @@
+using Strawhenge.Interactions.Unity.Sleep;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -18,9 +20,21 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         void OnWizardUpdate()
         {
-            isValid = _animatorController != null;
+            if (_animatorController == null)
+            {
+                isValid = false;
+                return;
+            }
 
-            // TODO Check for existing layer
+            if (_animatorController.GetLayersContaining<SleepStateMachine>().Any())
+            {
+                isValid = false;
+                errorString = "Sleep layer already exists.";
+                return;
+            }
+
+            isValid = true;
+            errorString = string.Empty;
         }
 
         void OnWizardCreate()

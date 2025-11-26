@@ -1,3 +1,5 @@
+using Strawhenge.Interactions.Unity.Sit;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -18,9 +20,21 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         void OnWizardUpdate()
         {
-            isValid = _animatorController != null;
-            
-            // TODO Check for existing layer
+            if (_animatorController == null)
+            {
+                isValid = false;
+                return;
+            }
+
+            if (_animatorController.GetLayersContaining<SitStateMachine>().Any())
+            {
+                isValid = false;
+                errorString = "Sit layer already exists.";
+                return;
+            }
+
+            isValid = true;
+            errorString = string.Empty;
         }
 
         void OnWizardCreate()
