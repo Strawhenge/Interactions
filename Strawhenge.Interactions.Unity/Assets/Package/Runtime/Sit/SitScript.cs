@@ -1,3 +1,4 @@
+using Strawhenge.Common.Unity;
 using Strawhenge.Common.Unity.Helpers;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace Strawhenge.Interactions.Unity.Sit
     {
         [SerializeField] Animator _animator;
         [SerializeField] SitTypeScriptableObject _defaultSitType;
+        [SerializeField, Tooltip("Optional.")] LoggerScript _logger;
 
         SitController _sitController;
 
@@ -19,12 +21,16 @@ namespace Strawhenge.Interactions.Unity.Sit
 
         SitController CreateSitController()
         {
+            var logger = _logger != null
+                ? _logger.Logger
+                : new UnityLogger(gameObject);
+
             ComponentRefHelper.EnsureRootHierarchyComponent(ref _animator, nameof(_animator), this);
 
             if (_defaultSitType == null)
                 Debug.LogError($"'{nameof(_defaultSitType)}' not set.", this);
 
-            return new SitController(_animator, _defaultSitType);
+            return new SitController(_animator, _defaultSitType, logger);
         }
     }
 }

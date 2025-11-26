@@ -1,6 +1,7 @@
 ﻿using Strawhenge.Common.Unity.AnimatorBehaviours;
 using System;
 using UnityEngine;
+using ILogger = Strawhenge.Common.Logging.ILogger;
 
 namespace Strawhenge.Interactions.Unity.Sit
 {
@@ -8,11 +9,13 @@ namespace Strawhenge.Interactions.Unity.Sit
     {
         readonly Animator _animator;
         readonly StateMachineEvents<SitStateMachine> _stateMachineEvents;
+        readonly ILogger _logger;
 
         public event Action Sitting;
+
         public event Action Standing;
 
-        public SitAnimationHandler(Animator animator)
+        public SitAnimationHandler(Animator animator, ILogger logger)
         {
             _animator = animator;
 
@@ -21,12 +24,21 @@ namespace Strawhenge.Interactions.Unity.Sit
                 {
                     stateMachine.OnSitting = OnSitting;
                     stateMachine.OnStanding = OnStanding;
+                    stateMachine.Destroyed += OnStateMachineDestroyed;
                 },
-                unsubscribe: _ => { });
+                unsubscribe: stateMachine => stateMachine.Destroyed -= OnStateMachineDestroyed);
+
+            _logger = logger;
         }
 
         public void Sit(SitTypeScriptableObject sitType)
         {
+            if (!_animator.isActiveAndEnabled)
+            {
+                _logger.LogWarning("Animator is not active.");
+                Standing?.Invoke();
+            }
+
             _stateMachineEvents.PrepareIfRequired();
 
             _animator.ResetTrigger(AnimatorParameters.Stand.Id);
@@ -47,5 +59,11 @@ namespace Strawhenge.Interactions.Unity.Sit
         void OnStanding() => Standing?.Invoke();
 
         void OnSitting() => Sitting?.Invoke();
+
+        void OnStateMachineDestroyed()
+        {
+            _logger.LogInformation($"'{nameof(SitStateMachine)}' destroyed.");
+            OnStanding();
+        }
     }
 }
