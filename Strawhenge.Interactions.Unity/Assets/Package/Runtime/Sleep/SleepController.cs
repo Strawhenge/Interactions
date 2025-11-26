@@ -39,7 +39,7 @@ namespace Strawhenge.Interactions.Unity.Sleep
         {
             if (IsSleepInProgress)
             {
-                _logger.LogWarning($"Sleep is already in progress.");
+                _logger.LogWarning("Sleep is already in progress.");
                 return;
             }
 
