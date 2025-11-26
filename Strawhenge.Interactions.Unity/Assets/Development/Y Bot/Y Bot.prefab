@@ -1921,13 +1921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 9080262009022577868}
-  _defaultAnimations:
-    _serialized:
-      _layDown: {fileID: 0}
-      _sleeping: {fileID: 0}
-      _getUp: {fileID: 0}
-    _scriptableObject: {fileID: 11400000, guid: aa26ce7e08f83254c9e266082be7e244, type: 2}
-    _type: 2
+  _defaultSleepType: {fileID: 11400000, guid: c7ed742e3e42d6548b6f0b2054f6130d, type: 2}
 --- !u!1 &5879743340707824353
 GameObject:
   m_ObjectHideFlags: 0
