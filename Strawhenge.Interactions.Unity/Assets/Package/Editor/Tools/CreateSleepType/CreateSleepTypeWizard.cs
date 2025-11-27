@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -20,6 +21,11 @@ namespace Strawhenge.Interactions.Unity.Editor
         [SerializeField] AnimationClip _sleepingAnimation;
         [SerializeField] AnimationClip _wakeUpAnimation;
 
+        void OnEnable()
+        {
+            _animatorController = LastUsed.AnimatorController;
+        }
+
         void OnWizardUpdate()
         {
             isValid =
@@ -28,6 +34,9 @@ namespace Strawhenge.Interactions.Unity.Editor
                 _layDownAnimation != null &&
                 _sleepingAnimation != null &&
                 _wakeUpAnimation != null;
+
+            if (_animatorController != null)
+                LastUsed.AnimatorController = _animatorController;
         }
 
         void OnWizardCreate()

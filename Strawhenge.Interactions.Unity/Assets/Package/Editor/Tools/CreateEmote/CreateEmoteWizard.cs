@@ -28,6 +28,11 @@ namespace Strawhenge.Interactions.Unity.Editor
         ItemScriptableObject _item;
         BarkScriptableObject _bark;
 
+        void OnEnable()
+        {
+            _animatorController = LastUsed.AnimatorController;
+        }
+
         protected override bool DrawWizardGUI()
         {
             var result = base.DrawWizardGUI();
@@ -39,7 +44,11 @@ namespace Strawhenge.Interactions.Unity.Editor
                 allowSceneObjects: false) as AnimatorController;
 
             if (_animatorController != animatorController)
+            {
                 _layerNames = GetEmoteLayers(animatorController);
+                LastUsed.AnimatorController = animatorController;
+            }
+
             _animatorController = animatorController;
 
             _selectedLayerIndex = EditorGUILayout.Popup(

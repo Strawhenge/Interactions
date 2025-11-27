@@ -18,11 +18,19 @@ namespace Strawhenge.Interactions.Unity.Editor
         [SerializeField] string _layerName;
         [SerializeField] AvatarMask _avatarMask;
 
+        void OnEnable()
+        {
+            _animatorController = LastUsed.AnimatorController;
+        }
+
         void OnWizardUpdate()
         {
             isValid =
                 _animatorController != null &&
                 !string.IsNullOrWhiteSpace(_layerName);
+
+            if (_animatorController != null)
+                LastUsed.AnimatorController = _animatorController;
         }
 
         void OnWizardCreate()

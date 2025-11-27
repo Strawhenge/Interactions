@@ -20,6 +20,11 @@ namespace Strawhenge.Interactions.Unity.Editor
         [SerializeField] AnimationClip _sittingAnimation;
         [SerializeField] AnimationClip _standAnimation;
 
+        void OnEnable()
+        {
+            _animatorController = LastUsed.AnimatorController;
+        }
+
         void OnWizardUpdate()
         {
             isValid =
@@ -28,6 +33,9 @@ namespace Strawhenge.Interactions.Unity.Editor
                 _sitAnimation != null &&
                 _sittingAnimation != null &&
                 _standAnimation != null;
+
+            if (_animatorController != null)
+                LastUsed.AnimatorController = _animatorController;
         }
 
         void OnWizardCreate()

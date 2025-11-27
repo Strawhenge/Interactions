@@ -18,6 +18,11 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         [SerializeField] AnimatorController _animatorController;
 
+        void OnEnable()
+        {
+            _animatorController = LastUsed.AnimatorController;
+        }
+
         void OnWizardUpdate()
         {
             if (_animatorController == null)
@@ -25,6 +30,8 @@ namespace Strawhenge.Interactions.Unity.Editor
                 isValid = false;
                 return;
             }
+
+            LastUsed.AnimatorController = _animatorController;
 
             if (_animatorController.GetLayersContaining<SitStateMachine>().Any())
             {

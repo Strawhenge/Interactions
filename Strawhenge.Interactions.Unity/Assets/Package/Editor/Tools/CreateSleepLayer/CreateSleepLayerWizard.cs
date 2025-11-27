@@ -1,4 +1,5 @@
 using Strawhenge.Interactions.Unity.Sleep;
+using System;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
@@ -18,6 +19,11 @@ namespace Strawhenge.Interactions.Unity.Editor
 
         [SerializeField] AnimatorController _animatorController;
 
+        void OnEnable()
+        {
+            _animatorController = LastUsed.AnimatorController;
+        }
+
         void OnWizardUpdate()
         {
             if (_animatorController == null)
@@ -25,6 +31,8 @@ namespace Strawhenge.Interactions.Unity.Editor
                 isValid = false;
                 return;
             }
+
+            LastUsed.AnimatorController = _animatorController;
 
             if (_animatorController.GetLayersContaining<SleepStateMachine>().Any())
             {
