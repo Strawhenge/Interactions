@@ -29,6 +29,13 @@ jobs:
       
     - name: Test
       run: dotnet test Strawhenge.Interactions
+      
+    - name: Pack Nuget Package
+      run: dotnet pack Strawhenge.Interactions -c Release -p:PackageVersion=${{ env.VERSION }} -o nupkg
+
+    - name: Publish Nuget Package
+      run: dotnet nuget push *.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/Strawhenge/index.json --no-symbols true
+      working-directory: ./nupkg
         
     - name: Release Unity Package
       run: |
