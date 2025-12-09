@@ -108,4 +108,34 @@ public partial class OneAtATimeTests
         var expectedCallbacksInvoked = emotes.Length - 1;
         Assert.Equal(expectedCallbacksInvoked, callbacksInvoked);
     }
+
+    [Fact]
+    public void Started_event_should_invoke_when_emote_started()
+    {
+        var emote = new Emote();
+        var eventInvocation = new VerifiableCallback();
+
+        _oneAtATimeManager.Started += eventInvocation;
+        
+        _oneAtATimeManager.Start(emote);
+        eventInvocation.VerifyInvokedOnce();
+    }
+
+    [Fact]
+    public void Stopped_event_should_invoke_when_emote_stopped()
+    {
+        var emote = new Emote();
+        var eventInvocation = new VerifiableCallback();
+
+        _oneAtATimeManager.Stopped += eventInvocation;
+        
+        _oneAtATimeManager.Start(emote);
+        eventInvocation.VerifyInvokedNever();
+        
+        _oneAtATimeManager.Stop();
+        eventInvocation.VerifyInvokedNever();
+        
+        emote.InvokeStopped();
+        eventInvocation.VerifyInvokedOnce();
+    }
 }

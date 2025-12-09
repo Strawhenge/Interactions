@@ -14,6 +14,10 @@ namespace Strawhenge.Interactions
         T _next;
         Action _nextCallback;
 
+        public event Action Started;
+
+        public event Action Stopped;
+
         public Maybe<T> Current => Maybe.NotNull(_current);
 
         public void Start(T oneAtATime, Action callback = null)
@@ -42,6 +46,7 @@ namespace Strawhenge.Interactions
             _current.Stopped += OnCurrentStopped;
             _currentCallback = callback;
 
+            Started?.Invoke();
             _current.Start();
         }
 
@@ -52,6 +57,9 @@ namespace Strawhenge.Interactions
 
             var callback = _currentCallback;
             _currentCallback = null;
+
+            Stopped?.Invoke();
+
             callback?.Invoke();
 
             foreach (var skippedCallback in _skippedCallbacks.DequeueAll())

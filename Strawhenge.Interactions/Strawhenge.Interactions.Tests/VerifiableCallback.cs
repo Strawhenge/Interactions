@@ -7,6 +7,8 @@ class VerifiableCallback
     int _invokedCount;
 
     public void VerifyInvokedOnce() => Assert.Equal(1, _invokedCount);
+   
+    public void VerifyInvokedNever() => Assert.Equal(0, _invokedCount);
 
     void OnInvoked() => _invokedCount++;
 }
