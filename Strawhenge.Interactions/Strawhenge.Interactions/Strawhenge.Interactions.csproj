@@ -10,6 +10,6 @@
 
     <ItemGroup>
       <PackageReference Include="FunctionalUtilities" Version="1.2.10" />
-      <PackageReference Include="Strawhenge.Common" Version="1.1.42" />
+      <PackageReference Include="Strawhenge.Common" Version="1.1.43" />
     </ItemGroup>
 </Project>

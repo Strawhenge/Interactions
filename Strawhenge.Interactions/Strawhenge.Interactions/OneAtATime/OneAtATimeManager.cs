@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FunctionalUtilities;
+using Strawhenge.Common;
 
 namespace Strawhenge.Interactions
 {
