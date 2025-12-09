@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  workflow_dispatch:  
+        
+jobs: 
+  Release:    
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Version
+      run: |
+        echo "VERSION=1.0.$(${{ github.run_number }} - 0)" >> $env:GITHUB_ENV
+        
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+          dotnet-version: 3.1.200
+          
+    - name: Restore
+      run: |        
+        dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Strawhenge/index.json"
+        dotnet restore Strawhenge.Interactions
+          
+    - name: Build
+      run: dotnet build Strawhenge.Interactions -p:Version=${{ env.VERSION }} --configuration Release
+      
+    - name: Test
+      run: dotnet test Strawhenge.Interactions
+        
+    - name: Release Unity Package
+      run: |
+          git --version
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          git checkout -b ${{ env.TEMP_BRANCH }}          
+          
+          Copy-Item "Strawhenge.Interactions\Strawhenge.Interactions\bin\Release\netstandard2.0\Strawhenge.Interactions.dll" -Destination "Strawhenge.Interactions.Unity\Assets\Package\Runtime"
+          
+          $package = Get-Content 'Strawhenge.Interactions.Unity\Assets\Package\package.json' -raw | ConvertFrom-Json
+          $package.version = '${{ env.VERSION }}'
+          $package | ConvertTo-Json | set-content 'Strawhenge.Interactions.Unity\Assets\Package\package.json'
+          
+          git add Strawhenge.Interactions.Unity\Assets\Package\Runtime\Strawhenge.Interactions.dll -f
+          git add Strawhenge.Interactions.Unity\Assets\Package\package.json        
+          git commit -m 'Prepare Release ${{ env.VERSION }}'
+          git push --set-upstream origin ${{ env.TEMP_BRANCH }}
+          
+          git push --delete origin release
+          git checkout -b release
+          git push --set-upstream origin release
+          git push --delete origin ${{ env.TEMP_BRANCH }}
+      env:
+          TEMP_BRANCH: temp-${{ github.run_number }}
