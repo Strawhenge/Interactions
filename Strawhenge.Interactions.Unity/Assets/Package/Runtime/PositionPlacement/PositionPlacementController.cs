@@ -26,6 +26,8 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
 
         public bool IsInProgress { get; private set; }
 
+        public Vector3 Velocity => _transformLerpPosition.Velocity;
+
         public void PlaceAt(
             PositionPlacementInstruction placement,
             Action onCompleted = null)
@@ -35,13 +37,13 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
 
             _transformLerpPosition.SetPosition(placement.Position, placement.Args.MoveSpeed);
             _transformSlerpTurn.SetDirection(placement.Direction, placement.Args.TurnSpeed);
-            
+
             _timePassed = 0;
             _timeout = placement.Args.TimeoutInSeconds;
-            
+
             _positionBuffer = placement.Args.PositionBuffer;
             _directionBuffer = placement.Args.DirectionBuffer;
-            
+
             _onCompleted = onCompleted;
 
             IsInProgress = true;

@@ -19,6 +19,8 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
 
         public float RemainingDistance => Vector3.Distance(_transform.position, _endPosition);
 
+        public Vector3 Velocity { get; private set; }
+
         public void SetPosition(Vector3 position, float speed)
         {
             _startPosition = _transform.position;
@@ -28,9 +30,15 @@ namespace Strawhenge.Interactions.Unity.PositionPlacement
 
             _totalDistance = Vector3.Distance(_startPosition, _endPosition);
             _totalTimePassed = 0;
+
+            Velocity = (_endPosition - _startPosition).normalized * speed;
         }
 
-        public void Complete() => _transform.position = _endPosition;
+        public void Complete()
+        {
+            _transform.position = _endPosition;
+            Velocity = Vector3.zero;
+        }
 
         public void Update(float timePassedInSeconds)
         {
